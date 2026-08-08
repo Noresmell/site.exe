@@ -1105,6 +1105,382 @@ body::before {
   }
 }
 
+
+/* ============================================================
+   FINAL RESPONSIVE XP LAYOUT
+   Compact desktop + proper mobile XP desktop
+   ============================================================ */
+
+/* ---------- DESKTOP: keep the wallpaper visible ---------- */
+@media (min-width: 901px) {
+  .desktop {
+    min-height: 100vh !important;
+    padding: 22px 24px 52px !important;
+  }
+
+  .desktop-header {
+    width: min(760px, 100%) !important;
+    margin: 0 auto 16px !important;
+  }
+
+  .desktop-header .computer {
+    font-size: 30px !important;
+    margin-bottom: 2px !important;
+  }
+
+  .desktop-header h1 {
+    font-size: 21px !important;
+  }
+
+  .desktop-header p {
+    font-size: 10px !important;
+    margin-top: 2px !important;
+  }
+
+  .icons {
+    width: min(620px, 100%) !important;
+    grid-template-columns: repeat(4, 1fr) !important;
+    gap: 14px 18px !important;
+  }
+
+  .icon {
+    width: 92px !important;
+    min-height: 88px !important;
+    padding: 5px !important;
+  }
+
+  .icon-symbol {
+    width: 52px !important;
+    height: 52px !important;
+    font-size: 42px !important;
+  }
+
+  .icon-name {
+    margin-top: 4px !important;
+    font-size: 11px !important;
+  }
+
+  /* Keep opened windows compact instead of filling the screen. */
+  .window {
+    width: min(600px, calc(100vw - 40px)) !important;
+    max-height: min(650px, 86vh) !important;
+  }
+}
+
+/* ---------- TABLET ---------- */
+@media (min-width: 601px) and (max-width: 900px) {
+  .desktop {
+    padding: 18px 16px 50px !important;
+  }
+
+  .desktop-header {
+    margin-bottom: 14px !important;
+  }
+
+  .icons {
+    width: min(600px, 100%) !important;
+    gap: 12px 14px !important;
+  }
+
+  .icon {
+    width: 88px !important;
+    min-height: 82px !important;
+  }
+
+  .icon-symbol {
+    font-size: 38px !important;
+  }
+}
+
+/* ============================================================
+   PHONE
+   Keep it looking like an XP desktop, NOT like generic mobile UI.
+   ============================================================ */
+@media (max-width: 600px) {
+  html,
+  body {
+    width: 100%;
+    min-width: 0;
+    height: 100%;
+    min-height: 100%;
+    overflow-x: hidden;
+    overflow-y: auto;
+  }
+
+  body::before {
+    background-position: center center !important;
+    background-size: cover !important;
+    background-attachment: scroll !important;
+  }
+
+  .desktop {
+    width: 100%;
+    min-height: 100dvh !important;
+    padding: 14px 10px 46px !important;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  /* Small XP-style identity header. */
+  .desktop-header {
+    width: min(330px, 100%) !important;
+    margin: 0 auto 12px !important;
+  }
+
+  .desktop-header .computer {
+    font-size: 28px !important;
+    margin-bottom: 2px !important;
+  }
+
+  .desktop-header h1 {
+    font-size: 19px !important;
+  }
+
+  .desktop-header p {
+    font-size: 9px !important;
+    margin-top: 2px !important;
+  }
+
+  /*
+     Icons remain desktop icons:
+     icon ABOVE label, transparent background.
+  */
+  .icons {
+    width: min(340px, 100%) !important;
+    margin: 0 auto !important;
+    display: grid !important;
+    grid-template-columns: repeat(3, 1fr) !important;
+    gap: 12px 4px !important;
+    justify-items: center !important;
+  }
+
+  .icon {
+    width: 92px !important;
+    min-height: 82px !important;
+    padding: 5px 3px !important;
+    background: transparent !important;
+    border: 1px solid transparent !important;
+    color: #fff !important;
+    text-align: center !important;
+  }
+
+  .icon:hover {
+    background: linear-gradient(
+      180deg,
+      rgba(255,234,244,.18),
+      rgba(42,111,224,.22)
+    ) !important;
+    border-color: rgba(255,216,234,.35) !important;
+  }
+
+  .icon:active {
+    background: rgba(26,70,130,.30) !important;
+  }
+
+  .icon-symbol {
+    width: 48px !important;
+    height: 48px !important;
+    margin: 0 auto !important;
+    font-size: 38px !important;
+  }
+
+  .icon-name {
+    margin-top: 4px !important;
+    font-size: 10px !important;
+    line-height: 1.1 !important;
+    white-space: nowrap;
+  }
+
+  /*
+     Opened XP window:
+     almost full width, but still has a visible wallpaper border.
+  */
+  .overlay {
+    align-items: flex-start !important;
+    justify-content: center !important;
+    padding: 12px 8px 42px !important;
+    overflow-y: auto !important;
+    background: rgba(0,0,0,.28) !important;
+  }
+
+  .window {
+    width: 100% !important;
+    max-width: 430px !important;
+    max-height: calc(100dvh - 54px) !important;
+    margin: 0 auto !important;
+    border-radius: 6px 6px 2px 2px !important;
+  }
+
+  .titlebar,
+  .panel-titlebar,
+  .window-titlebar {
+    height: 29px !important;
+    min-height: 29px !important;
+  }
+
+  .titlebar-left,
+  .panel-title-left,
+  .window-title-left {
+    font-size: 10px !important;
+  }
+
+  .titlebar-button,
+  .panel-button,
+  .window-button {
+    width: 20px !important;
+    min-width: 20px !important;
+    height: 19px !important;
+    font-size: 11px !important;
+  }
+
+  .window-content {
+    max-height: none !important;
+  }
+
+  .content-inner {
+    padding: 16px 14px 18px !important;
+  }
+
+  .profile-icon {
+    font-size: 34px !important;
+  }
+
+  .profile h2 {
+    font-size: 19px !important;
+  }
+
+  .profile p {
+    font-size: 10px !important;
+  }
+
+  .about-title,
+  .support-box h2 {
+    font-size: 18px !important;
+  }
+
+  .about-text {
+    font-size: 11px !important;
+    line-height: 1.6 !important;
+  }
+
+  .link {
+    min-height: 43px !important;
+    padding: 7px 9px !important;
+  }
+
+  .link strong {
+    font-size: 11px !important;
+  }
+
+  .link small {
+    font-size: 9px !important;
+  }
+
+  .project-grid {
+    grid-template-columns: 1fr !important;
+  }
+
+  /* The taskbar stays XP-like, but doesn't dominate the phone. */
+  .taskbar {
+    height: 30px !important;
+    min-height: 30px !important;
+    padding: 0 3px !important;
+    gap: 3px !important;
+  }
+
+  .start-button {
+    height: 23px !important;
+    padding: 0 7px 0 6px !important;
+    font-size: 10px !important;
+  }
+
+  .quick-launch {
+    display: none !important;
+  }
+
+  .taskbar-apps {
+    height: 23px !important;
+    gap: 2px !important;
+  }
+
+  .taskbar-app {
+    height: 22px !important;
+    min-width: 0 !important;
+    max-width: none !important;
+    flex: 1 1 0 !important;
+    justify-content: center !important;
+    padding: 0 4px !important;
+    font-size: 8px !important;
+  }
+
+  .taskbar-app__glyph {
+    font-size: 9px !important;
+  }
+
+  .system-tray {
+    height: 23px !important;
+    gap: 0 !important;
+    padding: 0 5px !important;
+  }
+
+  .system-tray .tray-icon {
+    display: none !important;
+  }
+
+  .tray-clock {
+    min-width: 38px !important;
+    font-size: 9px !important;
+  }
+
+  .xp-cursor {
+    display: none !important;
+  }
+}
+
+/* ---------- Very narrow phones ---------- */
+@media (max-width: 370px) {
+  .desktop {
+    padding-left: 6px !important;
+    padding-right: 6px !important;
+  }
+
+  .desktop-header {
+    margin-bottom: 8px !important;
+  }
+
+  .icons {
+    width: 100% !important;
+    grid-template-columns: repeat(3, 1fr) !important;
+    gap: 8px 0 !important;
+  }
+
+  .icon {
+    width: 82px !important;
+  }
+
+  .icon-symbol {
+    font-size: 34px !important;
+  }
+
+  .icon-name {
+    font-size: 9px !important;
+  }
+
+  .window {
+    max-width: 100% !important;
+  }
+
+  .content-inner {
+    padding-left: 11px !important;
+    padding-right: 11px !important;
+  }
+
+  .taskbar-app:nth-child(n+3) {
+    display: none !important;
+  }
+}
+
 </style>
 </head>
 
