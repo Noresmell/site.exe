@@ -1,0 +1,1569 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Noresmell.exe</title>
+
+<style>
+:root{
+  --xp-window-bg:#ECE9D8;
+  --xp-panel-bg:#F5F5F5;
+  --xp-border:#D6D3CE;
+  --xp-border-dark:#9E9B8F;
+
+  --titlebar-start:#2A6FE0;
+  --titlebar-mid:#5B9BF0;
+  --titlebar-end:#1750B5;
+  --titlebar-text:#FFFFFF;
+
+  --accent-pink:#FFD8EA;
+  --accent-pink-light:#FFEAF4;
+  --accent-pink-deep:#FFB7D5;
+  --accent-pink-darker:#D45B93;
+
+  --text-color:#333333;
+  --font-family:"Tahoma","Verdana","Segoe UI",sans-serif;
+  --window-shadow:0 8px 20px rgba(0,0,0,.30),0 2px 4px rgba(0,0,0,.18);
+  --taskbar-height:34px;
+}
+
+*{box-sizing:border-box}
+
+
+
+/* ---------------- DESKTOP ---------------- */
+
+.desktop{
+  min-height:100vh;
+  padding:28px 24px 55px;
+  position:relative;
+  z-index:1;
+  background:transparent !important;
+}
+
+
+
+.desktop-header{
+  position:relative;
+  z-index:2;
+  width:min(900px,100%);
+  margin:0 auto 28px;
+  text-align:center;
+  color:#fff;
+  text-shadow:0 1px 2px rgba(0,0,0,.75);
+}
+
+.desktop-header .computer{
+  font-size:38px;
+  display:block;
+  margin-bottom:5px;
+  filter:drop-shadow(1px 2px 2px rgba(0,0,0,.35));
+}
+
+.desktop-header h1{
+  margin:0;
+  font-size:24px;
+  font-weight:bold;
+  letter-spacing:.2px;
+}
+
+.desktop-header p{
+  margin:4px 0 0;
+  font-size:11px;
+  opacity:.95;
+}
+
+/* ---------------- ICONS ---------------- */
+
+.icons{
+  width:min(760px,100%);
+  margin:auto;
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap:30px 26px;
+  justify-items:center;
+}
+
+.icon{
+  width:120px;
+  min-height:112px;
+  border:1px solid transparent;
+  background:transparent;
+  color:#fff;
+  cursor:pointer;
+  padding:7px;
+  font-family:var(--font-family);
+  text-shadow:0 1px 2px rgba(0,0,0,.9),0 0 3px rgba(0,0,0,.35);
+  border-radius:2px;
+  transition:background .08s,border-color .08s;
+}
+
+.icon:hover{
+  background:linear-gradient(180deg,rgba(255,234,244,.20),rgba(42,111,224,.32));
+  border-color:rgba(255,216,234,.42);
+}
+
+.icon:active{
+  background:rgba(26,70,130,.45);
+}
+
+.icon-symbol{
+  width:58px;
+  height:58px;
+  margin:auto;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:47px;
+  line-height:1;
+  filter:drop-shadow(0 2px 2px rgba(0,0,0,.4));
+}
+
+.icon-name{
+  margin-top:7px;
+  font-size:12px;
+  font-weight:600;
+}
+
+.icon-sub{
+  display:none;
+}
+
+/* ---------------- STATUS BAR ---------------- */
+
+
+
+
+
+/* ---------------- XP WINDOW ---------------- */
+
+.overlay{
+  position:fixed;
+  inset:0;
+  z-index:20;
+  display:none;
+  align-items:center;
+  justify-content:center;
+  padding:20px;
+  background:rgba(0,0,0,.35);
+  backdrop-filter:blur(2px);
+}
+
+.overlay.open{
+  display:flex;
+}
+
+.window{
+  width:min(620px,100%);
+  max-height:min(720px,90vh);
+  display:flex;
+  flex-direction:column;
+  background:var(--window-bg);
+  border:1px solid #003c9d;
+  border-radius:7px 7px 4px 4px;
+  box-shadow:
+    0 0 0 1px rgba(255,255,255,.65) inset,
+    var(--shadow);
+  overflow:hidden;
+  animation:openWindow .18s ease-out;
+}
+
+@keyframes openWindow{
+  from{opacity:0;transform:scale(.94)}
+  to{opacity:1;transform:scale(1)}
+}
+
+/* XP titlebar */
+
+.titlebar{
+  height:30px;
+  flex:none;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  padding:0 4px 0 7px;
+  position:relative;
+  background:linear-gradient(
+    180deg,
+    var(--titlebar-mid) 0%,
+    var(--titlebar-start) 48%,
+    var(--titlebar-end) 100%
+  );
+  border-bottom:1px solid #16499e;
+}
+
+.titlebar::before{
+  content:"";
+  position:absolute;
+  inset:0 0 auto;
+  height:45%;
+  background:linear-gradient(
+    180deg,
+    rgba(255,255,255,.58),
+    rgba(255,255,255,0)
+  );
+  pointer-events:none;
+}
+
+.title-left{
+  display:flex;
+  align-items:center;
+  gap:6px;
+  color:white;
+  font-size:12px;
+  font-weight:bold;
+  text-shadow:0 1px 2px rgba(0,0,0,.55);
+  position:relative;
+  z-index:1;
+}
+
+.title-icon{font-size:14px}
+
+.window-buttons{
+  display:flex;
+  gap:3px;
+  position:relative;
+  z-index:1;
+}
+
+.win-btn{
+  width:20px;
+  height:18px;
+  padding:0;
+  border:1px solid rgba(0,0,0,.3);
+  border-radius:3px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:11px;
+  font-weight:bold;
+  color:#333;
+  background:linear-gradient(#fff,#d8e6f7 45%,#a9c6ea 50%,#cfe3f7);
+}
+
+.win-btn.close{
+  color:white;
+  background:linear-gradient(#ff8a80,#e2452f 45%,#c22a17 50%,#f0684f);
+}
+
+/* ---------------- WINDOW CONTENT ---------------- */
+
+.window-content{
+  overflow:auto;
+  padding:0;
+  background:#f7f7f7;
+}
+
+.menu{
+  height:25px;
+  display:flex;
+  align-items:center;
+  gap:18px;
+  padding:0 9px;
+  font-size:11px;
+  color:#111;
+  background:linear-gradient(#ffffff,#ece9d8);
+  border-bottom:1px solid #aaa79d;
+}
+
+.menu span:first-child{
+  text-decoration:underline;
+}
+
+.content-inner{
+  padding:20px 22px 22px;
+  background:linear-gradient(180deg,#fff 0%,#fffafd 100%);
+  position:relative;
+}
+
+.content-inner::after{
+  content:"";
+  position:absolute;
+  inset:8px;
+  border:1px solid var(--accent-pink);
+  border-radius:2px;
+  pointer-events:none;
+}
+
+.content-inner>*{
+  position:relative;
+  z-index:1;
+}
+
+/* social */
+
+.profile{
+  text-align:center;
+  margin-bottom:22px;
+}
+
+.profile-icon{
+  font-size:42px;
+  filter:drop-shadow(0 2px 2px rgba(0,0,0,.18));
+}
+
+.profile h2{
+  margin:5px 0 3px;
+  color:#2457a6;
+  font-size:22px;
+}
+
+.profile p{
+  margin:0;
+  font-size:11px;
+  color:#666;
+}
+
+.link-list{
+  display:grid;
+  gap:9px;
+}
+
+.link{
+  display:flex;
+  align-items:center;
+  gap:11px;
+  min-height:46px;
+  padding:8px 12px;
+  color:#222;
+  text-decoration:none;
+  background:linear-gradient(#ffffff,#eeeeee);
+  border:1px solid #aaa;
+  border-radius:2px;
+  box-shadow:
+    inset 1px 1px 0 #fff,
+    inset -1px -1px 0 #d2d2d2;
+  transition:background .08s;
+}
+
+.link:hover{
+  background:linear-gradient(#ffffff,#e5efff);
+}
+
+.link-icon{
+  width:28px;
+  text-align:center;
+  font-size:21px;
+}
+
+.link strong{
+  display:block;
+  font-size:12px;
+}
+
+.link small{
+  display:block;
+  margin-top:2px;
+  color:#777;
+  font-size:9px;
+}
+
+/* about */
+
+.about-title{
+  margin:0 0 13px;
+  color:#2457a6;
+  font-size:20px;
+}
+
+.about-text{
+  font-size:12px;
+  line-height:1.7;
+  color:#222;
+}
+
+.about-text p{
+  margin:0 0 12px;
+}
+
+.info-box{
+  margin-top:15px;
+  padding:10px 12px;
+  background:#f4f4f4;
+  border:1px solid #b7b7b7;
+  border-radius:2px;
+  font-size:10px;
+  line-height:1.7;
+}
+
+/* support */
+
+.support-box{
+  text-align:center;
+}
+
+.support-heart{
+  font-size:40px;
+  margin-bottom:5px;
+}
+
+.support-box h2{
+  margin:0 0 7px;
+  color:#2457a6;
+  font-size:20px;
+}
+
+.support-box p{
+  font-size:11px;
+  line-height:1.55;
+  color:#555;
+  margin:0 auto 16px;
+  max-width:430px;
+}
+
+/* projects */
+
+.project-grid{
+  display:grid;
+  grid-template-columns:repeat(2,1fr);
+  gap:10px;
+}
+
+.project{
+  padding:13px;
+  background:#f5f5f5;
+  border:1px solid #aaa;
+  border-radius:2px;
+  box-shadow:inset 1px 1px 0 #fff;
+}
+
+.project-icon{
+  font-size:24px;
+  margin-bottom:5px;
+}
+
+.project strong{
+  font-size:12px;
+}
+
+.project p{
+  margin:5px 0 0;
+  color:#666;
+  font-size:10px;
+  line-height:1.4;
+}
+
+/* window status */
+
+.window-status{
+  height:23px;
+  flex:none;
+  display:flex;
+  align-items:center;
+  gap:6px;
+  padding:0 8px;
+  background:#f5f5f5;
+  border-top:1px solid #d6d3ce;
+  font-size:9px;
+  color:#666;
+}
+
+@media(max-width:650px){
+  .desktop{padding:30px 12px 55px}
+  .icons{grid-template-columns:repeat(2,1fr);gap:24px 12px}
+  .desktop-header{margin-bottom:24px}
+  .desktop-header h1{font-size:21px}
+  .window{max-height:92vh}
+  .project-grid{grid-template-columns:1fr}
+}
+
+/* tiny desktop decorations */
+.sparkle{
+  position:fixed;
+  color:rgba(255,255,255,.18);
+  pointer-events:none;
+  user-select:none;
+  animation:none;
+}
+
+.s1{left:8%;top:22%;font-size:14px}
+.s2{right:12%;top:18%;font-size:12px}
+.s3{right:18%;bottom:20%;font-size:14px}
+.s4{left:15%;bottom:28%;font-size:10px}
+
+@keyframes float{
+  0%,100%{transform:translateY(0);opacity:.3}
+  50%{transform:translateY(-6px);opacity:.65}
+}
+
+.taskbar{
+  position:fixed;
+  left:0;
+  right:0;
+  bottom:0;
+  z-index:10;
+  height:34px;
+  display:flex;
+  align-items:center;
+  gap:6px;
+  padding:0 4px;
+  background:linear-gradient(
+    180deg,
+    #6FA8F5 0%,
+    var(--titlebar-mid) 12%,
+    var(--titlebar-start) 55%,
+    #C96FA8 100%
+  );
+  border-top:1px solid var(--accent-pink-deep);
+  box-shadow:var(--window-shadow);
+}
+.start-button{
+  display:flex;
+  align-items:center;
+  gap:6px;
+  height:26px;
+  padding:0 12px 0 8px;
+  border:1px solid #3E7A2E;
+  border-radius:4px 10px 10px 4px;
+  background:linear-gradient(180deg,#FFDDEE 0%,#F98BC0 45%,#E85CA0 55%,#FFB7D5 100%);
+  color:#fff;
+  font-weight:700;
+  font-style:italic;
+  font-size:13px;
+  text-shadow:0 1px 1px rgba(0,0,0,.35);
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.6),0 1px 2px rgba(0,0,0,.3);
+}
+.start-button__glyph{font-size:13px}
+.quick-launch{
+  display:flex;
+  align-items:center;
+  gap:5px;
+  height:26px;
+  padding:0 6px;
+  border-left:1px solid rgba(255,255,255,.35);
+  border-right:1px solid rgba(0,0,0,.2);
+}
+.quick-launch__icon{font-size:13px;opacity:.9}
+.taskbar-apps{
+  flex:1;
+  display:flex;
+  align-items:center;
+  gap:4px;
+  min-width:0;
+  height:26px;
+}
+.taskbar-app{
+  display:flex;
+  align-items:center;
+  gap:5px;
+  height:24px;
+  padding:0 10px;
+  max-width:180px;
+  overflow:hidden;
+  white-space:nowrap;
+  text-overflow:ellipsis;
+  border:1px solid rgba(0,0,0,.15);
+  border-radius:3px;
+  background:linear-gradient(180deg,#8FB8F2 0%,#5B9BF0 100%);
+  color:#fff;
+  font-size:11px;
+  text-shadow:0 1px 1px rgba(0,0,0,.3);
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.4);
+}
+.taskbar-app.is-active{
+  background:linear-gradient(180deg,#FFEAF4 0%,#FFB7D5 100%);
+  color:#6B2E4C;
+  text-shadow:0 1px 0 rgba(255,255,255,.5);
+  box-shadow:inset 0 1px 3px rgba(0,0,0,.25);
+}
+.taskbar-app__glyph{font-size:12px}
+.system-tray{
+  display:flex;
+  align-items:center;
+  gap:8px;
+  height:26px;
+  padding:0 10px;
+  border-left:1px solid rgba(0,0,0,.2);
+  border-radius:8px 0 0 8px;
+  background:linear-gradient(180deg,#4A82D6 0%,#2E5FB0 100%);
+  box-shadow:inset 1px 0 0 rgba(255,255,255,.25);
+}
+.tray-icon{font-size:12px;color:#fff;opacity:.9}
+.tray-clock{
+  font-size:11.5px;
+  font-weight:700;
+  color:#fff;
+  text-shadow:0 1px 1px rgba(0,0,0,.35);
+  min-width:46px;
+  text-align:center;
+}
+
+
+html, body {
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  font-family: var(--font-family);
+  color: var(--text-color);
+  background: transparent !important;
+}
+
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: -10;
+  background-image:
+    linear-gradient(
+      160deg,
+      rgba(255,216,234,.12) 0%,
+      rgba(255,246,250,.025) 42%,
+      rgba(42,111,224,.10) 100%
+    ),
+    url("https://raw.githubusercontent.com/Noresmell/stream-widgets-assets2/main/image/perfect_hue_47%20%281%29.jpg");
+  background-size: cover;
+  background-position: center center;
+  background-repeat: no-repeat;
+}
+
+
+/* ============================================================
+   RESTORED XP LUNA WINDOW CHROME
+   Based on the original Chat.exe / Notification.exe language
+   supplied by the user.
+   ============================================================ */
+
+.titlebar,
+.panel-titlebar,
+.window-titlebar {
+  height:30px;
+  min-height:30px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  padding:0 4px 0 7px;
+  background:
+    linear-gradient(
+      180deg,
+      #6FA8F5 0%,
+      #5B9BF0 14%,
+      #2A6FE0 52%,
+      #1750B5 100%
+    ) !important;
+  border:1px solid #174A9E !important;
+  border-bottom-color:#103D88 !important;
+  color:#fff !important;
+  text-shadow:0 1px 1px rgba(0,0,0,.45);
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,.55),
+    inset 0 -1px 0 rgba(0,0,0,.18);
+}
+
+.titlebar-left,
+.panel-title-left,
+.window-title-left {
+  display:flex;
+  align-items:center;
+  gap:6px;
+  min-width:0;
+  font-size:11px;
+  font-weight:700;
+}
+
+.titlebar-buttons,
+.panel-controls,
+.window-controls {
+  display:flex;
+  gap:2px;
+  align-items:center;
+}
+
+.titlebar-button,
+.panel-button,
+.window-button {
+  width:21px;
+  height:20px;
+  min-width:21px;
+  padding:0;
+  border:1px solid #0E3D86 !important;
+  border-radius:2px;
+  background:
+    linear-gradient(
+      180deg,
+      #7EB5F5 0%,
+      #4E8FE6 45%,
+      #2865C4 100%
+    ) !important;
+  color:#fff !important;
+  font-family:Tahoma,sans-serif;
+  font-size:12px;
+  font-weight:bold;
+  line-height:17px;
+  text-shadow:0 1px 1px rgba(0,0,0,.45);
+  box-shadow:
+    inset 1px 1px 0 rgba(255,255,255,.5),
+    0 1px 1px rgba(0,0,0,.25);
+}
+
+.titlebar-button:hover,
+.panel-button:hover,
+.window-button:hover {
+  background:
+    linear-gradient(
+      180deg,
+      #FFEDF5 0%,
+      #FFB7D5 45%,
+      #D45B93 100%
+    ) !important;
+}
+
+.titlebar-button.close,
+.panel-button.close,
+.window-button.close {
+  background:
+    linear-gradient(
+      180deg,
+      #FF9C9C 0%,
+      #E94E4E 55%,
+      #B92F2F 100%
+    ) !important;
+  border-color:#8E2525 !important;
+}
+
+.editor-body,
+.panel-body,
+.window-body,
+.panel-content-frame {
+  background:
+    linear-gradient(180deg,#F8F8F8 0%,#F5F5F5 55%,#ECE9D8 100%) !important;
+  border:1px solid #D6D3CE !important;
+  border-top:0 !important;
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,.95),
+    inset 0 0 0 1px rgba(255,255,255,.45);
+}
+
+.panel,
+.window,
+.xp-window {
+  border:1px solid #7F7B70 !important;
+  border-radius:6px 6px 2px 2px !important;
+  background:#ECE9D8 !important;
+  box-shadow:
+    0 8px 20px rgba(0,0,0,.30),
+    0 2px 4px rgba(0,0,0,.18),
+    inset 0 1px 0 rgba(255,255,255,.7);
+}
+
+.panel-heading,
+.window-heading {
+  color:var(--accent-pink-darker,#D45B93) !important;
+  text-shadow:
+    0 1px 0 rgba(255,255,255,.9),
+    0 0 7px rgba(255,183,213,.25);
+  font-weight:700;
+}
+
+.panel-description,
+.window-description {
+  color:#555 !important;
+}
+
+.panel-body::before,
+.window-body::before {
+  content:"";
+  position:absolute;
+  left:0;
+  right:0;
+  top:0;
+  height:18px;
+  pointer-events:none;
+  background:linear-gradient(
+    180deg,
+    rgba(255,255,255,.60),
+    rgba(255,255,255,0)
+  );
+  opacity:.7;
+}
+
+.panel-body,
+.window-body {
+  position:relative;
+}
+
+
+.desktop-icon__glyph,
+.icon-symbol {
+  filter:
+    drop-shadow(0 2px 2px rgba(0,0,0,.42))
+    drop-shadow(0 0 1px rgba(255,255,255,.25));
+}
+
+
+/* ============================================================
+   RESPONSIVE XP MODE
+   Desktop → tablet → phone
+   ============================================================ */
+
+/* Keep the wallpaper beautifully framed on smaller screens. */
+@media (max-width: 900px) {
+  .desktop {
+    padding: 22px 16px 48px;
+  }
+
+  .desktop-header {
+    width: min(760px, 100%);
+  }
+
+  .desktop-icons {
+    gap: 9px;
+  }
+
+  .desktop-icon {
+    width: 62px;
+  }
+
+  .desktop-icon__glyph,
+  .icon-symbol {
+    font-size: 24px;
+  }
+
+  .desktop-icon__label {
+    font-size: 10px;
+  }
+
+  .taskbar {
+    height: 32px;
+  }
+
+  .taskbar-app {
+    max-width: 125px;
+    padding: 0 8px;
+  }
+}
+
+/* ============================================================
+   PHONE MODE
+   No tiny desktop pretending to be a phone.
+   Same XP design language, reorganized for touch/readability.
+   ============================================================ */
+@media (max-width: 600px) {
+
+  html,
+  body {
+    min-width: 0;
+    width: 100%;
+    height: 100%;
+    overflow-x: hidden;
+    overflow-y: auto;
+  }
+
+  body::before {
+    background-position: center center;
+    background-size: cover;
+    background-attachment: fixed;
+  }
+
+  .desktop {
+    width: 100%;
+    min-height: 100dvh;
+    padding: 12px 10px 50px;
+    box-sizing: border-box;
+  }
+
+  /* Header becomes a compact XP window instead of a wide desktop header. */
+  .desktop-header {
+    width: 100%;
+    max-width: none;
+    margin: 0 0 10px;
+    box-sizing: border-box;
+  }
+
+  /* Desktop icons become a proper vertical navigation strip. */
+  .desktop-icons {
+    position: static;
+    width: 100%;
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 6px;
+    margin: 0 0 10px;
+    padding: 0;
+    pointer-events: auto;
+  }
+
+  .desktop-icon {
+    width: 100%;
+    min-height: 46px;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: center;
+    gap: 8px;
+    padding: 5px 8px;
+    text-align: left;
+    border: 1px solid rgba(255,255,255,.30);
+    border-radius: 3px;
+    background:
+      linear-gradient(
+        180deg,
+        rgba(255,234,244,.22),
+        rgba(42,111,224,.34)
+      );
+    box-shadow:
+      inset 0 1px 0 rgba(255,255,255,.42),
+      0 1px 2px rgba(0,0,0,.22);
+  }
+
+  .desktop-icon:active {
+    transform: translateY(1px);
+    box-shadow:
+      inset 0 1px 3px rgba(0,0,0,.25);
+  }
+
+  .desktop-icon__glyph,
+  .icon-symbol {
+    flex: 0 0 auto;
+    width: 28px;
+    margin: 0;
+    font-size: 23px;
+    text-align: center;
+  }
+
+  .desktop-icon__label {
+    min-width: 0;
+    font-size: 10px;
+    line-height: 1.15;
+    text-align: left;
+    overflow-wrap: anywhere;
+  }
+
+  /* Main XP window fills the phone without touching screen edges. */
+  .panel,
+  .window,
+  .xp-window {
+    width: 100% !important;
+    max-width: none !important;
+    min-width: 0 !important;
+    box-sizing: border-box;
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+  }
+
+  .panel-titlebar,
+  .titlebar,
+  .window-titlebar {
+    height: 32px;
+    min-height: 32px;
+    padding-left: 7px;
+  }
+
+  .titlebar-left,
+  .panel-title-left,
+  .window-title-left {
+    font-size: 11px;
+  }
+
+  .titlebar-button,
+  .panel-button,
+  .window-button {
+    width: 23px;
+    height: 22px;
+    min-width: 23px;
+    font-size: 12px;
+  }
+
+  .panel-body,
+  .editor-body,
+  .window-body {
+    box-sizing: border-box;
+    width: 100%;
+    min-width: 0;
+  }
+
+  .panel-content,
+  .window-content {
+    max-width: 100%;
+    box-sizing: border-box;
+    overflow-wrap: anywhere;
+  }
+
+  .panel-heading,
+  .window-heading {
+    font-size: clamp(22px, 7vw, 32px) !important;
+    line-height: 1.08;
+  }
+
+  .panel-description,
+  .window-description {
+    font-size: 14px !important;
+    line-height: 1.45;
+  }
+
+  /* Keep decorative corners, but make them quieter on small screens. */
+  .panel-decor {
+    font-size: 13px;
+    opacity: .55;
+  }
+
+  /* The XP taskbar becomes a slim mobile status bar. */
+  .taskbar {
+    left: 0;
+    right: 0;
+    bottom: 0;
+    height: 30px;
+    min-height: 30px;
+    padding: 0 3px;
+    gap: 3px;
+    border-radius: 0;
+  }
+
+  .start-button {
+    height: 23px;
+    padding: 0 8px 0 6px;
+    font-size: 11px;
+  }
+
+  .quick-launch {
+    display: none;
+  }
+
+  .taskbar-apps {
+    gap: 2px;
+    height: 23px;
+  }
+
+  .taskbar-app {
+    height: 22px;
+    min-width: 0;
+    max-width: none;
+    flex: 1 1 0;
+    justify-content: center;
+    padding: 0 5px;
+    font-size: 9px;
+  }
+
+  .taskbar-app__glyph {
+    font-size: 10px;
+  }
+
+  .system-tray {
+    height: 23px;
+    gap: 3px;
+    padding: 0 5px;
+  }
+
+  .system-tray .tray-icon {
+    display: none;
+  }
+
+  .tray-clock {
+    min-width: 38px;
+    font-size: 9px;
+  }
+
+  /* Don't let ambient effects interfere with reading on a small screen. */
+  .ambient--butterfly {
+    font-size: 16px;
+  }
+
+  .ambient--petal {
+    font-size: 13px;
+  }
+
+  .ambient--sparkle,
+  .ambient--heart {
+    font-size: 12px;
+  }
+
+  .xp-cursor {
+    display: none;
+  }
+}
+
+/* Very narrow phones: one navigation item per row for readability. */
+@media (max-width: 380px) {
+  .desktop {
+    padding-left: 7px;
+    padding-right: 7px;
+  }
+
+  .desktop-icons {
+    grid-template-columns: 1fr;
+  }
+
+  .desktop-icon {
+    min-height: 42px;
+  }
+
+  .taskbar-app {
+    font-size: 8px;
+  }
+
+  .taskbar-app:nth-child(n+3) {
+    display: none;
+  }
+}
+
+/* Respect phones that ask for less motion. */
+@media (prefers-reduced-motion: reduce) {
+  body::before {
+    background-attachment: scroll;
+  }
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="wallpaper-accent"><span class="spark s1">✦</span><span class="spark s2">✦</span><span class="spark s3">✧</span><span class="spark s4">✿</span></div>
+<div class="desktop">
+
+  <span class="sparkle s1">✦</span>
+  <span class="sparkle s2">♡</span>
+  <span class="sparkle s3">✿</span>
+  <span class="sparkle s4">✦</span>
+
+  <header class="desktop-header">
+    <span class="computer">🖥️</span>
+    <h1>Noresmell.exe</h1>
+    <p>personal desktop ♡</p>
+  </header>
+
+  <main class="icons">
+
+    <button class="icon" data-window="social">
+      <div class="icon-symbol">📁</div>
+      <div class="icon-name">SOCIAL.exe</div>
+      <div class="icon-sub">links & contacts</div>
+    </button>
+
+    <button class="icon" data-window="about">
+      <div class="icon-symbol">🦋</div>
+      <div class="icon-name">ABOUT.exe</div>
+      <div class="icon-sub">who am i?</div>
+    </button>
+
+    <button class="icon" data-window="support">
+      <div class="icon-symbol">🌐</div>
+      <div class="icon-name">SUPPORT.exe</div>
+      <div class="icon-sub">♡ thank you</div>
+    </button>
+
+    <button class="icon" data-window="projects">
+      <div class="icon-symbol">📁</div>
+      <div class="icon-name">PROJECTS.exe</div>
+      <div class="icon-sub">things i make</div>
+    </button>
+
+  </main>
+</div>
+
+
+<div class="taskbar">
+  <button class="start-button" type="button">
+    <span class="start-button__glyph">🪟</span> start
+  </button>
+
+  <div class="quick-launch" aria-hidden="true">
+    <span class="quick-launch__icon" title="Show Desktop">🖥</span>
+    <span class="quick-launch__icon" title="Internet Explorer">🌐</span>
+    <span class="quick-launch__icon" title="Winamp">🎵</span>
+  </div>
+
+  <div class="taskbar-apps" aria-hidden="true">
+    <button class="taskbar-app is-active" tabindex="-1">
+      <span class="taskbar-app__glyph">💗</span> Noresmell.exe
+    </button>
+  </div>
+
+  <div class="system-tray" aria-hidden="true">
+    <span class="tray-icon">🔊</span>
+    <span class="tray-icon">📶</span>
+    <span class="tray-icon">♥</span>
+    <span class="tray-clock" id="tray-clock">12:00 PM</span>
+  </div>
+</div>
+
+
+
+<!-- =========================================================
+     SOCIAL
+========================================================= -->
+
+<div class="overlay" id="social">
+  <section class="window">
+
+    <div class="titlebar">
+      <div class="title-left">
+        <span class="title-icon">🌐</span>
+        <span>Social.exe</span>
+      </div>
+      <div class="window-buttons">
+        <button class="win-btn">_</button>
+        <button class="win-btn">□</button>
+        <button class="win-btn close" data-close>×</button>
+      </div>
+    </div>
+
+    <div class="window-content">
+      <div class="menu">
+        <span>File</span>
+        <span>View</span>
+        <span>Links</span>
+        <span>Help</span>
+      </div>
+
+      <div class="content-inner">
+
+        <div class="profile">
+          <div class="profile-icon">🖥️</div>
+          <h2>NORESMELL ♡</h2>
+          <p>streamer / creator</p>
+        </div>
+
+        <div class="link-list">
+
+          <!-- ЗАМЕНИ href="#" НА СВОИ ССЫЛКИ -->
+
+          <a class="link" href="#" target="_blank" rel="noopener">
+            <span class="link-icon">🟣</span>
+            <span>
+              <strong>Twitch</strong>
+              <small>смотреть стримы →</small>
+            </span>
+          </a>
+
+          <a class="link" href="#" target="_blank" rel="noopener">
+            <span class="link-icon">🎵</span>
+            <span>
+              <strong>TikTok</strong>
+              <small>короткие видео →</small>
+            </span>
+          </a>
+
+          <a class="link" href="#" target="_blank" rel="noopener">
+            <span class="link-icon">💬</span>
+            <span>
+              <strong>Telegram</strong>
+              <small>чат / новости →</small>
+            </span>
+          </a>
+
+          <a class="link" href="#" target="_blank" rel="noopener">
+            <span class="link-icon">▶️</span>
+            <span>
+              <strong>YouTube</strong>
+              <small>видео и записи →</small>
+            </span>
+          </a>
+
+        </div>
+
+      </div>
+    </div>
+
+    <div class="window-status">
+      <span class="status-dot"></span>
+      Social links ready
+    </div>
+
+  </section>
+</div>
+
+
+<!-- =========================================================
+     ABOUT
+========================================================= -->
+
+<div class="overlay" id="about">
+  <section class="window">
+
+    <div class="titlebar">
+      <div class="title-left">
+        <span class="title-icon">📜</span>
+        <span>About.exe</span>
+      </div>
+      <div class="window-buttons">
+        <button class="win-btn">_</button>
+        <button class="win-btn">□</button>
+        <button class="win-btn close" data-close>×</button>
+      </div>
+    </div>
+
+    <div class="window-content">
+      <div class="menu">
+        <span>File</span>
+        <span>Profile</span>
+        <span>View</span>
+        <span>Help</span>
+      </div>
+
+      <div class="content-inner">
+
+        <h2 class="about-title">ABOUT NORESMELL</h2>
+
+        <div class="about-text">
+
+          <p>
+            Привіт! Я Noresmell — стрімер та креатор, який
+            любить робити дивні, красиві й іноді абсолютно
+            безглузді штуки.
+          </p>
+
+          <p>
+            На стрімах у мене ніколи не знаєш, що буде далі:
+            сьогодні це може бути гра, завтра якийсь новий
+            експеримент, а післязавтра я можу три години
+            намагатися полагодити одну маленьку деталь,
+            яка вирішила зламатися саме під час стріму.
+          </p>
+
+          <p>
+            Я люблю атмосферні ігри, модифікації, технічні
+            штуки, візуальний дизайн і моменти, коли з
+            абсолютно звичайної ідеї раптом виходить щось
+            цікаве.
+          </p>
+
+          <p>
+            Ще я дуже люблю створювати власну атмосферу
+            навколо стріму — оформлення, плашки, оверлеї,
+            персонажів, маленькі деталі та всілякі дурниці,
+            які ніхто начебто не просив, але без них уже
+            якось не те ♡
+          </p>
+
+          <p>
+            Тому цей маленький сайт — просто місце, де все
+            це можна зібрати докупи.
+          </p>
+
+        </div>
+
+        <div class="info-box">
+          <strong>nickname:</strong> Noresmell ♡<br>
+          <strong>status:</strong> online<br>
+          <strong>occupation:</strong> streamer / creator<br>
+          <strong>favorite activity:</strong> games & chaos<br>
+          <strong>system:</strong> Windows XP enthusiast ♡
+        </div>
+
+      </div>
+    </div>
+
+    <div class="window-status">
+      <span class="status-dot"></span>
+      About loaded successfully
+    </div>
+
+  </section>
+</div>
+
+
+<!-- =========================================================
+     SUPPORT
+========================================================= -->
+
+<div class="overlay" id="support">
+  <section class="window">
+
+    <div class="titlebar">
+      <div class="title-left">
+        <span class="title-icon">💳</span>
+        <span>Support.exe</span>
+      </div>
+      <div class="window-buttons">
+        <button class="win-btn">_</button>
+        <button class="win-btn">□</button>
+        <button class="win-btn close" data-close>×</button>
+      </div>
+    </div>
+
+    <div class="window-content">
+      <div class="menu">
+        <span>File</span>
+        <span>Support</span>
+        <span>Options</span>
+        <span>Help</span>
+      </div>
+
+      <div class="content-inner">
+
+        <div class="support-box">
+
+          <div class="support-heart">♡</div>
+
+          <h2>ПІДТРИМАТИ NORESMELL</h2>
+
+          <p>
+            Якщо тобі подобаються мої стріми, творчість або
+            просто хочеться закинути щось цьому хаотичному
+            організму — дякую ♡
+          </p>
+
+          <div class="link-list">
+
+            <!-- ЗАМЕНИ href="#" НА СВОЮ ССЫЛКУ MONOBANK -->
+
+            <a class="link" href="#" target="_blank" rel="noopener">
+              <span class="link-icon">💳</span>
+              <span>
+                <strong>Monobank</strong>
+                <small>підтримати мене →</small>
+              </span>
+            </a>
+
+            <a class="link" href="#" target="_blank" rel="noopener">
+              <span class="link-icon">♡</span>
+              <span>
+                <strong>Інший спосіб</strong>
+                <small>якщо з'явиться пізніше →</small>
+              </span>
+            </a>
+
+          </div>
+
+        </div>
+
+      </div>
+    </div>
+
+    <div class="window-status">
+      <span class="status-dot"></span>
+      Thank you for your support ♡
+    </div>
+
+  </section>
+</div>
+
+
+<!-- =========================================================
+     PROJECTS
+========================================================= -->
+
+<div class="overlay" id="projects">
+  <section class="window">
+
+    <div class="titlebar">
+      <div class="title-left">
+        <span class="title-icon">🛠️</span>
+        <span>Projects.exe</span>
+      </div>
+      <div class="window-buttons">
+        <button class="win-btn">_</button>
+        <button class="win-btn">□</button>
+        <button class="win-btn close" data-close>×</button>
+      </div>
+    </div>
+
+    <div class="window-content">
+      <div class="menu">
+        <span>File</span>
+        <span>Projects</span>
+        <span>View</span>
+        <span>Help</span>
+      </div>
+
+      <div class="content-inner">
+
+        <h2 class="about-title">PROJECTS</h2>
+
+        <div class="project-grid">
+
+          <div class="project">
+            <div class="project-icon">🎨</div>
+            <strong>Stream Design</strong>
+            <p>Плашки, оверлеї та всякі дрібні штуки для стрімів.</p>
+          </div>
+
+          <div class="project">
+            <div class="project-icon">🖥️</div>
+            <strong>Live2D</strong>
+            <p>Модель, ріггінг, анімації та експерименти з VTube Studio.</p>
+          </div>
+
+          <div class="project">
+            <div class="project-icon">🤖</div>
+            <strong>Stream Bots</strong>
+            <p>Боти, автоматизація та різні корисні штуки для трансляцій.</p>
+          </div>
+
+          <div class="project">
+            <div class="project-icon">🧪</div>
+            <strong>Experiments</strong>
+            <p>Все інше, що починається зі слів «а що буде, якщо...». </p>
+          </div>
+
+        </div>
+
+      </div>
+    </div>
+
+    <div class="window-status">
+      <span class="status-dot"></span>
+      4 projects found
+    </div>
+
+  </section>
+</div>
+
+
+<script>
+(function(){
+
+  const icons = document.querySelectorAll(".icon");
+  const overlays = document.querySelectorAll(".overlay");
+
+  function openWindow(id){
+    const overlay = document.getElementById(id);
+    if(!overlay) return;
+    overlay.classList.add("open");
+  }
+
+  function closeWindow(overlay){
+    overlay.classList.remove("open");
+  }
+
+  icons.forEach(icon=>{
+    icon.addEventListener("click",()=>{
+      openWindow(icon.dataset.window);
+    });
+  });
+
+  document.querySelectorAll("[data-close]").forEach(button=>{
+    button.addEventListener("click",()=>{
+      closeWindow(button.closest(".overlay"));
+    });
+  });
+
+  overlays.forEach(overlay=>{
+    overlay.addEventListener("click",(event)=>{
+      if(event.target === overlay){
+        closeWindow(overlay);
+      }
+    });
+  });
+
+  document.addEventListener("keydown",(event)=>{
+    if(event.key === "Escape"){
+      overlays.forEach(closeWindow);
+    }
+  });
+
+})();
+</script>
+
+
+<script>
+(() => {
+  const clock = document.getElementById("tray-clock");
+  function updateClock(){
+    const now = new Date();
+    let h = now.getHours();
+    const m = String(now.getMinutes()).padStart(2,"0");
+    const suffix = h >= 12 ? "PM" : "AM";
+    h = h % 12 || 12;
+    if(clock) clock.textContent = `${h}:${m} ${suffix}`;
+  }
+  updateClock();
+  setInterval(updateClock,15000);
+})();
+</script>
+
+</body>
+</html>
