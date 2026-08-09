@@ -1670,9 +1670,20 @@ body::before {
 }
 .app-secondary-btn:hover{background:linear-gradient(180deg,#ffffff,#ffd8ea);}
 .support-qr{
-  width:150px;height:150px;object-fit:contain;
-  margin:10px auto;display:block;
-  border:1px solid #aaa;border-radius:2px;background:#fff;padding:6px;
+  display:block;
+  width:100%;
+  max-width:230px;
+  height:auto;
+  aspect-ratio:1/1;
+  object-fit:contain;
+  margin:14px auto;
+  border:1px solid #aaa;border-radius:2px;background:#fff;padding:8px;
+}
+@media (min-width:601px){
+  .support-qr{ max-width:270px; }
+}
+@media (min-width:901px){
+  .support-qr{ max-width:300px; }
 }
 
 </style>
@@ -2058,11 +2069,7 @@ body::before {
         </div>
 
         <div class="app-preview-box" id="twitch-preview">
-          Не вдалося отримати статус ефіру наживо прямо тут —
-          для цього потрібен окремий сервер (Twitch не дозволяє
-          перевіряти це напряму з браузера без бекенду).<br><br>
-          Але це нічого не означає: Noresmell може стримити
-          прямо зараз. Найкраще — просто зазирнути на канал ♡
+          Перевіряємо статус ефіру…
         </div>
 
         <div style="text-align:center;">
@@ -2115,13 +2122,9 @@ body::before {
           <p>youtube.com/@noresmell</p>
         </div>
 
-        <div class="app-preview-box">
+        <div class="app-preview-box" id="youtube-preview">
           ОСТАННЄ ВІДЕО<br><br>
-          Отримати останнє відео автоматично тут неможливо
-          без офіційного API-ключа YouTube Data API, а
-          зберігати такий ключ у публічному коді сторінки
-          небезпечно. Тому без вигаданих даних —
-          просто перейди на канал і подивись сам ♡
+          Завантаження даних каналу…
         </div>
 
         <div style="text-align:center;">
@@ -4135,7 +4138,13 @@ P.S. якщо ти це читаєш - привіт ♡
         flashStatus(action.split("-")[0]+"app", "Меню File недоступне ♡", 2200);
         break;
       case "twitch-refresh":
+        if(typeof window.__fetchTwitchStatus === "function") window.__fetchTwitchStatus(true);
+        showToast("Оновлюємо статус Twitch ♡");
+        break;
       case "youtube-refresh":
+        if(typeof window.__fetchYouTubeLatest === "function") window.__fetchYouTubeLatest(true);
+        showToast("Оновлюємо дані YouTube ♡");
+        break;
       case "tiktok-refresh":
       case "telegram-refresh":
         showToast("Дані оновлено ♡ (це все, що можна показати без бекенду)");
@@ -4383,6 +4392,193 @@ P.S. якщо ти це читаєш - привіт ♡
         break;
     }
   }
+
+})();
+</script>
+
+<!-- =========================================================
+     site.exe BACKEND INTEGRATION — Twitch + YouTube
+     Worker: https://siteexe.me11isqwq.workers.dev
+========================================================= -->
+<script>
+(function(){
+  const API_BASE = "https://siteexe.me11isqwq.workers.dev";
+
+  function escapeHtml(str){
+    return String(str).replace(/[&<>"']/g, s => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[s]));
+  }
+
+  /* -------- Twitch -------- */
+
+  let twitchLoaded = false;
+  let twitchLoading = false;
+
+  function normalizeTwitch(raw){
+    if(!raw || typeof raw !== "object") return {isLive:false};
+
+    // Accept a few likely response shapes from the worker:
+    //  a) { isLive/live/online: bool, title, game, viewers, startedAt }
+    //  b) { stream: {...} } / { data: [ {...} ] } (Twitch Helix "Get Streams" style)
+    let stream = null;
+    if(Array.isArray(raw.data)) stream = raw.data[0] || null;
+    else if(raw.stream && typeof raw.stream === "object") stream = raw.stream;
+
+    const isLive = !!(
+      raw.isLive || raw.live || raw.online ||
+      (stream && (stream.type === "live" || stream.viewer_count !== undefined || stream.viewers !== undefined))
+    );
+
+    if(!isLive) return {isLive:false};
+
+    return {
+      isLive: true,
+      title: (stream && (stream.title)) || raw.title || "",
+      game: (stream && (stream.game_name || stream.game)) || raw.game || raw.game_name || "",
+      viewers: (stream && (stream.viewer_count ?? stream.viewers)) ?? raw.viewers ?? raw.viewer_count
+    };
+  }
+
+  async function fetchTwitchStatus(force){
+    const badge = document.getElementById("twitch-status-badge");
+    const preview = document.getElementById("twitch-preview");
+    if(!badge || !preview) return;
+    if(twitchLoading) return;
+    if(twitchLoaded && !force) return;
+
+    twitchLoading = true;
+    if(force) preview.textContent = "Перевіряємо статус ефіру…";
+
+    try{
+      const res = await fetch(API_BASE + "/api/twitch");
+      if(!res.ok) throw new Error("HTTP " + res.status);
+      const raw = await res.json();
+      const data = normalizeTwitch(raw);
+
+      if(data.isLive){
+        badge.textContent = "🔴 LIVE";
+        badge.classList.remove("is-offline");
+        badge.classList.add("is-live");
+
+        let html = "";
+        if(data.title) html += "<strong>" + escapeHtml(data.title) + "</strong><br>";
+        if(data.game) html += "Гра: " + escapeHtml(data.game) + "<br>";
+        if(typeof data.viewers === "number") html += "👀 " + data.viewers + " глядачів<br>";
+        html += "<br>Noresmell стрімить прямо зараз — саме час зазирнути ♡";
+        preview.innerHTML = html;
+      } else {
+        badge.textContent = "⚪ OFFLINE";
+        badge.classList.remove("is-live");
+        badge.classList.add("is-offline");
+        preview.innerHTML =
+          "Зараз ефір не йде.<br><br>" +
+          "Але це нічого не означає — Noresmell може почати стрімити " +
+          "будь-якої миті. Найкраще — просто зазирнути на канал ♡";
+      }
+      twitchLoaded = true;
+    } catch(err){
+      badge.textContent = "⚪ OFFLINE";
+      badge.classList.remove("is-live");
+      badge.classList.add("is-offline");
+      preview.innerHTML =
+        "Не вдалося отримати статус ефіру прямо зараз.<br><br>" +
+        "Спробуй оновити трохи пізніше або зазирни на канал напряму ♡";
+    } finally {
+      twitchLoading = false;
+    }
+  }
+  window.__fetchTwitchStatus = fetchTwitchStatus;
+
+  /* -------- YouTube -------- */
+
+  let youtubeLoaded = false;
+  let youtubeLoading = false;
+
+  function normalizeYouTube(raw){
+    if(!raw || typeof raw !== "object") return null;
+
+    // Accept a few likely response shapes from the worker:
+    //  a) { title, publishedAt, videoId } (already simplified)
+    //  b) { items: [ { snippet:{title,publishedAt}, id:{videoId} } ] } (YouTube Data API "search" style)
+    //  c) { video: {...} }
+    let item = null;
+    if(Array.isArray(raw.items)) item = raw.items[0] || null;
+    else if(raw.video && typeof raw.video === "object") item = raw.video;
+    else item = raw;
+
+    if(!item) return null;
+    const snippet = item.snippet && typeof item.snippet === "object" ? item.snippet : item;
+
+    const title = snippet.title || raw.title;
+    if(!title) return null;
+
+    const publishedAt = snippet.publishedAt || raw.publishedAt || null;
+    const videoId =
+      (item.id && typeof item.id === "object" ? item.id.videoId : item.id) ||
+      item.videoId || raw.videoId || null;
+
+    return { title, publishedAt, videoId };
+  }
+
+  function formatDate(iso){
+    if(!iso) return "";
+    try{
+      const d = new Date(iso);
+      if(isNaN(d.getTime())) return "";
+      return d.toLocaleDateString("uk-UA", { day:"numeric", month:"long", year:"numeric" });
+    }catch(e){ return ""; }
+  }
+
+  async function fetchYouTubeLatest(force){
+    const preview = document.getElementById("youtube-preview");
+    if(!preview) return;
+    if(youtubeLoading) return;
+    if(youtubeLoaded && !force) return;
+
+    youtubeLoading = true;
+    if(force) preview.innerHTML = "ОСТАННЄ ВІДЕО<br><br>Завантаження даних каналу…";
+
+    try{
+      const res = await fetch(API_BASE + "/api/youtube");
+      if(!res.ok) throw new Error("HTTP " + res.status);
+      const raw = await res.json();
+      const video = normalizeYouTube(raw);
+
+      if(!video){
+        preview.innerHTML =
+          "ОСТАННЄ ВІДЕО<br><br>" +
+          "Наразі не вдалось знайти останнє відео. Просто перейди на канал і подивись сам ♡";
+        return;
+      }
+
+      const dateStr = formatDate(video.publishedAt);
+      let html = "ОСТАННЄ ВІДЕО<br><br>";
+      html += "<strong>" + escapeHtml(video.title) + "</strong>";
+      if(dateStr) html += "<br>Опубліковано: " + escapeHtml(dateStr);
+      if(video.videoId){
+        html +=
+          '<br><br><a href="https://youtube.com/watch?v=' + encodeURIComponent(video.videoId) +
+          '" target="_blank" rel="noopener" style="color:#2457a6;">Дивитись це відео →</a>';
+      }
+      preview.innerHTML = html;
+      youtubeLoaded = true;
+    } catch(err){
+      preview.innerHTML =
+        "ОСТАННЄ ВІДЕО<br><br>" +
+        "Не вдалося завантажити дані каналу прямо зараз. Спробуй оновити трохи пізніше ♡";
+    } finally {
+      youtubeLoading = false;
+    }
+  }
+  window.__fetchYouTubeLatest = fetchYouTubeLatest;
+
+  /* -------- trigger on window open -------- */
+
+  document.querySelectorAll('[data-window="twitchapp"]').forEach(el=>{
+    el.addEventListener("click", ()=> fetchTwitchStatus(false));
+  });
+  document.querySelectorAll('[data-window="youtubeapp"]').forEach(el=>{
+    el.addEventListener("click", ()=> fetchYouTubeLatest(false));
+  });
 
 })();
 </script>
