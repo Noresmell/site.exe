@@ -1499,691 +1499,180 @@ body::before {
    Desktop → tablet → phone
    ============================================================ */
 
-/* Keep the wallpaper beautifully framed on smaller screens. */
 @media (max-width: 900px) {
-  .desktop {
-    padding: 22px 16px 48px;
-  }
-
-  .desktop-header {
-    width: min(760px, 100%);
-  }
-
-  .desktop-icons {
-    gap: 9px;
-  }
-
-  .desktop-icon {
-    width: 62px;
-  }
-
-  .desktop-icon__glyph,
-  .icon-symbol {
-    font-size: 24px;
-  }
-
-  .desktop-icon__label {
-    font-size: 10px;
-  }
-
-  .taskbar {
-    height: 32px;
-  }
-
-  .taskbar-app {
-    max-width: 125px;
-    padding: 0 8px;
-  }
+  .desktop { padding: 22px 16px 48px; }
+  .desktop-header { width: min(760px, 100%); }
+  .desktop-icons { gap: 9px; }
+  .desktop-icon { width: 62px; }
+  .desktop-icon__glyph, .icon-symbol { font-size: 24px; }
+  .desktop-icon__label { font-size: 10px; }
+  .taskbar { height: 32px; }
+  .taskbar-app { max-width: 125px; padding: 0 8px; }
 }
 
-/* ============================================================
-   PHONE MODE
-   No tiny desktop pretending to be a phone.
-   Same XP design language, reorganized for touch/readability.
-   ============================================================ */
 @media (max-width: 600px) {
-
-  html,
-  body {
-    min-width: 0;
-    width: 100%;
-    height: 100%;
-    overflow-x: hidden;
-    overflow-y: auto;
-  }
-
-  body::before {
-    background-position: center center;
-    background-size: cover;
-    background-attachment: fixed;
-  }
-
-  .desktop {
-    width: 100%;
-    min-height: 100dvh;
-    padding: 12px 10px 50px;
-    box-sizing: border-box;
-  }
-
-  /* Header becomes a compact XP window instead of a wide desktop header. */
-  .desktop-header {
-    width: 100%;
-    max-width: none;
-    margin: 0 0 10px;
-    box-sizing: border-box;
-  }
-
-  /* Desktop icons become a proper vertical navigation strip. */
-  .desktop-icons {
-    position: static;
-    width: 100%;
-    display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 6px;
-    margin: 0 0 10px;
-    padding: 0;
-    pointer-events: auto;
-  }
-
-  .desktop-icon {
-    width: 100%;
-    min-height: 46px;
-    box-sizing: border-box;
-    display: flex;
-    flex-direction: row;
-    justify-content: flex-start;
-    align-items: center;
-    gap: 8px;
-    padding: 5px 8px;
-    text-align: left;
-    border: 1px solid rgba(255,255,255,.30);
-    border-radius: 3px;
-    background:
-      linear-gradient(
-        180deg,
-        rgba(255,234,244,.22),
-        rgba(42,111,224,.34)
-      );
-    box-shadow:
-      inset 0 1px 0 rgba(255,255,255,.42),
-      0 1px 2px rgba(0,0,0,.22);
-  }
-
-  .desktop-icon:active {
-    transform: translateY(1px);
-    box-shadow:
-      inset 0 1px 3px rgba(0,0,0,.25);
-  }
-
-  .desktop-icon__glyph,
-  .icon-symbol {
-    flex: 0 0 auto;
-    width: 28px;
-    margin: 0;
-    font-size: 23px;
-    text-align: center;
-  }
-
-  .desktop-icon__label {
-    min-width: 0;
-    font-size: 10px;
-    line-height: 1.15;
-    text-align: left;
-    overflow-wrap: anywhere;
-  }
-
-  /* Main XP window fills the phone without touching screen edges. */
-  .panel,
-  .window,
-  .xp-window {
-    width: 100% !important;
-    max-width: none !important;
-    min-width: 0 !important;
-    box-sizing: border-box;
-    margin-left: 0 !important;
-    margin-right: 0 !important;
-  }
-
-  .panel-titlebar,
-  .titlebar,
-  .window-titlebar {
-    height: 32px;
-    min-height: 32px;
-    padding-left: 7px;
-  }
-
-  .titlebar-left,
-  .panel-title-left,
-  .window-title-left {
-    font-size: 11px;
-  }
-
-  .titlebar-button,
-  .panel-button,
-  .window-button {
-    width: 23px;
-    height: 22px;
-    min-width: 23px;
-    font-size: 12px;
-  }
-
-  .panel-body,
-  .editor-body,
-  .window-body {
-    box-sizing: border-box;
-    width: 100%;
-    min-width: 0;
-  }
-
-  .panel-content,
-  .window-content {
-    max-width: 100%;
-    box-sizing: border-box;
-    overflow-wrap: anywhere;
-  }
-
-  .panel-heading,
-  .window-heading {
-    font-size: clamp(22px, 7vw, 32px) !important;
-    line-height: 1.08;
-  }
-
-  .panel-description,
-  .window-description {
-    font-size: 14px !important;
-    line-height: 1.45;
-  }
-
-  /* Keep decorative corners, but make them quieter on small screens. */
-  .panel-decor {
-    font-size: 13px;
-    opacity: .55;
-  }
-
-  /* The XP taskbar becomes a slim mobile status bar. */
-  .taskbar {
-    left: 0;
-    right: 0;
-    bottom: 0;
-    height: 30px;
-    min-height: 30px;
-    padding: 0 3px;
-    gap: 3px;
-    border-radius: 0;
-  }
-
-  .start-button {
-    height: 23px;
-    padding: 0 8px 0 6px;
-    font-size: 11px;
-  }
-
-  .quick-launch {
-    display: none;
-  }
-
-  .taskbar-apps {
-    gap: 2px;
-    height: 23px;
-  }
-
-  .taskbar-app {
-    height: 22px;
-    min-width: 0;
-    max-width: none;
-    flex: 1 1 0;
-    justify-content: center;
-    padding: 0 5px;
-    font-size: 9px;
-  }
-
-  .taskbar-app__glyph {
-    font-size: 10px;
-  }
-
-  .system-tray {
-    height: 23px;
-    gap: 3px;
-    padding: 0 5px;
-  }
-
-  .system-tray .tray-icon {
-    display: none;
-  }
-
-  .tray-clock {
-    min-width: 38px;
-    font-size: 9px;
-  }
-
-  /* Don't let ambient effects interfere with reading on a small screen. */
-  .ambient--butterfly {
-    font-size: 16px;
-  }
-
-  .ambient--petal {
-    font-size: 13px;
-  }
-
-  .ambient--sparkle,
-  .ambient--heart {
-    font-size: 12px;
-  }
-
-  .xp-cursor {
-    display: none;
-  }
-
-  .petal{
-    display:none;
-  }
+  html, body { min-width: 0; width: 100%; height: 100%; overflow-x: hidden; overflow-y: auto; }
+  body::before { background-position: center center; background-size: cover; background-attachment: fixed; }
+  .desktop { width: 100%; min-height: 100dvh; padding: 12px 10px 50px; box-sizing: border-box; }
+  .desktop-header { width: 100%; max-width: none; margin: 0 0 10px; box-sizing: border-box; }
+  .desktop-icons { position: static; width: 100%; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 6px; margin: 0 0 10px; padding: 0; pointer-events: auto; }
+  .desktop-icon { width: 100%; min-height: 46px; box-sizing: border-box; display: flex; flex-direction: row; justify-content: flex-start; align-items: center; gap: 8px; padding: 5px 8px; text-align: left; border: 1px solid rgba(255,255,255,.30); border-radius: 3px; background: linear-gradient(180deg, rgba(255,234,244,.22), rgba(42,111,224,.34)); box-shadow: inset 0 1px 0 rgba(255,255,255,.42), 0 1px 2px rgba(0,0,0,.22); }
+  .desktop-icon:active { transform: translateY(1px); box-shadow: inset 0 1px 3px rgba(0,0,0,.25); }
+  .desktop-icon__glyph, .icon-symbol { flex: 0 0 auto; width: 28px; margin: 0; font-size: 23px; text-align: center; }
+  .desktop-icon__label { min-width: 0; font-size: 10px; line-height: 1.15; text-align: left; overflow-wrap: anywhere; }
+  .panel, .window, .xp-window { width: 100% !important; max-width: none !important; min-width: 0 !important; box-sizing: border-box; margin-left: 0 !important; margin-right: 0 !important; }
+  .panel-titlebar, .titlebar, .window-titlebar { height: 32px; min-height: 32px; padding-left: 7px; }
+  .titlebar-left, .panel-title-left, .window-title-left { font-size: 11px; }
+  .titlebar-button, .panel-button, .window-button { width: 23px; height: 22px; min-width: 23px; font-size: 12px; }
+  .panel-body, .editor-body, .window-body { box-sizing: border-box; width: 100%; min-width: 0; }
+  .panel-content, .window-content { max-width: 100%; box-sizing: border-box; overflow-wrap: anywhere; }
+  .panel-heading, .window-heading { font-size: clamp(22px, 7vw, 32px) !important; line-height: 1.08; }
+  .panel-description, .window-description { font-size: 14px !important; line-height: 1.45; }
+  .panel-decor { font-size: 13px; opacity: .55; }
+  .taskbar { left: 0; right: 0; bottom: 0; height: 30px; min-height: 30px; padding: 0 3px; gap: 3px; border-radius: 0; }
+  .start-button { height: 23px; padding: 0 8px 0 6px; font-size: 11px; }
+  .quick-launch { display: none; }
+  .taskbar-apps { gap: 2px; height: 23px; }
+  .taskbar-app { height: 22px; min-width: 0; max-width: none; flex: 1 1 0; justify-content: center; padding: 0 5px; font-size: 9px; }
+  .taskbar-app__glyph { font-size: 10px; }
+  .system-tray { height: 23px; gap: 3px; padding: 0 5px; }
+  .system-tray .tray-icon { display: none; }
+  .tray-clock { min-width: 38px; font-size: 9px; }
+  .ambient--butterfly { font-size: 16px; }
+  .ambient--petal { font-size: 13px; }
+  .ambient--sparkle, .ambient--heart { font-size: 12px; }
+  .xp-cursor { display: none; }
+  .petal{ display:none; }
 }
 
-/* Very narrow phones: one navigation item per row for readability. */
 @media (max-width: 380px) {
-  .desktop {
-    padding-left: 7px;
-    padding-right: 7px;
-  }
-
-  .desktop-icons {
-    grid-template-columns: 1fr;
-  }
-
-  .desktop-icon {
-    min-height: 42px;
-  }
-
-  .taskbar-app {
-    font-size: 8px;
-  }
-
-  .taskbar-app:nth-child(n+3) {
-    display: none;
-  }
+  .desktop { padding-left: 7px; padding-right: 7px; }
+  .desktop-icons { grid-template-columns: 1fr; }
+  .desktop-icon { min-height: 42px; }
+  .taskbar-app { font-size: 8px; }
+  .taskbar-app:nth-child(n+3) { display: none; }
 }
 
-/* Respect phones that ask for less motion. */
 @media (prefers-reduced-motion: reduce) {
-  body::before {
-    background-attachment: scroll;
-  }
+  body::before { background-attachment: scroll; }
 }
 
 
 /* ============================================================
    FINAL RESPONSIVE XP LAYOUT
-   Compact desktop + proper mobile XP desktop
    ============================================================ */
 
-/* ---------- DESKTOP: keep the wallpaper visible ---------- */
 @media (min-width: 901px) {
-  .desktop {
-    min-height: 100vh !important;
-    padding: 22px 24px 52px !important;
-  }
-
-  .desktop-header {
-    width: min(760px, 100%) !important;
-    margin: 0 auto 16px !important;
-  }
-
-  .desktop-header .computer {
-    font-size: 30px !important;
-    margin-bottom: 2px !important;
-  }
-
-  .desktop-header h1 {
-    font-size: 21px !important;
-  }
-
-  .desktop-header p {
-    font-size: 10px !important;
-    margin-top: 2px !important;
-  }
-
-  .icons {
-    width: min(620px, 100%) !important;
-    grid-template-columns: repeat(4, 1fr) !important;
-    gap: 14px 18px !important;
-  }
-
-  .icon {
-    width: 92px !important;
-    min-height: 88px !important;
-    padding: 5px !important;
-  }
-
-  .icon-symbol {
-    width: 52px !important;
-    height: 52px !important;
-    font-size: 42px !important;
-  }
-
-  .icon-name {
-    margin-top: 4px !important;
-    font-size: 11px !important;
-  }
-
-  /* Keep opened windows compact instead of filling the screen. */
-  .window {
-    width: min(600px, calc(100vw - 40px)) !important;
-    max-height: min(650px, 86vh) !important;
-  }
+  .desktop { min-height: 100vh !important; padding: 22px 24px 52px !important; }
+  .desktop-header { width: min(760px, 100%) !important; margin: 0 auto 16px !important; }
+  .desktop-header .computer { font-size: 30px !important; margin-bottom: 2px !important; }
+  .desktop-header h1 { font-size: 21px !important; }
+  .desktop-header p { font-size: 10px !important; margin-top: 2px !important; }
+  .icons { width: min(620px, 100%) !important; grid-template-columns: repeat(4, 1fr) !important; gap: 14px 18px !important; }
+  .icon { width: 92px !important; min-height: 88px !important; padding: 5px !important; }
+  .icon-symbol { width: 52px !important; height: 52px !important; font-size: 42px !important; }
+  .icon-name { margin-top: 4px !important; font-size: 11px !important; }
+  .window { width: min(600px, calc(100vw - 40px)) !important; max-height: min(650px, 86vh) !important; }
 }
 
-/* ---------- TABLET ---------- */
 @media (min-width: 601px) and (max-width: 900px) {
-  .desktop {
-    padding: 18px 16px 50px !important;
-  }
-
-  .desktop-header {
-    margin-bottom: 14px !important;
-  }
-
-  .icons {
-    width: min(600px, 100%) !important;
-    gap: 12px 14px !important;
-  }
-
-  .icon {
-    width: 88px !important;
-    min-height: 82px !important;
-  }
-
-  .icon-symbol {
-    font-size: 38px !important;
-  }
+  .desktop { padding: 18px 16px 50px !important; }
+  .desktop-header { margin-bottom: 14px !important; }
+  .icons { width: min(600px, 100%) !important; gap: 12px 14px !important; }
+  .icon { width: 88px !important; min-height: 82px !important; }
+  .icon-symbol { font-size: 38px !important; }
 }
 
-/* ============================================================
-   PHONE
-   Keep it looking like an XP desktop, NOT like generic mobile UI.
-   ============================================================ */
 @media (max-width: 600px) {
-  html,
-  body {
-    width: 100%;
-    min-width: 0;
-    height: 100%;
-    min-height: 100%;
-    overflow-x: hidden;
-    overflow-y: auto;
-  }
-
-  body::before {
-    background-position: center center !important;
-    background-size: cover !important;
-    background-attachment: scroll !important;
-  }
-
-  .desktop {
-    width: 100%;
-    min-height: 100dvh !important;
-    padding: 14px 10px 46px !important;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-  }
-
-  /* Small XP-style identity header. */
-  .desktop-header {
-    width: min(330px, 100%) !important;
-    margin: 0 auto 12px !important;
-  }
-
-  .desktop-header .computer {
-    font-size: 28px !important;
-    margin-bottom: 2px !important;
-  }
-
-  .desktop-header h1 {
-    font-size: 19px !important;
-  }
-
-  .desktop-header p {
-    font-size: 9px !important;
-    margin-top: 2px !important;
-  }
-
-  /*
-     Icons remain desktop icons:
-     icon ABOVE label, transparent background.
-  */
-  .icons {
-    width: min(340px, 100%) !important;
-    margin: 0 auto !important;
-    display: grid !important;
-    grid-template-columns: repeat(3, 1fr) !important;
-    gap: 12px 4px !important;
-    justify-items: center !important;
-  }
-
-  .icon {
-    width: 92px !important;
-    min-height: 82px !important;
-    padding: 5px 3px !important;
-    background: transparent !important;
-    border: 1px solid transparent !important;
-    color: #fff !important;
-    text-align: center !important;
-  }
-
-  .icon:hover {
-    background: linear-gradient(
-      180deg,
-      rgba(255,234,244,.18),
-      rgba(42,111,224,.22)
-    ) !important;
-    border-color: rgba(255,216,234,.35) !important;
-  }
-
-  .icon:active {
-    background: rgba(26,70,130,.30) !important;
-  }
-
-  .icon-symbol {
-    width: 48px !important;
-    height: 48px !important;
-    margin: 0 auto !important;
-    font-size: 38px !important;
-  }
-
-  .icon-name {
-    margin-top: 4px !important;
-    font-size: 10px !important;
-    line-height: 1.1 !important;
-    white-space: nowrap;
-  }
-
-  /*
-     Opened XP window:
-     almost full width, but still has a visible wallpaper border.
-  */
-  .overlay {
-    align-items: flex-start !important;
-    justify-content: center !important;
-    padding: 12px 8px 42px !important;
-    overflow-y: auto !important;
-    background: rgba(0,0,0,.28) !important;
-  }
-
-  .window {
-    width: 100% !important;
-    max-width: 430px !important;
-    max-height: calc(100dvh - 54px) !important;
-    margin: 0 auto !important;
-    border-radius: 6px 6px 2px 2px !important;
-  }
-
-  .titlebar,
-  .panel-titlebar,
-  .window-titlebar {
-    height: 29px !important;
-    min-height: 29px !important;
-  }
-
-  .titlebar-left,
-  .panel-title-left,
-  .window-title-left {
-    font-size: 10px !important;
-  }
-
-  .titlebar-button,
-  .panel-button,
-  .window-button {
-    width: 20px !important;
-    min-width: 20px !important;
-    height: 19px !important;
-    font-size: 11px !important;
-  }
-
-  .window-content {
-    max-height: none !important;
-  }
-
-  .content-inner {
-    padding: 16px 14px 18px !important;
-  }
-
-  .profile-icon {
-    font-size: 34px !important;
-  }
-
-  .profile h2 {
-    font-size: 19px !important;
-  }
-
-  .profile p {
-    font-size: 10px !important;
-  }
-
-  .about-title,
-  .support-box h2 {
-    font-size: 18px !important;
-  }
-
-  .about-text {
-    font-size: 11px !important;
-    line-height: 1.6 !important;
-  }
-
-  .link {
-    min-height: 43px !important;
-    padding: 7px 9px !important;
-  }
-
-  .link strong {
-    font-size: 11px !important;
-  }
-
-  .link small {
-    font-size: 9px !important;
-  }
-
-  .project-grid {
-    grid-template-columns: 1fr !important;
-  }
-
-  /* The taskbar stays XP-like, but doesn't dominate the phone. */
-  .taskbar {
-    height: 30px !important;
-    min-height: 30px !important;
-    padding: 0 3px !important;
-    gap: 3px !important;
-  }
-
-  .start-button {
-    height: 23px !important;
-    padding: 0 7px 0 6px !important;
-    font-size: 10px !important;
-  }
-
-  .quick-launch {
-    display: none !important;
-  }
-
-  .taskbar-apps {
-    height: 23px !important;
-    gap: 2px !important;
-  }
-
-  .taskbar-app {
-    height: 22px !important;
-    min-width: 0 !important;
-    max-width: none !important;
-    flex: 1 1 0 !important;
-    justify-content: center !important;
-    padding: 0 4px !important;
-    font-size: 8px !important;
-  }
-
-  .taskbar-app__glyph {
-    font-size: 9px !important;
-  }
-
-  .system-tray {
-    height: 23px !important;
-    gap: 0 !important;
-    padding: 0 5px !important;
-  }
-
-  .system-tray .tray-icon {
-    display: none !important;
-  }
-
-  .tray-clock {
-    min-width: 38px !important;
-    font-size: 9px !important;
-  }
-
-  .xp-cursor {
-    display: none !important;
-  }
+  html, body { width: 100%; min-width: 0; height: 100%; min-height: 100%; overflow-x: hidden; overflow-y: auto; }
+  body::before { background-position: center center !important; background-size: cover !important; background-attachment: scroll !important; }
+  .desktop { width: 100%; min-height: 100dvh !important; padding: 14px 10px 46px !important; display: flex; flex-direction: column; align-items: center; }
+  .desktop-header { width: min(330px, 100%) !important; margin: 0 auto 12px !important; }
+  .desktop-header .computer { font-size: 28px !important; margin-bottom: 2px !important; }
+  .desktop-header h1 { font-size: 19px !important; }
+  .desktop-header p { font-size: 9px !important; margin-top: 2px !important; }
+  .icons { width: min(340px, 100%) !important; margin: 0 auto !important; display: grid !important; grid-template-columns: repeat(3, 1fr) !important; gap: 12px 4px !important; justify-items: center !important; }
+  .icon { width: 92px !important; min-height: 82px !important; padding: 5px 3px !important; background: transparent !important; border: 1px solid transparent !important; color: #fff !important; text-align: center !important; }
+  .icon:hover { background: linear-gradient(180deg, rgba(255,234,244,.18), rgba(42,111,224,.22)) !important; border-color: rgba(255,216,234,.35) !important; }
+  .icon:active { background: rgba(26,70,130,.30) !important; }
+  .icon-symbol { width: 48px !important; height: 48px !important; margin: 0 auto !important; font-size: 38px !important; }
+  .icon-name { margin-top: 4px !important; font-size: 10px !important; line-height: 1.1 !important; white-space: nowrap; }
+  .overlay { align-items: flex-start !important; justify-content: center !important; padding: 12px 8px 42px !important; overflow-y: auto !important; background: rgba(0,0,0,.28) !important; }
+  .window { width: 100% !important; max-width: 430px !important; max-height: calc(100dvh - 54px) !important; margin: 0 auto !important; border-radius: 6px 6px 2px 2px !important; }
+  .titlebar, .panel-titlebar, .window-titlebar { height: 29px !important; min-height: 29px !important; }
+  .titlebar-left, .panel-title-left, .window-title-left { font-size: 10px !important; }
+  .titlebar-button, .panel-button, .window-button { width: 20px !important; min-width: 20px !important; height: 19px !important; font-size: 11px !important; }
+  .window-content { max-height: none !important; }
+  .content-inner { padding: 16px 14px 18px !important; }
+  .profile-icon { font-size: 34px !important; }
+  .profile h2 { font-size: 19px !important; }
+  .profile p { font-size: 10px !important; }
+  .about-title, .support-box h2 { font-size: 18px !important; }
+  .about-text { font-size: 11px !important; line-height: 1.6 !important; }
+  .link { min-height: 43px !important; padding: 7px 9px !important; }
+  .link strong { font-size: 11px !important; }
+  .link small { font-size: 9px !important; }
+  .project-grid { grid-template-columns: 1fr !important; }
+  .taskbar { height: 30px !important; min-height: 30px !important; padding: 0 3px !important; gap: 3px !important; }
+  .start-button { height: 23px !important; padding: 0 7px 0 6px !important; font-size: 10px !important; }
+  .quick-launch { display: none !important; }
+  .taskbar-apps { height: 23px !important; gap: 2px !important; }
+  .taskbar-app { height: 22px !important; min-width: 0 !important; max-width: none !important; flex: 1 1 0 !important; justify-content: center !important; padding: 0 4px !important; font-size: 8px !important; }
+  .taskbar-app__glyph { font-size: 9px !important; }
+  .system-tray { height: 23px !important; gap: 0 !important; padding: 0 5px !important; }
+  .system-tray .tray-icon { display: none !important; }
+  .tray-clock { min-width: 38px !important; font-size: 9px !important; }
+  .xp-cursor { display: none !important; }
 }
 
-/* ---------- Very narrow phones ---------- */
 @media (max-width: 370px) {
-  .desktop {
-    padding-left: 6px !important;
-    padding-right: 6px !important;
-  }
+  .desktop { padding-left: 6px !important; padding-right: 6px !important; }
+  .desktop-header { margin-bottom: 8px !important; }
+  .icons { width: 100% !important; grid-template-columns: repeat(3, 1fr) !important; gap: 8px 0 !important; }
+  .icon { width: 82px !important; }
+  .icon-symbol { font-size: 34px !important; }
+  .icon-name { font-size: 9px !important; }
+  .window { max-width: 100% !important; }
+  .content-inner { padding-left: 11px !important; padding-right: 11px !important; }
+  .taskbar-app:nth-child(n+3) { display: none !important; }
+}
 
-  .desktop-header {
-    margin-bottom: 8px !important;
-  }
-
-  .icons {
-    width: 100% !important;
-    grid-template-columns: repeat(3, 1fr) !important;
-    gap: 8px 0 !important;
-  }
-
-  .icon {
-    width: 82px !important;
-  }
-
-  .icon-symbol {
-    font-size: 34px !important;
-  }
-
-  .icon-name {
-    font-size: 9px !important;
-  }
-
-  .window {
-    max-width: 100% !important;
-  }
-
-  .content-inner {
-    padding-left: 11px !important;
-    padding-right: 11px !important;
-  }
-
-  .taskbar-app:nth-child(n+3) {
-    display: none !important;
-  }
+/* ---- new app windows: reuse existing look, no new design ---- */
+.app-window-status-line{font-size:9px;color:#777;margin-top:2px}
+.live-badge{
+  display:inline-flex;align-items:center;gap:5px;
+  font-size:11px;font-weight:700;padding:3px 8px;border-radius:2px;
+  border:1px solid #aaa;
+}
+.live-badge.is-live{background:#ffe1e1;color:#c22a17;border-color:#e2452f}
+.live-badge.is-offline{background:#eee;color:#666}
+.app-open-btn{
+  display:inline-flex;align-items:center;justify-content:center;gap:6px;
+  margin-top:14px;padding:8px 16px;
+  border:1px solid #aaa;border-radius:2px;
+  background:linear-gradient(180deg,#fff,#eeeeee);
+  font-size:12px;font-weight:700;color:#2457a6;
+  cursor:pointer;
+  box-shadow:inset 1px 1px 0 #fff,inset -1px -1px 0 #d2d2d2;
+}
+.app-open-btn:hover{background:linear-gradient(180deg,#ffffff,#e5efff);}
+.app-preview-box{
+  margin:12px 0;padding:10px;background:#f4f4f4;border:1px solid #b7b7b7;
+  border-radius:2px;font-size:10px;line-height:1.6;color:#444;text-align:left;
+}
+.app-secondary-btn{
+  display:inline-flex;align-items:center;justify-content:center;gap:6px;
+  margin-top:8px;margin-left:6px;padding:8px 16px;
+  border:1px solid #aaa;border-radius:2px;
+  background:linear-gradient(180deg,#fff,#ffeaf4);
+  font-size:12px;font-weight:700;color:#D45B93;
+  cursor:pointer;
+}
+.app-secondary-btn:hover{background:linear-gradient(180deg,#ffffff,#ffd8ea);}
+.support-qr{
+  width:150px;height:150px;object-fit:contain;
+  margin:10px auto;display:block;
+  border:1px solid #aaa;border-radius:2px;background:#fff;padding:6px;
 }
 
 </style>
@@ -2199,7 +1688,6 @@ body::before {
   <span class="sparkle s3">✿</span>
   <span class="sparkle s4">✦</span>
 
-  <!-- ambient falling petals — signature ambient motion, kept light (5 elements, transform/opacity only) -->
   <span class="petal" style="left:6%;font-size:15px;--drift:35px;animation-duration:16s;animation-delay:0s;">✿</span>
   <span class="petal" style="left:22%;font-size:11px;--drift:-25px;animation-duration:13s;animation-delay:3s;">♡</span>
   <span class="petal" style="left:48%;font-size:13px;--drift:20px;animation-duration:18s;animation-delay:6s;">✦</span>
@@ -2282,10 +1770,6 @@ body::before {
 </div>
 
 
-<!-- =========================================================
-     START MENU
-========================================================= -->
-
 <div class="start-menu" id="start-menu">
   <div class="start-menu-banner">
     <div class="avatar">🖥️</div>
@@ -2317,11 +1801,11 @@ body::before {
     </div>
 
     <div class="start-menu-shortcuts">
-      <div class="sm-item" data-toast="🖴 Тут поки що порожньо"><span class="sm-icon">🖴</span> Мій комп'ютер</div>
-      <div class="sm-item" data-toast="🗂 Документів ще немає"><span class="sm-icon">🗂</span> Мої документи</div>
-      <div class="sm-item" data-toast="🔍 Нічого не знайдено, звісно ♡"><span class="sm-icon">🔍</span> Пошук</div>
-      <div class="sm-item" data-toast="⚙️ Тут все й так ідеально"><span class="sm-icon">⚙️</span> Панель керування</div>
-      <div class="sm-item" data-toast="❓ Спробуй ще раз ♡"><span class="sm-icon">❓</span> Довідка</div>
+      <div class="sm-item" data-window="mycomputer"><span class="sm-icon">🖴</span> Мій комп'ютер</div>
+      <div class="sm-item" data-window="mydocuments"><span class="sm-icon">🗂</span> Мої документи</div>
+      <div class="sm-item" data-window="searchapp"><span class="sm-icon">🔍</span> Пошук</div>
+      <div class="sm-item" data-window="controlpanel"><span class="sm-icon">⚙️</span> Панель керування</div>
+      <div class="sm-item" data-window="winhelp"><span class="sm-icon">❓</span> Довідка</div>
     </div>
   </div>
 
@@ -2454,7 +1938,7 @@ body::before {
 
 
 <!-- =========================================================
-     SOCIAL
+     SOCIAL — links open dedicated .exe windows, not the site directly
 ========================================================= -->
 
 <div class="overlay" id="social">
@@ -2490,39 +1974,37 @@ body::before {
 
         <div class="link-list" id="social-link-list">
 
-          <!-- ЗАМІНИ href="#" НА СВОЇ ПОСИЛАННЯ -->
-
-          <a class="link" href="#" target="_blank" rel="noopener">
+          <button type="button" class="link" data-window="twitchapp">
             <span class="link-icon">🟣</span>
             <span>
               <strong>Twitch</strong>
               <small>дивитись стріми →</small>
             </span>
-          </a>
+          </button>
 
-          <a class="link" href="#" target="_blank" rel="noopener">
+          <button type="button" class="link" data-window="tiktokapp">
             <span class="link-icon">🎵</span>
             <span>
               <strong>TikTok</strong>
               <small>короткі відео →</small>
             </span>
-          </a>
+          </button>
 
-          <a class="link" href="#" target="_blank" rel="noopener">
+          <button type="button" class="link" data-window="telegramapp">
             <span class="link-icon">💬</span>
             <span>
               <strong>Telegram</strong>
               <small>чат / новини →</small>
             </span>
-          </a>
+          </button>
 
-          <a class="link" href="#" target="_blank" rel="noopener">
+          <button type="button" class="link" data-window="youtubeapp">
             <span class="link-icon">▶️</span>
             <span>
               <strong>YouTube</strong>
               <small>відео та записи →</small>
             </span>
-          </a>
+          </button>
 
         </div>
 
@@ -2531,7 +2013,238 @@ body::before {
 
     <div class="window-status">
       <span class="status-dot"></span>
-      <span class="status-text">Social links ready</span>
+      <span class="status-text">Соціальні посилання готові</span>
+    </div>
+
+  </section>
+</div>
+
+
+<!-- =========================================================
+     TWITCH.exe
+========================================================= -->
+
+<div class="overlay" id="twitchapp">
+  <section class="window">
+
+    <div class="titlebar">
+      <div class="title-left">
+        <span class="title-icon">🟣</span>
+        <span>Twitch.exe</span>
+      </div>
+      <div class="window-buttons">
+        <button class="win-btn" data-minimize title="Згорнути">_</button>
+        <button class="win-btn" data-maximize title="Розгорнути">□</button>
+        <button class="win-btn close" data-close title="Закрити">×</button>
+      </div>
+    </div>
+
+    <div class="window-content">
+      <div class="menu">
+        <span data-action="twitch-file">File</span>
+        <span data-action="twitch-refresh">Refresh</span>
+        <span data-action="twitch-help">Help</span>
+      </div>
+
+      <div class="content-inner">
+        <div class="profile">
+          <div class="profile-icon">🟣</div>
+          <h2>noresmell</h2>
+          <p>twitch.tv/noresmell</p>
+        </div>
+
+        <div style="text-align:center;">
+          <span class="live-badge is-offline" id="twitch-status-badge">⚪ OFFLINE</span>
+        </div>
+
+        <div class="app-preview-box" id="twitch-preview">
+          Не вдалося отримати статус ефіру наживо прямо тут —
+          для цього потрібен окремий сервер (Twitch не дозволяє
+          перевіряти це напряму з браузера без бекенду).<br><br>
+          Але це нічого не означає: Noresmell може стримити
+          прямо зараз. Найкраще — просто зазирнути на канал ♡
+        </div>
+
+        <div style="text-align:center;">
+          <button type="button" class="app-open-btn" data-open-link="https://www.twitch.tv/noresmell">
+            ВІДКРИТИ TWITCH →
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <div class="window-status">
+      <span class="status-dot"></span>
+      <span class="status-text">Профіль Twitch завантажено</span>
+    </div>
+
+  </section>
+</div>
+
+
+<!-- =========================================================
+     YOUTUBE.exe
+========================================================= -->
+
+<div class="overlay" id="youtubeapp">
+  <section class="window">
+
+    <div class="titlebar">
+      <div class="title-left">
+        <span class="title-icon">▶️</span>
+        <span>YouTube.exe</span>
+      </div>
+      <div class="window-buttons">
+        <button class="win-btn" data-minimize title="Згорнути">_</button>
+        <button class="win-btn" data-maximize title="Розгорнути">□</button>
+        <button class="win-btn close" data-close title="Закрити">×</button>
+      </div>
+    </div>
+
+    <div class="window-content">
+      <div class="menu">
+        <span data-action="youtube-file">File</span>
+        <span data-action="youtube-refresh">Refresh</span>
+        <span data-action="youtube-help">Help</span>
+      </div>
+
+      <div class="content-inner">
+        <div class="profile">
+          <div class="profile-icon">▶️</div>
+          <h2>Noresmell</h2>
+          <p>youtube.com/@noresmell</p>
+        </div>
+
+        <div class="app-preview-box">
+          ОСТАННЄ ВІДЕО<br><br>
+          Отримати останнє відео автоматично тут неможливо
+          без офіційного API-ключа YouTube Data API, а
+          зберігати такий ключ у публічному коді сторінки
+          небезпечно. Тому без вигаданих даних —
+          просто перейди на канал і подивись сам ♡
+        </div>
+
+        <div style="text-align:center;">
+          <button type="button" class="app-open-btn" data-open-link="https://youtube.com/@noresmell?si=TmlZkmbJbb2m7tJS">
+            ДИВИТИСЯ НА YOUTUBE →
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <div class="window-status">
+      <span class="status-dot"></span>
+      <span class="status-text">Канал YouTube завантажено</span>
+    </div>
+
+  </section>
+</div>
+
+
+<!-- =========================================================
+     TIKTOK.exe
+========================================================= -->
+
+<div class="overlay" id="tiktokapp">
+  <section class="window">
+
+    <div class="titlebar">
+      <div class="title-left">
+        <span class="title-icon">🎵</span>
+        <span>TikTok.exe</span>
+      </div>
+      <div class="window-buttons">
+        <button class="win-btn" data-minimize title="Згорнути">_</button>
+        <button class="win-btn" data-maximize title="Розгорнути">□</button>
+        <button class="win-btn close" data-close title="Закрити">×</button>
+      </div>
+    </div>
+
+    <div class="window-content">
+      <div class="menu">
+        <span data-action="tiktok-file">File</span>
+        <span data-action="tiktok-refresh">Refresh</span>
+        <span data-action="tiktok-help">Help</span>
+      </div>
+
+      <div class="content-inner">
+        <div class="profile">
+          <div class="profile-icon">🎵</div>
+          <h2>@noresmell2</h2>
+          <p>tiktok.com/@noresmell2</p>
+        </div>
+
+        <div class="app-preview-box">
+          ОСТАННІ ВІДЕО<br><br>
+          Зазирни на TikTok, щоб побачити нове ♡
+        </div>
+
+        <div style="text-align:center;">
+          <button type="button" class="app-open-btn" data-open-link="https://www.tiktok.com/@noresmell2?_r=1&_t=ZS-98joVdQ83BB">
+            ВІДКРИТИ TIKTOK →
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <div class="window-status">
+      <span class="status-dot"></span>
+      <span class="status-text">Профіль TikTok завантажено</span>
+    </div>
+
+  </section>
+</div>
+
+
+<!-- =========================================================
+     TELEGRAM.exe
+========================================================= -->
+
+<div class="overlay" id="telegramapp">
+  <section class="window">
+
+    <div class="titlebar">
+      <div class="title-left">
+        <span class="title-icon">💬</span>
+        <span>Telegram.exe</span>
+      </div>
+      <div class="window-buttons">
+        <button class="win-btn" data-minimize title="Згорнути">_</button>
+        <button class="win-btn" data-maximize title="Розгорнути">□</button>
+        <button class="win-btn close" data-close title="Закрити">×</button>
+      </div>
+    </div>
+
+    <div class="window-content">
+      <div class="menu">
+        <span data-action="telegram-file">File</span>
+        <span data-action="telegram-refresh">Refresh</span>
+        <span data-action="telegram-help">Help</span>
+      </div>
+
+      <div class="content-inner">
+        <div class="profile">
+          <div class="profile-icon">💬</div>
+          <h2>NORESMELL SHIT</h2>
+          <p>@noresmellSHIT</p>
+        </div>
+
+        <div class="app-preview-box">
+          тут живе весь хаос ♡<br><br>
+          чат / новини / всякий хаос
+        </div>
+
+        <div style="text-align:center;">
+          <button type="button" class="app-open-btn" data-open-link="https://t.me/noresmellSHIT">
+            ВІДКРИТИ TELEGRAM →
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <div class="window-status">
+      <span class="status-dot"></span>
+      <span class="status-text">Telegram завантажено</span>
     </div>
 
   </section>
@@ -2620,7 +2333,7 @@ body::before {
 
     <div class="window-status">
       <span class="status-dot"></span>
-      <span class="status-text">About loaded successfully</span>
+      <span class="status-text">Профіль завантажено</span>
     </div>
 
   </section>
@@ -2628,7 +2341,7 @@ body::before {
 
 
 <!-- =========================================================
-     SUPPORT
+     SUPPORT — QR code + Monobank + copy link
 ========================================================= -->
 
 <div class="overlay" id="support">
@@ -2663,31 +2376,23 @@ body::before {
           <h2>ПІДТРИМАТИ NORESMELL</h2>
 
           <p>
-            Якщо тобі подобаються мої стріми, творчість або
-            просто хочеться закинути щось цьому хаотичному
-            організму — дякую ♡
+            Якщо тобі подобається те, що я роблю, можеш
+            підтримати мене ♡
           </p>
 
-          <div class="link-list" id="support-link-list">
+          <img
+            class="support-qr"
+            src="https://raw.githubusercontent.com/Noresmell/site.exe/main/Untitled9_20260809144939.png"
+            alt="QR-код Monobank"
+          >
 
-            <!-- ЗАМІНИ href="#" НА СВОЄ ПОСИЛАННЯ MONOBANK -->
-
-            <a class="link" href="#" target="_blank" rel="noopener">
-              <span class="link-icon">💳</span>
-              <span>
-                <strong>Monobank</strong>
-                <small>підтримати мене →</small>
-              </span>
-            </a>
-
-            <a class="link" href="#" target="_blank" rel="noopener">
-              <span class="link-icon">♡</span>
-              <span>
-                <strong>Інший спосіб</strong>
-                <small>якщо з'явиться пізніше →</small>
-              </span>
-            </a>
-
+          <div>
+            <button type="button" class="app-open-btn" data-open-link="https://send.monobank.ua/jar/8jbRQ2YjaG">
+              ВІДКРИТИ MONOBANK →
+            </button>
+            <button type="button" class="app-secondary-btn" id="support-copy-btn" data-copy-link="https://send.monobank.ua/jar/8jbRQ2YjaG">
+              СКОПІЮВАТИ ПОСИЛАННЯ
+            </button>
           </div>
 
         </div>
@@ -2697,7 +2402,7 @@ body::before {
 
     <div class="window-status">
       <span class="status-dot"></span>
-      <span class="status-text">Thank you for your support ♡</span>
+      <span class="status-text">Дякую за підтримку ♡</span>
     </div>
 
   </section>
@@ -2768,7 +2473,7 @@ body::before {
 
     <div class="window-status">
       <span class="status-dot"></span>
-      <span class="status-text">4 projects found</span>
+      <span class="status-text">Знайдено 4 проєкти</span>
     </div>
 
   </section>
@@ -2807,17 +2512,17 @@ body::before {
           <div class="support-heart" style="font-size:46px;animation:none;">🗑️</div>
           <h2>RECYCLE BIN</h2>
           <p>
-            The Recycle Bin is empty.<br>
-            Obviously ♡
+            Кошик порожній.<br>
+            Звісно ♡
           </p>
-          <button type="button" id="bin-empty-btn" class="xp-dialog-ok" style="margin-top:6px;">Empty Recycle Bin</button>
+          <button type="button" id="bin-empty-btn" class="xp-dialog-ok" style="margin-top:6px;">Очистити кошик</button>
         </div>
       </div>
     </div>
 
     <div class="window-status">
       <span class="status-dot"></span>
-      <span class="status-text">0 objects</span>
+      <span class="status-text">0 об'єктів</span>
     </div>
 
   </section>
@@ -2922,13 +2627,196 @@ P.S. якщо ти це читаєш - привіт ♡
 </div>
 
 
+<!-- =========================================================
+     MY COMPUTER
+========================================================= -->
+
+<div class="overlay" id="mycomputer">
+  <section class="window">
+    <div class="titlebar">
+      <div class="title-left"><span class="title-icon">🖴</span><span>My Computer.exe</span></div>
+      <div class="window-buttons">
+        <button class="win-btn" data-minimize title="Згорнути">_</button>
+        <button class="win-btn" data-maximize title="Розгорнути">□</button>
+        <button class="win-btn close" data-close title="Закрити">×</button>
+      </div>
+    </div>
+    <div class="window-content">
+      <div class="menu">
+        <span data-action="pc-file">File</span>
+        <span data-action="pc-view">View</span>
+        <span data-action="pc-help">Help</span>
+      </div>
+      <div class="content-inner">
+        <h2 class="about-title">МІЙ КОМП'ЮТЕР</h2>
+        <div class="project-grid">
+          <div class="project"><div class="project-icon">💾</div><strong>C:\</strong><p>Локальний диск</p></div>
+          <div class="project"><div class="project-icon">💾</div><strong>D:\</strong><p>Резервна копія хаосу</p></div>
+          <div class="project"><div class="project-icon">🖥️</div><strong>Noresmell.exe</strong><p>Головний виконуваний файл ♡</p></div>
+          <div class="project"><div class="project-icon">📁</div><strong>stream_configs\</strong><p>Дуже важливі налаштування</p></div>
+        </div>
+      </div>
+    </div>
+    <div class="window-status"><span class="status-dot"></span><span class="status-text">4 об'єкти</span></div>
+  </section>
+</div>
+
+
+<!-- =========================================================
+     MY DOCUMENTS
+========================================================= -->
+
+<div class="overlay" id="mydocuments">
+  <section class="window">
+    <div class="titlebar">
+      <div class="title-left"><span class="title-icon">🗂</span><span>My Documents.exe</span></div>
+      <div class="window-buttons">
+        <button class="win-btn" data-minimize title="Згорнути">_</button>
+        <button class="win-btn" data-maximize title="Розгорнути">□</button>
+        <button class="win-btn close" data-close title="Закрити">×</button>
+      </div>
+    </div>
+    <div class="window-content">
+      <div class="menu">
+        <span data-action="docs-file">File</span>
+        <span data-action="docs-view">View</span>
+        <span data-action="docs-help">Help</span>
+      </div>
+      <div class="content-inner">
+        <h2 class="about-title">МОЇ ДОКУМЕНТИ</h2>
+        <div class="project-grid">
+          <div class="project"><div class="project-icon">📄</div><strong>stream_ideas.txt</strong><p>дуже сирі ідеї для наступного стріму</p></div>
+          <div class="project"><div class="project-icon">📄</div><strong>todo.txt</strong><p>ті самі справи, що й тиждень тому</p></div>
+          <div class="project"><div class="project-icon">📄</div><strong>very_secret.txt</strong><p>нічого цікавого, чесно ♡</p></div>
+        </div>
+      </div>
+    </div>
+    <div class="window-status"><span class="status-dot"></span><span class="status-text">3 об'єкти</span></div>
+  </section>
+</div>
+
+
+<!-- =========================================================
+     SEARCH
+========================================================= -->
+
+<div class="overlay" id="searchapp">
+  <section class="window">
+    <div class="titlebar">
+      <div class="title-left"><span class="title-icon">🔍</span><span>Search.exe</span></div>
+      <div class="window-buttons">
+        <button class="win-btn" data-minimize title="Згорнути">_</button>
+        <button class="win-btn" data-maximize title="Розгорнути">□</button>
+        <button class="win-btn close" data-close title="Закрити">×</button>
+      </div>
+    </div>
+    <div class="window-content">
+      <div class="menu">
+        <span data-action="search-file">File</span>
+        <span data-action="search-help">Help</span>
+      </div>
+      <div class="content-inner">
+        <h2 class="about-title">ПОШУК</h2>
+        <p class="about-text">Введи запит і подивимось, що знайдеться ♡</p>
+        <div style="display:flex;gap:8px;margin-top:10px;">
+          <input type="text" id="search-input" placeholder="Що шукаємо?" style="flex:1;padding:7px 9px;border:1px solid #999;border-radius:2px;font-family:var(--font-family);font-size:11px;">
+          <button type="button" class="app-open-btn" id="search-go-btn" style="margin-top:0;">Шукати</button>
+        </div>
+        <div class="app-preview-box" id="search-result" style="display:none;"></div>
+      </div>
+    </div>
+    <div class="window-status"><span class="status-dot"></span><span class="status-text" id="search-status">Готово до пошуку</span></div>
+  </section>
+</div>
+
+
+<!-- =========================================================
+     CONTROL PANEL
+========================================================= -->
+
+<div class="overlay" id="controlpanel">
+  <section class="window">
+    <div class="titlebar">
+      <div class="title-left"><span class="title-icon">⚙️</span><span>Control Panel.exe</span></div>
+      <div class="window-buttons">
+        <button class="win-btn" data-minimize title="Згорнути">_</button>
+        <button class="win-btn" data-maximize title="Розгорнути">□</button>
+        <button class="win-btn close" data-close title="Закрити">×</button>
+      </div>
+    </div>
+    <div class="window-content">
+      <div class="menu">
+        <span data-action="cp-file">File</span>
+        <span data-action="cp-help">Help</span>
+      </div>
+      <div class="content-inner">
+        <h2 class="about-title">ПАНЕЛЬ КЕРУВАННЯ</h2>
+        <div class="info-box" style="line-height:2;">
+          <label style="display:flex;justify-content:space-between;align-items:center;">
+            🔊 Звук інтерфейсу <input type="checkbox" id="cp-sound" checked>
+          </label>
+          <label style="display:flex;justify-content:space-between;align-items:center;">
+            ✦ Ambient-ефекти (петали, іскри) <input type="checkbox" id="cp-ambient" checked>
+          </label>
+          <label style="display:flex;justify-content:space-between;align-items:center;">
+            🌀 Зменшений рух (reduced motion) <input type="checkbox" id="cp-reduced-motion">
+          </label>
+          <label style="display:flex;justify-content:space-between;align-items:center;">
+            💗 Насиченість рожевого
+            <select id="cp-pink-intensity" style="font-family:var(--font-family);font-size:11px;">
+              <option value="low">менше</option>
+              <option value="normal" selected>звичайно</option>
+              <option value="high">більше ♡</option>
+            </select>
+          </label>
+        </div>
+      </div>
+    </div>
+    <div class="window-status"><span class="status-dot"></span><span class="status-text">Налаштування збережено автоматично</span></div>
+  </section>
+</div>
+
+
+<!-- =========================================================
+     WINDOWS HELP
+========================================================= -->
+
+<div class="overlay" id="winhelp">
+  <section class="window">
+    <div class="titlebar">
+      <div class="title-left"><span class="title-icon">❓</span><span>Windows Help.exe</span></div>
+      <div class="window-buttons">
+        <button class="win-btn" data-minimize title="Згорнути">_</button>
+        <button class="win-btn" data-maximize title="Розгорнути">□</button>
+        <button class="win-btn close" data-close title="Закрити">×</button>
+      </div>
+    </div>
+    <div class="window-content">
+      <div class="menu">
+        <span data-action="help-file">File</span>
+        <span data-action="help-help">Help</span>
+      </div>
+      <div class="content-inner">
+        <h2 class="about-title">Як користуватися site.exe</h2>
+        <div class="about-text">
+          <p>Клікай на іконки на робочому столі, щоб відкривати програми.</p>
+          <p>У SOCIAL.exe кожна мережа відкривається в своєму маленькому вікні — там можна побачити інформацію, а потім перейти на справжній сервіс кнопкою.</p>
+          <p>Вікна можна перетягувати за заголовок, згортати, розгортати й закривати — як у справжньому Windows XP.</p>
+          <p>Кнопка «start» відкриває меню з іграми та стандартними програмами.</p>
+        </div>
+      </div>
+    </div>
+    <div class="window-status"><span class="status-dot"></span><span class="status-text">Довідку завантажено</span></div>
+  </section>
+</div>
+
+
+
 <script>
 (function(){
 
   /* =========================================================
      UI SOUND — centralized, single place to tune volume/mute.
-     One click sound reused via a small pool so overlapping
-     triggers (double-click, fast clicks) don't cut each other off.
   ========================================================= */
   const UI_SOUND_SRC = "https://raw.githubusercontent.com/Noresmell/site.exe/main/lightningbulb-spacebar-click-keyboard-199448.mp3";
   const UI_VOLUME = 0.32;
@@ -2936,6 +2824,11 @@ P.S. якщо ти це читаєш - привіт ♡
   let uiSoundEnabled = true;
   let uiAudioPool = [];
   let uiAudioIndex = 0;
+
+  try{
+    const saved = localStorage.getItem("noresmell-sound-enabled");
+    if(saved !== null) uiSoundEnabled = saved === "1";
+  }catch(e){}
 
   function buildAudioPool(){
     for(let i=0;i<UI_POOL_SIZE;i++){
@@ -2954,27 +2847,33 @@ P.S. якщо ти це читаєш - привіт ♡
     try{
       audio.currentTime = 0;
       const p = audio.play();
-      if(p && p.catch) p.catch(()=>{ /* autoplay blocked before first interaction — fine */ });
-    }catch(e){ /* ignore */ }
+      if(p && p.catch) p.catch(()=>{});
+    }catch(e){}
   }
   window.playUISound = playUISound;
 
   const trayVolume = document.getElementById("tray-volume");
+  function syncVolumeIcon(){
+    if(!trayVolume) return;
+    trayVolume.textContent = uiSoundEnabled ? "🔊" : "🔇";
+    trayVolume.title = uiSoundEnabled ? "Звук інтерфейсу: увімкнено" : "Звук інтерфейсу: вимкнено";
+    const cpSound = document.getElementById("cp-sound");
+    if(cpSound) cpSound.checked = uiSoundEnabled;
+  }
+  function setSoundEnabled(val){
+    uiSoundEnabled = val;
+    try{ localStorage.setItem("noresmell-sound-enabled", val ? "1" : "0"); }catch(e){}
+    syncVolumeIcon();
+  }
+  window.__setSoundEnabled = setSoundEnabled;
   if(trayVolume){
     trayVolume.style.cursor = "pointer";
-    trayVolume.addEventListener("click",()=>{
-      uiSoundEnabled = !uiSoundEnabled;
-      trayVolume.textContent = uiSoundEnabled ? "🔊" : "🔇";
-      trayVolume.title = uiSoundEnabled ? "Звук інтерфейсу: увімкнено" : "Звук інтерфейсу: вимкнено";
-    });
+    trayVolume.addEventListener("click",()=>{ setSoundEnabled(!uiSoundEnabled); });
   }
+  syncVolumeIcon();
 
   /* =========================================================
      WINDOW MANAGER
-     - multiple windows can be open & visible at once
-     - clicking a window brings it to front / marks it active
-     - taskbar reflects real open windows
-     - minimize hides but preserves state (games keep progress)
   ========================================================= */
 
   const APPS = {
@@ -2986,14 +2885,23 @@ P.S. якщо ти це читаєш - привіт ♡
     projects:    {title:"Projects.exe",    glyph:"🛠️"},
     recyclebin:  {title:"Recycle Bin",     glyph:"🗑️"},
     notepad:     {title:"Notepad.exe",     glyph:"📝"},
-    iexplore:    {title:"Internet Explorer", glyph:"🌐"}
+    iexplore:    {title:"Internet Explorer", glyph:"🌐"},
+    twitchapp:   {title:"Twitch.exe",      glyph:"🟣"},
+    youtubeapp:  {title:"YouTube.exe",     glyph:"▶️"},
+    tiktokapp:   {title:"TikTok.exe",      glyph:"🎵"},
+    telegramapp: {title:"Telegram.exe",    glyph:"💬"},
+    mycomputer:  {title:"My Computer.exe", glyph:"🖴"},
+    mydocuments: {title:"My Documents.exe",glyph:"🗂"},
+    searchapp:   {title:"Search.exe",      glyph:"🔍"},
+    controlpanel:{title:"Control Panel.exe",glyph:"⚙️"},
+    winhelp:     {title:"Windows Help.exe",glyph:"❓"}
   };
 
   const overlays = document.querySelectorAll(".overlay");
   const taskbarAppsEl = document.getElementById("taskbar-apps");
 
-  const openOrder = [];           // ids currently open, in the order they were opened
-  const windowState = {};         // id -> { minimized: bool }
+  const openOrder = [];
+  const windowState = {};
   let activeId = null;
   let zCounter = 100;
 
@@ -3089,7 +2997,6 @@ P.S. якщо ти це читаєш - привіт ♡
 
     if(!alreadyOpen){
       positionCascade(overlay);
-      // fresh open — reset the games; re-opening from taskbar/minimize keeps progress
       if(id === "minesweeper" && typeof window.resetMinesweeper === "function"){
         window.resetMinesweeper();
       }
@@ -3101,6 +3008,7 @@ P.S. якщо ти це читаєш - привіт ♡
     bringToFront(overlay);
     if(typeof window.playDropSound === "function") window.playDropSound(); else playUISound();
   }
+  window.__xpOpenWindow = openWindow;
 
   function minimizeWindow(overlay){
     if(!overlay || !windowState[overlay.id]) return;
@@ -3153,16 +3061,16 @@ P.S. якщо ти це читаєш - привіт ♡
     else renderTaskbar();
   }
 
-  window.__xpCloseWindow = closeWindow; // used by shutdown sequence below
+  window.__xpCloseWindow = closeWindow;
 
-  /* wire desktop icons */
-  document.querySelectorAll(".icon[data-window]").forEach(icon=>{
-    icon.addEventListener("click",()=>{
-      openWindow(icon.dataset.window);
+  /* wire desktop icons + any element with data-window (social links, start menu shortcuts) */
+  document.querySelectorAll("[data-window]").forEach(trigger=>{
+    trigger.addEventListener("click",()=>{
+      if(typeof window.playSelectSound === "function") window.playSelectSound(); else playUISound();
+      openWindow(trigger.dataset.window);
     });
   });
 
-  /* wire window control buttons */
   document.querySelectorAll("[data-close]").forEach(button=>{
     button.addEventListener("click",(e)=>{
       e.stopPropagation();
@@ -3182,7 +3090,6 @@ P.S. якщо ти це читаєш - привіт ♡
     });
   });
 
-  /* clicking anywhere on a window activates/raises it */
   document.querySelectorAll(".window").forEach(win=>{
     win.addEventListener("pointerdown",()=>{
       const overlay = win.closest(".overlay");
@@ -3268,12 +3175,11 @@ P.S. якщо ти це читаєш - привіт ♡
 
   startMenu.querySelectorAll("[data-window]").forEach(item=>{
     item.addEventListener("click",()=>{
-      openWindow(item.dataset.window);
       closeStartMenu();
     });
   });
 
-  /* ---------------- toast for decorative shortcuts ---------------- */
+  /* ---------------- toast ---------------- */
   const toast = document.getElementById("xp-toast");
   let toastTimer = null;
   function showToast(text){
@@ -3284,14 +3190,6 @@ P.S. якщо ти це читаєш - привіт ♡
     toastTimer = setTimeout(()=> toast.classList.remove("show"), 1800);
   }
   window.__xpShowToast = showToast;
-
-  startMenu.querySelectorAll("[data-toast]").forEach(item=>{
-    item.addEventListener("click",()=>{
-      if(typeof window.playSelectSound === "function") window.playSelectSound(); else playUISound();
-      showToast(item.dataset.toast);
-      closeStartMenu();
-    });
-  });
 
   /* ---------------- shutdown easter egg ---------------- */
   const shutdownScreen = document.getElementById("shutdown-screen");
@@ -3326,10 +3224,6 @@ P.S. якщо ти це читаєш - привіт ♡
 
   /* =========================================================
      LIVE DESKTOP — rare, quiet ambient events.
-     Runs on its own timer, mostly does nothing visible;
-     every 45–110s there's a small chance of a toast,
-     a drifting symbol, or (rarely) a fake system error.
-     Pauses while the tab isn't visible to save resources.
   ========================================================= */
 
   const AMBIENT_MESSAGES = [
@@ -3343,6 +3237,7 @@ P.S. якщо ти це читаєш - привіт ♡
   const AMBIENT_SYMBOLS = ["✦","♡","✿","🦋"];
 
   function spawnDriftingSymbol(){
+    if(document.body.classList.contains("ambient-off")) return;
     const symbol = AMBIENT_SYMBOLS[Math.floor(Math.random()*AMBIENT_SYMBOLS.length)];
     const el = document.createElement("span");
     const crossing = symbol === "🦋" && Math.random() < 0.6;
@@ -3368,7 +3263,7 @@ P.S. якщо ти це читаєш - привіт ♡
       '<div class="fake-error-titlebar">⚠️ Windows</div>' +
       '<div class="fake-error-body">' +
         '<span class="fake-error-icon">⚠️</span>' +
-        'Something went wrong.<br>But probably not important.' +
+        'Щось пішло не так.<br>Але, певно, нічого важливого.' +
         '<br><button class="fake-error-ok" type="button">OK</button>' +
       '</div>';
     document.body.appendChild(dlg);
@@ -3392,7 +3287,7 @@ P.S. якщо ти це читаєш - привіт ♡
   }
 
   function scheduleAmbientEvent(){
-    const delay = 45000 + Math.random()*65000; // 45–110s
+    const delay = 45000 + Math.random()*65000;
     setTimeout(()=>{
       triggerAmbientEvent();
       scheduleAmbientEvent();
@@ -3632,7 +3527,7 @@ P.S. якщо ти це читаєш - привіт ♡
   let stock = [], waste = [];
   let foundations = {S:[],H:[],D:[],C:[]};
   let tableau = [[],[],[],[],[],[],[]];
-  let selected = null; // {zone:'waste'} | {zone:'tableau', col, idx}
+  let selected = null;
   let moves = 0, seconds = 0, timerInterval = null, gameWon = false;
 
   function rankLabel(r){ return RANK_LABEL[r] || String(r); }
@@ -3700,7 +3595,6 @@ P.S. якщо ти це читаєш - привіт ♡
   }
 
   function render(){
-    // stock
     stockEl.innerHTML = "";
     if(stock.length){
       stockEl.appendChild(makeCardEl({faceUp:false}));
@@ -3708,7 +3602,6 @@ P.S. якщо ти це читаєш - привіт ♡
       stockEl.appendChild(makePlaceholderEl("↺"));
     }
 
-    // waste
     wasteEl.innerHTML = "";
     if(waste.length){
       const top = waste[waste.length-1];
@@ -3717,7 +3610,6 @@ P.S. якщо ти це читаєш - привіт ♡
       wasteEl.appendChild(el);
     }
 
-    // foundations
     SUITS.forEach(suit=>{
       const pile = foundations[suit];
       const el = foundationEls[suit];
@@ -3729,7 +3621,6 @@ P.S. якщо ти це читаєш - привіт ♡
       }
     });
 
-    // tableau
     tableau.forEach((colCards, colIndex)=>{
       const colEl = columnEls[colIndex];
       colEl.innerHTML = "";
@@ -3802,7 +3693,6 @@ P.S. якщо ти це читаєш - привіт ♡
     if(selected){
       const moved = tryMoveSelectedToColumn(col);
       if(moved) return;
-      // fall through to try re-selecting a valid run at this spot
     }
 
     if(isSequenceValid(colCards, idx)){
@@ -3904,8 +3794,6 @@ P.S. якщо ти це читаєш - привіт ♡
     return card.rank === topRank + 1;
   }
 
-  /* ---------------- event wiring ---------------- */
-
   stockEl.addEventListener("click", drawFromStock);
 
   wasteEl.addEventListener("click", ()=>{
@@ -3957,8 +3845,6 @@ P.S. якщо ти це читаєш - привіт ♡
 
   restartBtn.addEventListener("click", ()=> window.newSolitaireGame());
 
-  /* ---------------- new game ---------------- */
-
   function newGame(){
     stopTimer();
     stock = buildDeck();
@@ -3989,15 +3875,11 @@ P.S. якщо ти це читаєш - привіт ♡
 
 
 <!-- =========================================================
-     DEAD-CLICK FIXES
-     Central feedback system: every element that looks
-     clickable now gives some reaction (status / toast /
-     dialog / real action), per the "no dead clicks" spec.
+     DEAD-CLICK FIXES + NEW APP LOGIC
 ========================================================= -->
 <script>
 (function(){
 
-  /* ---------------- extra sound categories ---------------- */
   const SELECT_SOUND_SRC = "https://raw.githubusercontent.com/Noresmell/site.exe/main/u_2fbuaev0zn-select-sound-121244.mp3";
   const DROP_SOUND_SRC   = "https://raw.githubusercontent.com/Noresmell/site.exe/main/sounds_desktop_drop.mp3";
 
@@ -4035,12 +3917,10 @@ P.S. якщо ти це читаєш - привіт ♡
   function showToast(text){
     if(typeof window.__xpShowToast === "function") window.__xpShowToast(text);
   }
-
   function playClick(){
     if(typeof window.playUISound === "function") window.playUISound();
   }
 
-  /* ---------------- generic XP dialog ---------------- */
   function escapeHtml(str){
     return String(str).replace(/[&<>"']/g, s => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[s]));
   }
@@ -4079,7 +3959,6 @@ P.S. якщо ти це читаєш - привіт ♡
   }
   window.showXPDialog = showXPDialog;
 
-  /* ---------------- status bar helper ---------------- */
   function flashStatus(overlayId, text, revertMs){
     const overlay = document.getElementById(overlayId);
     if(!overlay) return;
@@ -4100,151 +3979,325 @@ P.S. якщо ти це читаєш - привіт ♡
     el.classList.add("highlight-flash");
   }
 
-  /* ---------------- window menu bars (File / View / Help / ...) ---------------- */
+  /* ---------------- open real link (used by Twitch/YouTube/TikTok/Telegram/Monobank buttons) ---------------- */
+  document.querySelectorAll("[data-open-link]").forEach(btn=>{
+    btn.addEventListener("click", (e)=>{
+      e.stopPropagation();
+      playSelectSound();
+      const url = btn.dataset.openLink;
+      window.open(url, "_blank", "noopener");
+    });
+  });
+
+  /* ---------------- copy link (Support.exe) ---------------- */
+  document.querySelectorAll("[data-copy-link]").forEach(btn=>{
+    btn.addEventListener("click", async (e)=>{
+      e.stopPropagation();
+      playClick();
+      const url = btn.dataset.copyLink;
+      try{
+        await navigator.clipboard.writeText(url);
+        showToast("Посилання скопійовано ♡");
+      }catch(err){
+        try{
+          const ta = document.createElement("textarea");
+          ta.value = url;
+          ta.style.position = "fixed";
+          ta.style.opacity = "0";
+          document.body.appendChild(ta);
+          ta.select();
+          document.execCommand("copy");
+          ta.remove();
+          showToast("Посилання скопійовано ♡");
+        }catch(err2){
+          showToast("Не вдалося скопіювати. Ось посилання: " + url);
+        }
+      }
+    });
+  });
+
+  /* ---------------- Search.exe ---------------- */
+  const searchInput = document.getElementById("search-input");
+  const searchGoBtn = document.getElementById("search-go-btn");
+  const searchResult = document.getElementById("search-result");
+  const searchStatus = document.getElementById("search-status");
+  function runSearch(){
+    if(!searchInput) return;
+    const q = searchInput.value.trim().toLowerCase();
+    playSelectSound();
+    if(!searchResult) return;
+    searchResult.style.display = "block";
+    if(!q){
+      searchResult.textContent = "Спочатку введи щось ♡";
+    } else if(q.includes("noresmell")){
+      searchResult.textContent = "Знайдено 1 результат: Noresmell.exe ♡";
+    } else if(q.includes("as") || q.includes("fix") || q.includes("stream") || q.includes("стрім")){
+      searchResult.textContent = "0 результатів. Цю проблему доведеться вирішувати самостійно ♡";
+    } else {
+      searchResult.textContent = "0 результатів знайдено.";
+    }
+    if(searchStatus) searchStatus.textContent = "Пошук завершено";
+  }
+  if(searchGoBtn) searchGoBtn.addEventListener("click", runSearch);
+  if(searchInput) searchInput.addEventListener("keydown", (e)=>{ if(e.key === "Enter") runSearch(); });
+
+  /* ---------------- Control Panel.exe — real working toggles ---------------- */
+  const cpSound = document.getElementById("cp-sound");
+  const cpAmbient = document.getElementById("cp-ambient");
+  const cpReducedMotion = document.getElementById("cp-reduced-motion");
+  const cpPink = document.getElementById("cp-pink-intensity");
+
+  function loadCP(){
+    try{
+      const ambient = localStorage.getItem("noresmell-ambient-enabled");
+      if(ambient !== null && cpAmbient) cpAmbient.checked = ambient === "1";
+      const rm = localStorage.getItem("noresmell-reduced-motion");
+      if(rm !== null && cpReducedMotion) cpReducedMotion.checked = rm === "1";
+      const pink = localStorage.getItem("noresmell-pink-intensity");
+      if(pink && cpPink) cpPink.value = pink;
+    }catch(e){}
+    applyCP();
+  }
+  function applyCP(){
+    document.body.classList.toggle("ambient-off", cpAmbient && !cpAmbient.checked);
+    document.body.classList.toggle("reduced-motion-on", !!(cpReducedMotion && cpReducedMotion.checked));
+    document.querySelectorAll(".petal, .sparkle").forEach(el=>{
+      el.style.display = (cpAmbient && !cpAmbient.checked) ? "none" : "";
+    });
+    if(cpReducedMotion && cpReducedMotion.checked){
+      document.documentElement.style.setProperty("--reduced-motion","1");
+      document.body.style.setProperty("animation","none");
+    }
+    if(cpPink){
+      const val = cpPink.value;
+      const map = {low:".6", normal:"1", high:"1.4"};
+      document.documentElement.style.setProperty("--pink-boost", map[val] || "1");
+    }
+  }
+  if(cpSound){
+    cpSound.addEventListener("change", ()=>{
+      if(typeof window.__setSoundEnabled === "function") window.__setSoundEnabled(cpSound.checked);
+      showToast(cpSound.checked ? "🔊 Звук увімкнено" : "🔇 Звук вимкнено");
+    });
+  }
+  if(cpAmbient){
+    cpAmbient.addEventListener("change", ()=>{
+      try{ localStorage.setItem("noresmell-ambient-enabled", cpAmbient.checked ? "1" : "0"); }catch(e){}
+      applyCP();
+      showToast(cpAmbient.checked ? "✦ Ambient-ефекти увімкнено" : "✦ Ambient-ефекти вимкнено");
+    });
+  }
+  if(cpReducedMotion){
+    cpReducedMotion.addEventListener("change", ()=>{
+      try{ localStorage.setItem("noresmell-reduced-motion", cpReducedMotion.checked ? "1" : "0"); }catch(e){}
+      applyCP();
+      showToast(cpReducedMotion.checked ? "🌀 Зменшений рух увімкнено" : "🌀 Зменшений рух вимкнено");
+    });
+  }
+  if(cpPink){
+    cpPink.addEventListener("change", ()=>{
+      try{ localStorage.setItem("noresmell-pink-intensity", cpPink.value); }catch(e){}
+      applyCP();
+      showToast("💗 Насиченість рожевого оновлено");
+    });
+  }
+  loadCP();
+
+  /* ---------------- window menu bars ---------------- */
   function handleMenuAction(action){
     switch(action){
 
-      /* -------- SOCIAL.EXE -------- */
       case "social-file":
-        flashStatus("social", "File menu unavailable ♡", 2200);
+        flashStatus("social", "Меню File недоступне ♡", 2200);
         break;
       case "social-view":
         showXPDialog({
           title:"View", icon:"🪟",
           bodyHTML:
             '<div class="xp-dialog-row"><label><input type="checkbox" checked disabled> XP layout</label></div>' +
-            '<div class="xp-dialog-row"><label><input type="checkbox" disabled> Really modern</label></div>' +
-            '<div class="xp-dialog-row"><label><input type="checkbox" disabled> Definitely not Windows Vista</label></div>'
+            '<div class="xp-dialog-row"><label><input type="checkbox" disabled> Дуже сучасний</label></div>'
         });
         break;
       case "social-links":
         flashHighlight(document.getElementById("social-link-list"));
         document.getElementById("social-link-list")?.scrollIntoView({behavior:"smooth", block:"center"});
-        flashStatus("social", "Social links ready", 1800);
+        flashStatus("social", "Соціальні посилання готові", 1800);
         break;
       case "social-help":
-        showXPDialog({title:"Social.exe Help", icon:"❓", centered:true,
-          bodyHTML:"<p>Click a link to visit it.</p><p>That's literally it.</p>"});
+        showXPDialog({title:"Довідка Social.exe", icon:"❓", centered:true,
+          bodyHTML:"<p>Клікни на пункт, щоб відкрити його окреме вікно.</p><p>Звідти вже можна перейти на справжній сервіс.</p>"});
         break;
 
-      /* -------- ABOUT.EXE -------- */
+      case "twitch-file":
+      case "youtube-file":
+      case "tiktok-file":
+      case "telegram-file":
+        flashStatus(action.split("-")[0]+"app", "Меню File недоступне ♡", 2200);
+        break;
+      case "twitch-refresh":
+      case "youtube-refresh":
+      case "tiktok-refresh":
+      case "telegram-refresh":
+        showToast("Дані оновлено ♡ (це все, що можна показати без бекенду)");
+        break;
+      case "twitch-help":
+        showXPDialog({title:"Twitch.exe", icon:"❓", centered:true, bodyHTML:"<p>Натисни кнопку, щоб перейти на справжній Twitch.</p>"});
+        break;
+      case "youtube-help":
+        showXPDialog({title:"YouTube.exe", icon:"❓", centered:true, bodyHTML:"<p>Натисни кнопку, щоб перейти на справжній YouTube.</p>"});
+        break;
+      case "tiktok-help":
+        showXPDialog({title:"TikTok.exe", icon:"❓", centered:true, bodyHTML:"<p>Натисни кнопку, щоб перейти на справжній TikTok.</p>"});
+        break;
+      case "telegram-help":
+        showXPDialog({title:"Telegram.exe", icon:"❓", centered:true, bodyHTML:"<p>Натисни кнопку, щоб перейти на справжній Telegram.</p>"});
+        break;
+
       case "about-file":
-        flashStatus("about", "File menu unavailable ♡", 2200);
+        flashStatus("about", "Меню File недоступне ♡", 2200);
         break;
       case "about-profile":
-        showToast("Profile loaded successfully ♡");
+        showToast("Профіль завантажено ♡");
         break;
       case "about-view":
         showXPDialog({
           title:"View", icon:"🪟",
           bodyHTML:
             '<div class="xp-dialog-row"><label><input type="radio" name="about-view" checked disabled> Classic XP</label></div>' +
-            '<div class="xp-dialog-row"><label><input type="radio" name="about-view" disabled> Definitely not modern</label></div>'
+            '<div class="xp-dialog-row"><label><input type="radio" name="about-view" disabled> Не дуже сучасний</label></div>'
         });
         break;
       case "about-help":
         showXPDialog({title:"About.exe", icon:"❓", centered:true,
-          bodyHTML:"<p>This is where you learn who Noresmell is.</p><p>Congratulations.</p>"});
+          bodyHTML:"<p>Тут можна дізнатись, хто такий Noresmell.</p>"});
         break;
 
-      /* -------- SUPPORT.EXE -------- */
       case "support-file":
-        flashStatus("support", "File menu unavailable ♡", 2200);
+        flashStatus("support", "Меню File недоступне ♡", 2200);
         break;
       case "support-support":
-        flashHighlight(document.getElementById("support-link-list"));
-        document.getElementById("support-link-list")?.scrollIntoView({behavior:"smooth", block:"center"});
-        flashStatus("support", "Ready to receive support ♡", 1800);
+        flashHighlight(document.querySelector("#support .support-box"));
+        flashStatus("support", "Готовий отримати підтримку ♡", 1800);
         break;
       case "support-options":
         showXPDialog({
           title:"Support Options", icon:"💳",
           bodyHTML:
-            '<div class="xp-dialog-row"><label><input type="checkbox" checked disabled> Gratitude</label></div>' +
-            '<div class="xp-dialog-row"><label><input type="checkbox" checked disabled> Emotional damage</label></div>' +
-            '<div class="xp-dialog-row"><label><input type="checkbox" checked disabled> Pink XP interface</label></div>'
+            '<div class="xp-dialog-row"><label><input type="checkbox" checked disabled> Вдячність</label></div>' +
+            '<div class="xp-dialog-row"><label><input type="checkbox" checked disabled> Рожевий XP-інтерфейс</label></div>'
         });
         break;
       case "support-help":
-        showXPDialog({title:"Help", icon:"❓", centered:true,
-          bodyHTML:"<p>If you want to support Noresmell,<br>click one of the links below ♡</p>"});
+        showXPDialog({title:"Довідка", icon:"❓", centered:true,
+          bodyHTML:"<p>Відскануй QR-код або натисни кнопку нижче ♡</p>"});
         break;
 
-      /* -------- PROJECTS.EXE -------- */
       case "projects-file":
-        flashStatus("projects", "File menu unavailable ♡", 2200);
+        flashStatus("projects", "Меню File недоступне ♡", 2200);
         break;
       case "projects-projects":
         flashHighlight(document.getElementById("projects-grid"));
-        flashStatus("projects", "4 projects found", 1800);
+        flashStatus("projects", "Знайдено 4 проєкти", 1800);
         break;
       case "projects-view":
         showXPDialog({
           title:"View", icon:"🪟",
           bodyHTML:
             '<div class="xp-dialog-row"><label><input type="radio" name="projects-view" checked disabled> Icons</label></div>' +
-            '<div class="xp-dialog-row"><label><input type="radio" name="projects-view" disabled> Details</label></div>' +
-            '<div class="xp-dialog-row"><label><input type="radio" name="projects-view" disabled> Very important government documents</label></div>'
+            '<div class="xp-dialog-row"><label><input type="radio" name="projects-view" disabled> Details</label></div>'
         });
         break;
       case "projects-help":
-        showXPDialog({title:"Projects.exe", icon:"❓", centered:true,
-          bodyHTML:"<p>These are things Noresmell makes.</p><p>Somehow.</p>"});
+        showXPDialog({title:"Projects.exe", icon:"❓", centered:true, bodyHTML:"<p>Це те, що робить Noresmell. Якимось чином.</p>"});
         break;
 
-      /* -------- RECYCLE BIN -------- */
       case "bin-file":
-        flashStatus("recyclebin", "File menu unavailable ♡", 2200);
+        flashStatus("recyclebin", "Меню File недоступне ♡", 2200);
         break;
       case "bin-edit":
-        flashStatus("recyclebin", "Nothing to edit. It's empty ♡", 2200);
+        flashStatus("recyclebin", "Нічого редагувати. Тут порожньо ♡", 2200);
         break;
       case "bin-view":
-        showXPDialog({title:"View", icon:"🪟", centered:true,
-          bodyHTML:"<p>There's nothing to view.</p><p>It's empty ♡</p>"});
+        showXPDialog({title:"View", icon:"🪟", centered:true, bodyHTML:"<p>Тут нема на що дивитись.</p><p>Порожньо ♡</p>"});
         break;
       case "bin-help":
-        showXPDialog({title:"Windows Help", icon:"❓", centered:true,
-          bodyHTML:"<p>No help available.</p><p>You're on your own ♡</p>"});
+        showXPDialog({title:"Довідка Windows", icon:"❓", centered:true, bodyHTML:"<p>Довідка відсутня.</p><p>Ти сам собі помічник ♡</p>"});
         break;
 
-      /* -------- NOTEPAD.EXE -------- */
       case "notepad-file":
-        showToast("New file? This one's kind of the point.");
+        showToast("Новий файл? Це майже те, для чого цей і створений.");
         break;
       case "notepad-edit":
-        showToast("Nothing to select. It's already all there.");
+        showToast("Нічого виділяти. Тут вже все є.");
         break;
       case "notepad-format":
-        showToast("Format is fixed. Comic Sans, somewhere in spirit.");
+        showToast("Формат незмінний. Десь у дусі Comic Sans.");
         break;
       case "notepad-help":
-        showXPDialog({title:"Notepad.exe Help", icon:"❓", centered:true,
-          bodyHTML:"<p>This is a text file.</p><p>You read it. The end.</p>"});
+        showXPDialog({title:"Довідка Notepad.exe", icon:"❓", centered:true, bodyHTML:"<p>Це текстовий файл.</p><p>Ти його прочитав. Кінець.</p>"});
         break;
 
-      /* -------- INTERNET EXPLORER -------- */
       case "ie-back":
-        flashStatus("iexplore", "Cannot go back. There is nowhere to go.", 2400);
+        flashStatus("iexplore", "Неможливо повернутись назад. Нікуди.", 2400);
         break;
       case "ie-forward":
-        flashStatus("iexplore", "Cannot go forward. You haven't gone anywhere.", 2400);
+        flashStatus("iexplore", "Неможливо перейти вперед. Ти нікуди не переходив.", 2400);
         break;
       case "ie-refresh": {
         const refreshBtn = document.getElementById("ie-refresh");
-        flashStatus("iexplore", "Refreshing... still broken.", null);
+        flashStatus("iexplore", "Оновлення... все ще зламано.", null);
         if(refreshBtn){
           refreshBtn.style.display = "inline-block";
           refreshBtn.style.animation = "none";
           void refreshBtn.offsetWidth;
           refreshBtn.style.animation = "spin .6s linear 2";
         }
-        setTimeout(()=>{ flashStatus("iexplore", "Done. Nothing changed.", 2600); }, 900);
+        setTimeout(()=>{ flashStatus("iexplore", "Готово. Нічого не змінилось.", 2600); }, 900);
         break;
       }
       case "ie-address":
-        showXPDialog({title:"Internet Explorer", icon:"🌐", centered:true,
-          bodyHTML:"<p>Please don't type anything suspicious.</p>"});
+        showXPDialog({title:"Internet Explorer", icon:"🌐", centered:true, bodyHTML:"<p>Будь ласка, не вводь нічого підозрілого.</p>"});
+        break;
+
+      case "pc-file":
+        flashStatus("mycomputer", "Меню File недоступне ♡", 2200);
+        break;
+      case "pc-view":
+        showXPDialog({title:"View", icon:"🪟", centered:true, bodyHTML:"<p>Великі значки. Інших варіантів немає ♡</p>"});
+        break;
+      case "pc-help":
+        showXPDialog({title:"My Computer.exe", icon:"❓", centered:true, bodyHTML:"<p>Тут живуть диски й один дуже важливий .exe ♡</p>"});
+        break;
+
+      case "docs-file":
+        flashStatus("mydocuments", "Меню File недоступне ♡", 2200);
+        break;
+      case "docs-view":
+        showXPDialog({title:"View", icon:"🪟", centered:true, bodyHTML:"<p>Список. Дуже простий список ♡</p>"});
+        break;
+      case "docs-help":
+        showXPDialog({title:"My Documents.exe", icon:"❓", centered:true, bodyHTML:"<p>Кілька текстових файлів. Нічого секретного.</p>"});
+        break;
+
+      case "search-file":
+        flashStatus("searchapp", "Меню File недоступне ♡", 2200);
+        break;
+      case "search-help":
+        showXPDialog({title:"Search.exe", icon:"❓", centered:true, bodyHTML:"<p>Введи слово і натисни «Шукати».</p><p>Результати можуть здивувати (не дуже).</p>"});
+        break;
+
+      case "cp-file":
+        flashStatus("controlpanel", "Меню File недоступне ♡", 2200);
+        break;
+      case "cp-help":
+        showXPDialog({title:"Control Panel.exe", icon:"❓", centered:true, bodyHTML:"<p>Тут насправді працюють перемикачі ♡</p><p>Спробуй звук чи ambient-ефекти.</p>"});
+        break;
+
+      case "help-file":
+        flashStatus("winhelp", "Меню File недоступне ♡", 2200);
+        break;
+      case "help-help":
+        showXPDialog({title:"Windows Help.exe", icon:"❓", centered:true, bodyHTML:"<p>Довідка про довідку. Мета ♡</p>"});
         break;
     }
   }
@@ -4256,22 +4309,23 @@ P.S. якщо ти це читаєш - привіт ♡
     });
   });
 
-  /* ---------------- Recycle Bin: real-ish interaction ---------------- */
+  /* ---------------- Recycle Bin ---------------- */
   const binEmptyBtn = document.getElementById("bin-empty-btn");
   if(binEmptyBtn){
     binEmptyBtn.addEventListener("click", (e)=>{
       e.stopPropagation();
       playClick();
       showXPDialog({title:"Recycle Bin", icon:"🗑️", centered:true,
-        bodyHTML:"<p>It's already empty.</p><p>What exactly did you expect?</p>"});
+        bodyHTML:"<p>Тут вже й так порожньо.</p><p>А що ти взагалі очікував побачити?</p>"});
     });
   }
   const binEmptyArea = document.getElementById("bin-empty-area");
   if(binEmptyArea){
-    binEmptyArea.addEventListener("click", ()=>{
+    binEmptyArea.addEventListener("click", (e)=>{
+      if(e.target.closest("#bin-empty-btn")) return;
       playSelectSound();
       showXPDialog({title:"Recycle Bin", icon:"🗑️", centered:true,
-        bodyHTML:"<p>The Recycle Bin is empty.</p><p>There is literally nothing here.</p>"});
+        bodyHTML:"<p>Кошик порожній.</p><p>Тут справді нічого немає.</p>"});
     });
   }
 
@@ -4311,17 +4365,17 @@ P.S. якщо ти це читаєш - привіт ♡
   function handleContextAction(action){
     switch(action){
       case "view":
-        showToast("🖼 View: Large Icons (only option, honestly)");
+        showToast("🖼 View: великі значки (єдиний варіант, чесно)");
         break;
       case "sort":
-        showToast("Icons sorted. They were already sorted ♡");
+        showToast("Значки впорядковано. Вони й так були впорядковані ♡");
         break;
       case "refresh":
-        showToast("Desktop refreshed ♡");
+        showToast("Робочий стіл оновлено ♡");
         break;
       case "new":
         showXPDialog({title:"New", icon:"🗂️", centered:true,
-          bodyHTML:"<p>Feature unavailable.</p><p>Probably for the best.</p>"});
+          bodyHTML:"<p>Функція недоступна.</p><p>Мабуть, на краще.</p>"});
         break;
       case "properties":
         showXPDialog({title:"Display Properties", icon:"🖥️", centered:true,
