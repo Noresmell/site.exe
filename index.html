@@ -308,6 +308,22 @@
   text-decoration:underline;
 }
 
+.menu span[data-action]{
+  cursor:pointer;
+  padding:2px 5px;
+  border-radius:2px;
+  user-select:none;
+}
+
+.menu span[data-action]:hover{
+  background:var(--titlebar-start);
+  color:#fff;
+}
+
+.window-status .status-text{
+  transition:opacity .1s ease;
+}
+
 .content-inner{
   padding:20px 22px 22px;
   background:linear-gradient(180deg,#fff 0%,#fffafd 100%);
@@ -677,6 +693,115 @@
 }
 .fake-error-ok:hover{ filter:brightness(1.06); }
 
+/* ---------------- GENERIC XP DIALOG (reused for menu stubs) ---------------- */
+.xp-dialog-overlay{
+  position:fixed;
+  inset:0;
+  z-index:70;
+  background:rgba(0,0,0,.15);
+}
+.xp-dialog{
+  position:fixed;
+  top:32%;
+  left:50%;
+  transform:translate(-50%,-50%);
+  z-index:71;
+  width:290px;
+  max-width:90vw;
+  background:#ECE9D8;
+  border:1px solid #7F7B70;
+  border-radius:6px 6px 2px 2px;
+  box-shadow:var(--window-shadow);
+  font-family:var(--font-family);
+  animation:openWindow .18s cubic-bezier(.34,1.56,.64,1);
+}
+.xp-dialog-titlebar{
+  height:26px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  padding:0 6px 0 9px;
+  background:linear-gradient(180deg,var(--titlebar-mid) 0%,var(--titlebar-start) 55%,var(--titlebar-end) 100%);
+  color:#fff;
+  font-size:11px;
+  font-weight:700;
+  text-shadow:0 1px 1px rgba(0,0,0,.45);
+  border-radius:5px 5px 0 0;
+}
+.xp-dialog-titlebar span{display:flex;align-items:center;gap:6px}
+.xp-dialog-x{
+  width:18px;height:16px;
+  display:flex;align-items:center;justify-content:center;
+  background:linear-gradient(180deg,#f6a5a0,#d9463c 55%,#b8271d);
+  border:1px solid #7a1c15;
+  border-radius:2px;
+  color:#fff;
+  font-size:10px;
+  cursor:pointer;
+  line-height:1;
+}
+.xp-dialog-x:hover{filter:brightness(1.08)}
+.xp-dialog-body{
+  padding:14px 16px 14px;
+  font-size:11px;
+  color:#333;
+  line-height:1.6;
+}
+.xp-dialog-body.centered{text-align:center}
+.xp-dialog-icon{
+  font-size:26px;
+  display:block;
+  margin-bottom:8px;
+  text-align:center;
+}
+.xp-dialog-row{
+  display:flex;
+  align-items:center;
+  gap:7px;
+  padding:3px 0;
+}
+.xp-dialog-row input{margin:0}
+.xp-dialog-actions{
+  display:flex;
+  justify-content:center;
+  margin-top:12px;
+}
+.xp-dialog-ok{
+  padding:5px 22px;
+  border:1px solid #7F7B70;
+  border-radius:2px;
+  background:linear-gradient(180deg,#fff,#d8e6f7 45%,#a9c6ea 50%,#cfe3f7);
+  font-size:11px;
+  cursor:pointer;
+  font-family:var(--font-family);
+}
+.xp-dialog-ok:hover{filter:brightness(1.06)}
+
+.link-list.highlight-flash{
+  animation:linkFlash 1s ease;
+}
+@keyframes linkFlash{
+  0%,100%{filter:none}
+  25%,75%{filter:drop-shadow(0 0 0 transparent)}
+  40%{filter:brightness(1)}
+}
+.link-list.highlight-flash .link{
+  animation:linkFlashItem .9s ease;
+}
+@keyframes linkFlashItem{
+  0%{background:linear-gradient(#fff,#ffe6f2)}
+  100%{background:linear-gradient(#ffffff,#eeeeee)}
+}
+
+.project-grid.highlight-flash .project{
+  animation:linkFlashItem .9s ease;
+}
+
+@keyframes spin{
+  from{transform:rotate(0deg)}
+  to{transform:rotate(360deg)}
+}
+
 .taskbar{
   position:fixed;
   left:0;
@@ -950,6 +1075,38 @@
 .xp-toast.show{
   opacity:1;
   transform:translateX(-50%) translateY(0);
+}
+
+/* ---------------- DESKTOP CONTEXT MENU ---------------- */
+.xp-context-menu{
+  position:fixed;
+  z-index:65;
+  min-width:170px;
+  background:#F5F5F5;
+  border:1px solid #7F7B70;
+  border-radius:2px;
+  box-shadow:var(--window-shadow);
+  padding:3px 0;
+  font-family:var(--font-family);
+  font-size:11px;
+  display:none;
+}
+.xp-context-menu.open{display:block}
+.xp-context-item{
+  padding:5px 14px 5px 28px;
+  cursor:pointer;
+  color:#222;
+  position:relative;
+  white-space:nowrap;
+}
+.xp-context-item:hover{
+  background:var(--titlebar-start);
+  color:#fff;
+}
+.xp-context-divider{
+  height:1px;
+  margin:4px 6px;
+  background:#d6d3ce;
 }
 
 /* ---------------- SHUTDOWN EASTER EGG ---------------- */
@@ -2176,6 +2333,16 @@ body::before {
 
 <div class="xp-toast" id="xp-toast"></div>
 
+<div class="xp-context-menu" id="desktop-context-menu">
+  <div class="xp-context-item" data-ctx="view">View</div>
+  <div class="xp-context-item" data-ctx="sort">Sort Icons</div>
+  <div class="xp-context-item" data-ctx="refresh">Refresh</div>
+  <div class="xp-context-divider"></div>
+  <div class="xp-context-item" data-ctx="new">New</div>
+  <div class="xp-context-divider"></div>
+  <div class="xp-context-item" data-ctx="properties">Properties</div>
+</div>
+
 <div class="shutdown-screen" id="shutdown-screen">
   <div class="msg" id="shutdown-msg">Windows завершує роботу...</div>
   <div class="shutdown-bar"><div class="shutdown-bar-fill" id="shutdown-bar-fill"></div></div>
@@ -2307,10 +2474,10 @@ body::before {
 
     <div class="window-content">
       <div class="menu">
-        <span>File</span>
-        <span>View</span>
-        <span>Links</span>
-        <span>Help</span>
+        <span data-action="social-file">File</span>
+        <span data-action="social-view">View</span>
+        <span data-action="social-links">Links</span>
+        <span data-action="social-help">Help</span>
       </div>
 
       <div class="content-inner">
@@ -2321,7 +2488,7 @@ body::before {
           <p>streamer / creator</p>
         </div>
 
-        <div class="link-list">
+        <div class="link-list" id="social-link-list">
 
           <!-- ЗАМІНИ href="#" НА СВОЇ ПОСИЛАННЯ -->
 
@@ -2364,7 +2531,7 @@ body::before {
 
     <div class="window-status">
       <span class="status-dot"></span>
-      Social links ready
+      <span class="status-text">Social links ready</span>
     </div>
 
   </section>
@@ -2392,10 +2559,10 @@ body::before {
 
     <div class="window-content">
       <div class="menu">
-        <span>File</span>
-        <span>Profile</span>
-        <span>View</span>
-        <span>Help</span>
+        <span data-action="about-file">File</span>
+        <span data-action="about-profile">Profile</span>
+        <span data-action="about-view">View</span>
+        <span data-action="about-help">Help</span>
       </div>
 
       <div class="content-inner">
@@ -2453,7 +2620,7 @@ body::before {
 
     <div class="window-status">
       <span class="status-dot"></span>
-      About loaded successfully
+      <span class="status-text">About loaded successfully</span>
     </div>
 
   </section>
@@ -2481,10 +2648,10 @@ body::before {
 
     <div class="window-content">
       <div class="menu">
-        <span>File</span>
-        <span>Support</span>
-        <span>Options</span>
-        <span>Help</span>
+        <span data-action="support-file">File</span>
+        <span data-action="support-support">Support</span>
+        <span data-action="support-options">Options</span>
+        <span data-action="support-help">Help</span>
       </div>
 
       <div class="content-inner">
@@ -2501,7 +2668,7 @@ body::before {
             організму — дякую ♡
           </p>
 
-          <div class="link-list">
+          <div class="link-list" id="support-link-list">
 
             <!-- ЗАМІНИ href="#" НА СВОЄ ПОСИЛАННЯ MONOBANK -->
 
@@ -2530,7 +2697,7 @@ body::before {
 
     <div class="window-status">
       <span class="status-dot"></span>
-      Thank you for your support ♡
+      <span class="status-text">Thank you for your support ♡</span>
     </div>
 
   </section>
@@ -2558,17 +2725,17 @@ body::before {
 
     <div class="window-content">
       <div class="menu">
-        <span>File</span>
-        <span>Projects</span>
-        <span>View</span>
-        <span>Help</span>
+        <span data-action="projects-file">File</span>
+        <span data-action="projects-projects">Projects</span>
+        <span data-action="projects-view">View</span>
+        <span data-action="projects-help">Help</span>
       </div>
 
       <div class="content-inner">
 
         <h2 class="about-title">PROJECTS</h2>
 
-        <div class="project-grid">
+        <div class="project-grid" id="projects-grid">
 
           <div class="project">
             <div class="project-icon">🎨</div>
@@ -2601,7 +2768,7 @@ body::before {
 
     <div class="window-status">
       <span class="status-dot"></span>
-      4 projects found
+      <span class="status-text">4 projects found</span>
     </div>
 
   </section>
@@ -2629,27 +2796,28 @@ body::before {
 
     <div class="window-content">
       <div class="menu">
-        <span>File</span>
-        <span>Edit</span>
-        <span>View</span>
-        <span>Help</span>
+        <span data-action="bin-file">File</span>
+        <span data-action="bin-edit">Edit</span>
+        <span data-action="bin-view">View</span>
+        <span data-action="bin-help">Help</span>
       </div>
 
       <div class="content-inner">
-        <div class="support-box">
+        <div class="support-box" id="bin-empty-area" style="cursor:pointer;">
           <div class="support-heart" style="font-size:46px;animation:none;">🗑️</div>
           <h2>RECYCLE BIN</h2>
           <p>
             The Recycle Bin is empty.<br>
             Obviously ♡
           </p>
+          <button type="button" id="bin-empty-btn" class="xp-dialog-ok" style="margin-top:6px;">Empty Recycle Bin</button>
         </div>
       </div>
     </div>
 
     <div class="window-status">
       <span class="status-dot"></span>
-      0 objects
+      <span class="status-text">0 objects</span>
     </div>
 
   </section>
@@ -2677,10 +2845,10 @@ body::before {
 
     <div class="window-content">
       <div class="menu">
-        <span>File</span>
-        <span>Edit</span>
-        <span>Format</span>
-        <span>Help</span>
+        <span data-action="notepad-file">File</span>
+        <span data-action="notepad-edit">Edit</span>
+        <span data-action="notepad-format">Format</span>
+        <span data-action="notepad-help">Help</span>
       </div>
 
       <div class="content-inner">
@@ -2699,7 +2867,7 @@ P.S. якщо ти це читаєш - привіт ♡
 
     <div class="window-status">
       <span class="status-dot"></span>
-      Ln 1, Col 1
+      <span class="status-text">Ln 1, Col 1</span>
     </div>
 
   </section>
@@ -2727,10 +2895,10 @@ P.S. якщо ти це читаєш - привіт ♡
 
     <div class="window-content">
       <div class="menu" style="gap:8px;">
-        <span style="text-decoration:none;">◀</span>
-        <span style="text-decoration:none;">▶</span>
-        <span style="text-decoration:none;">⟳</span>
-        <span style="flex:1;background:#fff;border:1px solid #999;border-radius:2px;padding:2px 6px;color:#555;font-size:10px;">http://noresmell.exe/404</span>
+        <span style="text-decoration:none;" data-action="ie-back">◀</span>
+        <span style="text-decoration:none;" data-action="ie-forward">▶</span>
+        <span style="text-decoration:none;" data-action="ie-refresh" id="ie-refresh">⟳</span>
+        <span style="flex:1;background:#fff;border:1px solid #999;border-radius:2px;padding:2px 6px;color:#555;font-size:10px;cursor:text;" data-action="ie-address">http://noresmell.exe/404</span>
       </div>
 
       <div class="content-inner">
@@ -2747,7 +2915,7 @@ P.S. якщо ти це читаєш - привіт ♡
 
     <div class="window-status">
       <span class="status-dot" style="background:#e2452f;"></span>
-      Готово (з помилками, як завжди)
+      <span class="status-text">Готово (з помилками, як завжди)</span>
     </div>
 
   </section>
@@ -2853,7 +3021,7 @@ P.S. якщо ти це читаєш - привіт ♡
       btn.className = "taskbar-app" + (isActive ? " is-active" : "");
       btn.innerHTML = '<span class="taskbar-app__glyph">' + cfg.glyph + '</span> ' + cfg.title;
       btn.addEventListener("click", ()=>{
-        playUISound();
+        if(typeof window.playSelectSound === "function") window.playSelectSound(); else playUISound();
         toggleFromTaskbar(id);
       });
       taskbarAppsEl.appendChild(btn);
@@ -2931,7 +3099,7 @@ P.S. якщо ти це читаєш - привіт ♡
     }
 
     bringToFront(overlay);
-    playUISound();
+    if(typeof window.playDropSound === "function") window.playDropSound(); else playUISound();
   }
 
   function minimizeWindow(overlay){
@@ -3119,7 +3287,7 @@ P.S. якщо ти це читаєш - привіт ♡
 
   startMenu.querySelectorAll("[data-toast]").forEach(item=>{
     item.addEventListener("click",()=>{
-      playUISound();
+      if(typeof window.playSelectSound === "function") window.playSelectSound(); else playUISound();
       showToast(item.dataset.toast);
       closeStartMenu();
     });
@@ -3816,6 +3984,352 @@ P.S. якщо ти це читаєш - привіт ♡
   }
 
   window.newSolitaireGame = newGame;
+})();
+</script>
+
+
+<!-- =========================================================
+     DEAD-CLICK FIXES
+     Central feedback system: every element that looks
+     clickable now gives some reaction (status / toast /
+     dialog / real action), per the "no dead clicks" spec.
+========================================================= -->
+<script>
+(function(){
+
+  /* ---------------- extra sound categories ---------------- */
+  const SELECT_SOUND_SRC = "https://raw.githubusercontent.com/Noresmell/site.exe/main/u_2fbuaev0zn-select-sound-121244.mp3";
+  const DROP_SOUND_SRC   = "https://raw.githubusercontent.com/Noresmell/site.exe/main/sounds_desktop_drop.mp3";
+
+  function buildPool(src, size, volume){
+    const pool = [];
+    for(let i=0;i<size;i++){
+      const a = new Audio(src);
+      a.volume = volume;
+      a.preload = "auto";
+      pool.push(a);
+    }
+    return pool;
+  }
+
+  const selectPool = buildPool(SELECT_SOUND_SRC, 3, 0.3);
+  const dropPool   = buildPool(DROP_SOUND_SRC, 3, 0.3);
+  const selectRef = {i:0}, dropRef = {i:0};
+
+  function playFromPool(pool, ref){
+    if(!pool.length) return;
+    const audio = pool[ref.i];
+    ref.i = (ref.i + 1) % pool.length;
+    try{
+      audio.currentTime = 0;
+      const p = audio.play();
+      if(p && p.catch) p.catch(()=>{});
+    }catch(e){}
+  }
+
+  function playSelectSound(){ playFromPool(selectPool, selectRef); }
+  function playDropSound(){ playFromPool(dropPool, dropRef); }
+  window.playSelectSound = playSelectSound;
+  window.playDropSound = playDropSound;
+
+  function showToast(text){
+    if(typeof window.__xpShowToast === "function") window.__xpShowToast(text);
+  }
+
+  function playClick(){
+    if(typeof window.playUISound === "function") window.playUISound();
+  }
+
+  /* ---------------- generic XP dialog ---------------- */
+  function escapeHtml(str){
+    return String(str).replace(/[&<>"']/g, s => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[s]));
+  }
+
+  function showXPDialog(opts){
+    opts = opts || {};
+    document.querySelectorAll(".xp-dialog-overlay").forEach(el => el.remove());
+
+    const overlay = document.createElement("div");
+    overlay.className = "xp-dialog-overlay";
+
+    const dlg = document.createElement("div");
+    dlg.className = "xp-dialog";
+
+    const title = opts.title || "Windows";
+    const icon = opts.icon || "";
+
+    dlg.innerHTML =
+      '<div class="xp-dialog-titlebar"><span>' + (icon ? icon + ' ' : '') + escapeHtml(title) + '</span><span class="xp-dialog-x" data-dlg-close>×</span></div>' +
+      '<div class="xp-dialog-body' + (opts.centered ? ' centered' : '') + '">' +
+        (opts.bodyIcon ? '<span class="xp-dialog-icon">' + opts.bodyIcon + '</span>' : '') +
+        (opts.bodyHTML || '') +
+        '<div class="xp-dialog-actions"><button type="button" class="xp-dialog-ok" data-dlg-ok>' + (opts.okText || 'OK') + '</button></div>' +
+      '</div>';
+
+    function close(){
+      playClick();
+      overlay.remove();
+    }
+    overlay.addEventListener("click", (e)=>{ if(e.target === overlay) close(); });
+    document.body.appendChild(overlay);
+    overlay.appendChild(dlg);
+    dlg.querySelector("[data-dlg-close]").addEventListener("click", close);
+    dlg.querySelector("[data-dlg-ok]").addEventListener("click", close);
+    playClick();
+  }
+  window.showXPDialog = showXPDialog;
+
+  /* ---------------- status bar helper ---------------- */
+  function flashStatus(overlayId, text, revertMs){
+    const overlay = document.getElementById(overlayId);
+    if(!overlay) return;
+    const el = overlay.querySelector(".window-status .status-text");
+    if(!el) return;
+    if(el.dataset.original === undefined) el.dataset.original = el.textContent;
+    el.textContent = text;
+    clearTimeout(el._revertTimer);
+    if(revertMs){
+      el._revertTimer = setTimeout(()=>{ el.textContent = el.dataset.original; }, revertMs);
+    }
+  }
+
+  function flashHighlight(el){
+    if(!el) return;
+    el.classList.remove("highlight-flash");
+    void el.offsetWidth;
+    el.classList.add("highlight-flash");
+  }
+
+  /* ---------------- window menu bars (File / View / Help / ...) ---------------- */
+  function handleMenuAction(action){
+    switch(action){
+
+      /* -------- SOCIAL.EXE -------- */
+      case "social-file":
+        flashStatus("social", "File menu unavailable ♡", 2200);
+        break;
+      case "social-view":
+        showXPDialog({
+          title:"View", icon:"🪟",
+          bodyHTML:
+            '<div class="xp-dialog-row"><label><input type="checkbox" checked disabled> XP layout</label></div>' +
+            '<div class="xp-dialog-row"><label><input type="checkbox" disabled> Really modern</label></div>' +
+            '<div class="xp-dialog-row"><label><input type="checkbox" disabled> Definitely not Windows Vista</label></div>'
+        });
+        break;
+      case "social-links":
+        flashHighlight(document.getElementById("social-link-list"));
+        document.getElementById("social-link-list")?.scrollIntoView({behavior:"smooth", block:"center"});
+        flashStatus("social", "Social links ready", 1800);
+        break;
+      case "social-help":
+        showXPDialog({title:"Social.exe Help", icon:"❓", centered:true,
+          bodyHTML:"<p>Click a link to visit it.</p><p>That's literally it.</p>"});
+        break;
+
+      /* -------- ABOUT.EXE -------- */
+      case "about-file":
+        flashStatus("about", "File menu unavailable ♡", 2200);
+        break;
+      case "about-profile":
+        showToast("Profile loaded successfully ♡");
+        break;
+      case "about-view":
+        showXPDialog({
+          title:"View", icon:"🪟",
+          bodyHTML:
+            '<div class="xp-dialog-row"><label><input type="radio" name="about-view" checked disabled> Classic XP</label></div>' +
+            '<div class="xp-dialog-row"><label><input type="radio" name="about-view" disabled> Definitely not modern</label></div>'
+        });
+        break;
+      case "about-help":
+        showXPDialog({title:"About.exe", icon:"❓", centered:true,
+          bodyHTML:"<p>This is where you learn who Noresmell is.</p><p>Congratulations.</p>"});
+        break;
+
+      /* -------- SUPPORT.EXE -------- */
+      case "support-file":
+        flashStatus("support", "File menu unavailable ♡", 2200);
+        break;
+      case "support-support":
+        flashHighlight(document.getElementById("support-link-list"));
+        document.getElementById("support-link-list")?.scrollIntoView({behavior:"smooth", block:"center"});
+        flashStatus("support", "Ready to receive support ♡", 1800);
+        break;
+      case "support-options":
+        showXPDialog({
+          title:"Support Options", icon:"💳",
+          bodyHTML:
+            '<div class="xp-dialog-row"><label><input type="checkbox" checked disabled> Gratitude</label></div>' +
+            '<div class="xp-dialog-row"><label><input type="checkbox" checked disabled> Emotional damage</label></div>' +
+            '<div class="xp-dialog-row"><label><input type="checkbox" checked disabled> Pink XP interface</label></div>'
+        });
+        break;
+      case "support-help":
+        showXPDialog({title:"Help", icon:"❓", centered:true,
+          bodyHTML:"<p>If you want to support Noresmell,<br>click one of the links below ♡</p>"});
+        break;
+
+      /* -------- PROJECTS.EXE -------- */
+      case "projects-file":
+        flashStatus("projects", "File menu unavailable ♡", 2200);
+        break;
+      case "projects-projects":
+        flashHighlight(document.getElementById("projects-grid"));
+        flashStatus("projects", "4 projects found", 1800);
+        break;
+      case "projects-view":
+        showXPDialog({
+          title:"View", icon:"🪟",
+          bodyHTML:
+            '<div class="xp-dialog-row"><label><input type="radio" name="projects-view" checked disabled> Icons</label></div>' +
+            '<div class="xp-dialog-row"><label><input type="radio" name="projects-view" disabled> Details</label></div>' +
+            '<div class="xp-dialog-row"><label><input type="radio" name="projects-view" disabled> Very important government documents</label></div>'
+        });
+        break;
+      case "projects-help":
+        showXPDialog({title:"Projects.exe", icon:"❓", centered:true,
+          bodyHTML:"<p>These are things Noresmell makes.</p><p>Somehow.</p>"});
+        break;
+
+      /* -------- RECYCLE BIN -------- */
+      case "bin-file":
+        flashStatus("recyclebin", "File menu unavailable ♡", 2200);
+        break;
+      case "bin-edit":
+        flashStatus("recyclebin", "Nothing to edit. It's empty ♡", 2200);
+        break;
+      case "bin-view":
+        showXPDialog({title:"View", icon:"🪟", centered:true,
+          bodyHTML:"<p>There's nothing to view.</p><p>It's empty ♡</p>"});
+        break;
+      case "bin-help":
+        showXPDialog({title:"Windows Help", icon:"❓", centered:true,
+          bodyHTML:"<p>No help available.</p><p>You're on your own ♡</p>"});
+        break;
+
+      /* -------- NOTEPAD.EXE -------- */
+      case "notepad-file":
+        showToast("New file? This one's kind of the point.");
+        break;
+      case "notepad-edit":
+        showToast("Nothing to select. It's already all there.");
+        break;
+      case "notepad-format":
+        showToast("Format is fixed. Comic Sans, somewhere in spirit.");
+        break;
+      case "notepad-help":
+        showXPDialog({title:"Notepad.exe Help", icon:"❓", centered:true,
+          bodyHTML:"<p>This is a text file.</p><p>You read it. The end.</p>"});
+        break;
+
+      /* -------- INTERNET EXPLORER -------- */
+      case "ie-back":
+        flashStatus("iexplore", "Cannot go back. There is nowhere to go.", 2400);
+        break;
+      case "ie-forward":
+        flashStatus("iexplore", "Cannot go forward. You haven't gone anywhere.", 2400);
+        break;
+      case "ie-refresh": {
+        const refreshBtn = document.getElementById("ie-refresh");
+        flashStatus("iexplore", "Refreshing... still broken.", null);
+        if(refreshBtn){
+          refreshBtn.style.display = "inline-block";
+          refreshBtn.style.animation = "none";
+          void refreshBtn.offsetWidth;
+          refreshBtn.style.animation = "spin .6s linear 2";
+        }
+        setTimeout(()=>{ flashStatus("iexplore", "Done. Nothing changed.", 2600); }, 900);
+        break;
+      }
+      case "ie-address":
+        showXPDialog({title:"Internet Explorer", icon:"🌐", centered:true,
+          bodyHTML:"<p>Please don't type anything suspicious.</p>"});
+        break;
+    }
+  }
+
+  document.querySelectorAll(".menu span[data-action]").forEach(span=>{
+    span.addEventListener("click", ()=>{
+      playSelectSound();
+      handleMenuAction(span.dataset.action);
+    });
+  });
+
+  /* ---------------- Recycle Bin: real-ish interaction ---------------- */
+  const binEmptyBtn = document.getElementById("bin-empty-btn");
+  if(binEmptyBtn){
+    binEmptyBtn.addEventListener("click", (e)=>{
+      e.stopPropagation();
+      playClick();
+      showXPDialog({title:"Recycle Bin", icon:"🗑️", centered:true,
+        bodyHTML:"<p>It's already empty.</p><p>What exactly did you expect?</p>"});
+    });
+  }
+  const binEmptyArea = document.getElementById("bin-empty-area");
+  if(binEmptyArea){
+    binEmptyArea.addEventListener("click", ()=>{
+      playSelectSound();
+      showXPDialog({title:"Recycle Bin", icon:"🗑️", centered:true,
+        bodyHTML:"<p>The Recycle Bin is empty.</p><p>There is literally nothing here.</p>"});
+    });
+  }
+
+  /* ---------------- desktop right-click context menu ---------------- */
+  const desktopEl = document.querySelector(".desktop");
+  const ctxMenu = document.getElementById("desktop-context-menu");
+
+  function closeCtxMenu(){ if(ctxMenu) ctxMenu.classList.remove("open"); }
+
+  if(desktopEl && ctxMenu){
+    desktopEl.addEventListener("contextmenu", (e)=>{
+      e.preventDefault();
+      playSelectSound();
+      const x = Math.min(e.clientX, window.innerWidth - 190);
+      const y = Math.min(e.clientY, window.innerHeight - 220);
+      ctxMenu.style.left = x + "px";
+      ctxMenu.style.top = y + "px";
+      ctxMenu.classList.add("open");
+    });
+
+    document.addEventListener("click", (e)=>{
+      if(ctxMenu.classList.contains("open") && !ctxMenu.contains(e.target)) closeCtxMenu();
+    });
+    document.addEventListener("contextmenu", (e)=>{
+      if(!desktopEl.contains(e.target)) closeCtxMenu();
+    });
+
+    ctxMenu.querySelectorAll("[data-ctx]").forEach(item=>{
+      item.addEventListener("click", ()=>{
+        playSelectSound();
+        closeCtxMenu();
+        handleContextAction(item.dataset.ctx);
+      });
+    });
+  }
+
+  function handleContextAction(action){
+    switch(action){
+      case "view":
+        showToast("🖼 View: Large Icons (only option, honestly)");
+        break;
+      case "sort":
+        showToast("Icons sorted. They were already sorted ♡");
+        break;
+      case "refresh":
+        showToast("Desktop refreshed ♡");
+        break;
+      case "new":
+        showXPDialog({title:"New", icon:"🗂️", centered:true,
+          bodyHTML:"<p>Feature unavailable.</p><p>Probably for the best.</p>"});
+        break;
+      case "properties":
+        showXPDialog({title:"Display Properties", icon:"🖥️", centered:true,
+          bodyHTML:"<p><strong>Windows XP</strong><br>Noresmell Edition ♡</p>"});
+        break;
+    }
+  }
+
 })();
 </script>
 
