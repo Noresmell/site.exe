@@ -154,12 +154,16 @@
   align-items:center;
   justify-content:center;
   padding:20px;
-  background:rgba(0,0,0,.35);
-  backdrop-filter:blur(2px);
+  background:transparent;
+  pointer-events:none;
 }
 
 .overlay.open{
   display:flex;
+}
+
+.overlay.open.is-minimized{
+  display:none;
 }
 
 .window{
@@ -175,6 +179,24 @@
     var(--shadow);
   overflow:hidden;
   animation:openWindow .22s cubic-bezier(.34,1.56,.64,1);
+  pointer-events:auto;
+  opacity:.94;
+}
+
+.window.is-active-window{
+  opacity:1;
+  box-shadow:
+    0 0 0 1px rgba(255,255,255,.75) inset,
+    0 10px 26px rgba(0,0,0,.40),
+    0 3px 6px rgba(0,0,0,.22),
+    0 0 0 2px rgba(255,183,213,.5);
+}
+
+.window.is-maximized{
+  width:calc(100vw - 20px) !important;
+  max-width:calc(100vw - 20px) !important;
+  height:calc(100vh - 54px) !important;
+  max-height:calc(100vh - 54px) !important;
 }
 
 @keyframes openWindow{
@@ -580,6 +602,80 @@
     transition:none !important;
   }
 }
+
+/* ---------------- LIVE DESKTOP: rare ambient events ---------------- */
+.ambient-event{
+  position:fixed;
+  z-index:6;
+  font-size:20px;
+  color:rgba(255,255,255,.9);
+  text-shadow:0 2px 5px rgba(0,0,0,.45);
+  pointer-events:none;
+  opacity:0;
+  transform:translateY(8px) scale(.75);
+  transition:opacity .9s ease,transform .9s ease;
+}
+.ambient-event.show{
+  opacity:.95;
+  transform:translateY(-6px) scale(1);
+}
+.ambient-event.crossing{
+  transition:opacity .9s ease,transform 4.5s linear;
+}
+.ambient-event.crossing.show{
+  transform:translate(70vw,-10px) scale(1);
+}
+
+/* ---------------- FAKE ERROR DIALOG ---------------- */
+.fake-error{
+  position:fixed;
+  top:38%;
+  left:50%;
+  transform:translate(-50%,-50%);
+  z-index:60;
+  width:260px;
+  background:#ECE9D8;
+  border:1px solid #7F7B70;
+  border-radius:6px 6px 2px 2px;
+  box-shadow:var(--window-shadow);
+  font-family:var(--font-family);
+  animation:openWindow .2s cubic-bezier(.34,1.56,.64,1);
+}
+.fake-error-titlebar{
+  height:26px;
+  display:flex;
+  align-items:center;
+  padding:0 8px;
+  background:linear-gradient(180deg,var(--titlebar-mid) 0%,var(--titlebar-start) 55%,var(--titlebar-end) 100%);
+  color:#fff;
+  font-size:11px;
+  font-weight:700;
+  text-shadow:0 1px 1px rgba(0,0,0,.45);
+  border-radius:5px 5px 0 0;
+}
+.fake-error-body{
+  padding:16px 14px 14px;
+  text-align:center;
+  font-size:11px;
+  color:#333;
+  line-height:1.6;
+}
+.fake-error-icon{
+  font-size:28px;
+  display:block;
+  margin-bottom:8px;
+}
+.fake-error-ok{
+  margin-top:12px;
+  padding:5px 20px;
+  border:1px solid #7F7B70;
+  border-radius:2px;
+  background:linear-gradient(180deg,#fff,#d8e6f7 45%,#a9c6ea 50%,#cfe3f7);
+  font-size:11px;
+  cursor:pointer;
+  font-family:var(--font-family);
+}
+.fake-error-ok:hover{ filter:brightness(1.06); }
 
 .taskbar{
   position:fixed;
@@ -1985,6 +2081,24 @@ body::before {
       <div class="icon-sub">things i make</div>
     </button>
 
+    <button class="icon" data-window="recyclebin">
+      <div class="icon-symbol">🗑️</div>
+      <div class="icon-name">Recycle Bin</div>
+      <div class="icon-sub">it's empty</div>
+    </button>
+
+    <button class="icon" data-window="notepad">
+      <div class="icon-symbol">📝</div>
+      <div class="icon-name">Notepad.exe</div>
+      <div class="icon-sub">random thoughts</div>
+    </button>
+
+    <button class="icon" data-window="iexplore">
+      <div class="icon-symbol">🌐</div>
+      <div class="icon-name">Internet Explorer</div>
+      <div class="icon-sub">???</div>
+    </button>
+
   </main>
 </div>
 
@@ -2000,14 +2114,10 @@ body::before {
     <span class="quick-launch__icon" title="Winamp">🎵</span>
   </div>
 
-  <div class="taskbar-apps" aria-hidden="true">
-    <button class="taskbar-app is-active" tabindex="-1">
-      <span class="taskbar-app__glyph">💗</span> Noresmell.exe
-    </button>
-  </div>
+  <div class="taskbar-apps" id="taskbar-apps"></div>
 
   <div class="system-tray" aria-hidden="true">
-    <span class="tray-icon">🔊</span>
+    <span class="tray-icon" id="tray-volume" title="Звук інтерфейсу: увімкнено">🔊</span>
     <span class="tray-icon">📶</span>
     <span class="tray-icon tray-heart">♥</span>
     <span class="tray-clock" id="tray-clock">12:00 PM</span>
@@ -2037,6 +2147,14 @@ body::before {
         <div class="sm-submenu">
           <div class="sm-item" data-window="minesweeper"><span class="sm-icon">💣</span> Сапер</div>
           <div class="sm-item" data-window="solitaire"><span class="sm-icon">🃏</span> Пасьянс</div>
+        </div>
+      </div>
+      <div class="sm-item has-submenu">
+        <span class="sm-icon">🛠️</span> Стандартні <span class="sm-arrow">▶</span>
+        <div class="sm-submenu">
+          <div class="sm-item" data-window="notepad"><span class="sm-icon">📝</span> Блокнот</div>
+          <div class="sm-item" data-window="iexplore"><span class="sm-icon">🌐</span> Internet Explorer</div>
+          <div class="sm-item" data-window="recyclebin"><span class="sm-icon">🗑️</span> Кошик</div>
         </div>
       </div>
     </div>
@@ -2077,9 +2195,9 @@ body::before {
         <span>Сапер.exe</span>
       </div>
       <div class="window-buttons">
-        <button class="win-btn">_</button>
-        <button class="win-btn">□</button>
-        <button class="win-btn close" data-close>×</button>
+        <button class="win-btn" data-minimize title="Згорнути">_</button>
+        <button class="win-btn" data-maximize title="Розгорнути">□</button>
+        <button class="win-btn close" data-close title="Закрити">×</button>
       </div>
     </div>
 
@@ -2116,9 +2234,9 @@ body::before {
         <span>Пасьянс.exe</span>
       </div>
       <div class="window-buttons">
-        <button class="win-btn">_</button>
-        <button class="win-btn">□</button>
-        <button class="win-btn close" data-close>×</button>
+        <button class="win-btn" data-minimize title="Згорнути">_</button>
+        <button class="win-btn" data-maximize title="Розгорнути">□</button>
+        <button class="win-btn close" data-close title="Закрити">×</button>
       </div>
     </div>
 
@@ -2181,9 +2299,9 @@ body::before {
         <span>Social.exe</span>
       </div>
       <div class="window-buttons">
-        <button class="win-btn">_</button>
-        <button class="win-btn">□</button>
-        <button class="win-btn close" data-close>×</button>
+        <button class="win-btn" data-minimize title="Згорнути">_</button>
+        <button class="win-btn" data-maximize title="Розгорнути">□</button>
+        <button class="win-btn close" data-close title="Закрити">×</button>
       </div>
     </div>
 
@@ -2266,9 +2384,9 @@ body::before {
         <span>About.exe</span>
       </div>
       <div class="window-buttons">
-        <button class="win-btn">_</button>
-        <button class="win-btn">□</button>
-        <button class="win-btn close" data-close>×</button>
+        <button class="win-btn" data-minimize title="Згорнути">_</button>
+        <button class="win-btn" data-maximize title="Розгорнути">□</button>
+        <button class="win-btn close" data-close title="Закрити">×</button>
       </div>
     </div>
 
@@ -2355,9 +2473,9 @@ body::before {
         <span>Support.exe</span>
       </div>
       <div class="window-buttons">
-        <button class="win-btn">_</button>
-        <button class="win-btn">□</button>
-        <button class="win-btn close" data-close>×</button>
+        <button class="win-btn" data-minimize title="Згорнути">_</button>
+        <button class="win-btn" data-maximize title="Розгорнути">□</button>
+        <button class="win-btn close" data-close title="Закрити">×</button>
       </div>
     </div>
 
@@ -2432,9 +2550,9 @@ body::before {
         <span>Projects.exe</span>
       </div>
       <div class="window-buttons">
-        <button class="win-btn">_</button>
-        <button class="win-btn">□</button>
-        <button class="win-btn close" data-close>×</button>
+        <button class="win-btn" data-minimize title="Згорнути">_</button>
+        <button class="win-btn" data-maximize title="Розгорнути">□</button>
+        <button class="win-btn close" data-close title="Закрити">×</button>
       </div>
     </div>
 
@@ -2490,11 +2608,226 @@ body::before {
 </div>
 
 
+<!-- =========================================================
+     RECYCLE BIN
+========================================================= -->
+
+<div class="overlay" id="recyclebin">
+  <section class="window">
+
+    <div class="titlebar">
+      <div class="title-left">
+        <span class="title-icon">🗑️</span>
+        <span>Recycle Bin</span>
+      </div>
+      <div class="window-buttons">
+        <button class="win-btn" data-minimize title="Згорнути">_</button>
+        <button class="win-btn" data-maximize title="Розгорнути">□</button>
+        <button class="win-btn close" data-close title="Закрити">×</button>
+      </div>
+    </div>
+
+    <div class="window-content">
+      <div class="menu">
+        <span>File</span>
+        <span>Edit</span>
+        <span>View</span>
+        <span>Help</span>
+      </div>
+
+      <div class="content-inner">
+        <div class="support-box">
+          <div class="support-heart" style="font-size:46px;animation:none;">🗑️</div>
+          <h2>RECYCLE BIN</h2>
+          <p>
+            The Recycle Bin is empty.<br>
+            Obviously ♡
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <div class="window-status">
+      <span class="status-dot"></span>
+      0 objects
+    </div>
+
+  </section>
+</div>
+
+
+<!-- =========================================================
+     NOTEPAD
+========================================================= -->
+
+<div class="overlay" id="notepad">
+  <section class="window">
+
+    <div class="titlebar">
+      <div class="title-left">
+        <span class="title-icon">📝</span>
+        <span>Untitled - Notepad.exe</span>
+      </div>
+      <div class="window-buttons">
+        <button class="win-btn" data-minimize title="Згорнути">_</button>
+        <button class="win-btn" data-maximize title="Розгорнути">□</button>
+        <button class="win-btn close" data-close title="Закрити">×</button>
+      </div>
+    </div>
+
+    <div class="window-content">
+      <div class="menu">
+        <span>File</span>
+        <span>Edit</span>
+        <span>Format</span>
+        <span>Help</span>
+      </div>
+
+      <div class="content-inner">
+        <div class="about-text" style="font-family:'Courier New',monospace;white-space:pre-wrap;">todo.txt
+
+- вигадати новий стрім
+- не спалити мікрофон
+- полагодити ту одну деталь (знову)
+- НЕ відкривати цей ноутбук о 3 ночі
+- ...чому я взагалі тут щось пишу
+
+P.S. якщо ти це читаєш - привіт ♡
+      ти справжній дослідник</div>
+      </div>
+    </div>
+
+    <div class="window-status">
+      <span class="status-dot"></span>
+      Ln 1, Col 1
+    </div>
+
+  </section>
+</div>
+
+
+<!-- =========================================================
+     INTERNET EXPLORER
+========================================================= -->
+
+<div class="overlay" id="iexplore">
+  <section class="window">
+
+    <div class="titlebar">
+      <div class="title-left">
+        <span class="title-icon">🌐</span>
+        <span>Internet Explorer</span>
+      </div>
+      <div class="window-buttons">
+        <button class="win-btn" data-minimize title="Згорнути">_</button>
+        <button class="win-btn" data-maximize title="Розгорнути">□</button>
+        <button class="win-btn close" data-close title="Закрити">×</button>
+      </div>
+    </div>
+
+    <div class="window-content">
+      <div class="menu" style="gap:8px;">
+        <span style="text-decoration:none;">◀</span>
+        <span style="text-decoration:none;">▶</span>
+        <span style="text-decoration:none;">⟳</span>
+        <span style="flex:1;background:#fff;border:1px solid #999;border-radius:2px;padding:2px 6px;color:#555;font-size:10px;">http://noresmell.exe/404</span>
+      </div>
+
+      <div class="content-inner">
+        <div class="support-box">
+          <div class="support-heart" style="font-size:44px;animation:none;">🧭</div>
+          <h2>Сторінку не знайдено</h2>
+          <p>
+            Ти справді відкрив Internet Explorer у 2026 році.<br>
+            Поваги ♡ Але сторінки тут немає — і, певно, ніколи не було.
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <div class="window-status">
+      <span class="status-dot" style="background:#e2452f;"></span>
+      Готово (з помилками, як завжди)
+    </div>
+
+  </section>
+</div>
+
+
 <script>
 (function(){
 
-  const icons = document.querySelectorAll(".icon");
+  /* =========================================================
+     UI SOUND — centralized, single place to tune volume/mute.
+     One click sound reused via a small pool so overlapping
+     triggers (double-click, fast clicks) don't cut each other off.
+  ========================================================= */
+  const UI_SOUND_SRC = "https://raw.githubusercontent.com/Noresmell/site.exe/main/lightningbulb-spacebar-click-keyboard-199448.mp3";
+  const UI_VOLUME = 0.32;
+  const UI_POOL_SIZE = 4;
+  let uiSoundEnabled = true;
+  let uiAudioPool = [];
+  let uiAudioIndex = 0;
+
+  function buildAudioPool(){
+    for(let i=0;i<UI_POOL_SIZE;i++){
+      const a = new Audio(UI_SOUND_SRC);
+      a.volume = UI_VOLUME;
+      a.preload = "auto";
+      uiAudioPool.push(a);
+    }
+  }
+  buildAudioPool();
+
+  function playUISound(){
+    if(!uiSoundEnabled || !uiAudioPool.length) return;
+    const audio = uiAudioPool[uiAudioIndex];
+    uiAudioIndex = (uiAudioIndex + 1) % uiAudioPool.length;
+    try{
+      audio.currentTime = 0;
+      const p = audio.play();
+      if(p && p.catch) p.catch(()=>{ /* autoplay blocked before first interaction — fine */ });
+    }catch(e){ /* ignore */ }
+  }
+  window.playUISound = playUISound;
+
+  const trayVolume = document.getElementById("tray-volume");
+  if(trayVolume){
+    trayVolume.style.cursor = "pointer";
+    trayVolume.addEventListener("click",()=>{
+      uiSoundEnabled = !uiSoundEnabled;
+      trayVolume.textContent = uiSoundEnabled ? "🔊" : "🔇";
+      trayVolume.title = uiSoundEnabled ? "Звук інтерфейсу: увімкнено" : "Звук інтерфейсу: вимкнено";
+    });
+  }
+
+  /* =========================================================
+     WINDOW MANAGER
+     - multiple windows can be open & visible at once
+     - clicking a window brings it to front / marks it active
+     - taskbar reflects real open windows
+     - minimize hides but preserves state (games keep progress)
+  ========================================================= */
+
+  const APPS = {
+    minesweeper: {title:"Сапер.exe",       glyph:"💣"},
+    solitaire:   {title:"Пасьянс.exe",     glyph:"🃏"},
+    social:      {title:"Social.exe",      glyph:"🌐"},
+    about:       {title:"About.exe",       glyph:"🦋"},
+    support:     {title:"Support.exe",     glyph:"💳"},
+    projects:    {title:"Projects.exe",    glyph:"🛠️"},
+    recyclebin:  {title:"Recycle Bin",     glyph:"🗑️"},
+    notepad:     {title:"Notepad.exe",     glyph:"📝"},
+    iexplore:    {title:"Internet Explorer", glyph:"🌐"}
+  };
+
   const overlays = document.querySelectorAll(".overlay");
+  const taskbarAppsEl = document.getElementById("taskbar-apps");
+
+  const openOrder = [];           // ids currently open, in the order they were opened
+  const windowState = {};         // id -> { minimized: bool }
+  let activeId = null;
+  let zCounter = 100;
 
   function resetWindowPosition(overlay){
     const win = overlay.querySelector(".window");
@@ -2503,48 +2836,195 @@ body::before {
     win.style.left = "";
     win.style.top = "";
     win.style.margin = "";
+    win.style.width = "";
+    win.style.height = "";
+    win.classList.remove("is-maximized","is-active-window");
+    delete win.dataset.positioned;
+  }
+
+  function renderTaskbar(){
+    if(!taskbarAppsEl) return;
+    taskbarAppsEl.innerHTML = "";
+    openOrder.forEach(id=>{
+      const cfg = APPS[id] || {title:id, glyph:"🗔"};
+      const btn = document.createElement("button");
+      const isActive = id === activeId && !windowState[id].minimized;
+      btn.type = "button";
+      btn.className = "taskbar-app" + (isActive ? " is-active" : "");
+      btn.innerHTML = '<span class="taskbar-app__glyph">' + cfg.glyph + '</span> ' + cfg.title;
+      btn.addEventListener("click", ()=>{
+        playUISound();
+        toggleFromTaskbar(id);
+      });
+      taskbarAppsEl.appendChild(btn);
+    });
+  }
+
+  function toggleFromTaskbar(id){
+    if(!windowState[id]) return;
+    if(windowState[id].minimized){
+      activateWindow(id);
+    } else if(activeId === id){
+      minimizeWindow(document.getElementById(id));
+    } else {
+      activateWindow(id);
+    }
+  }
+
+  function positionCascade(overlay){
+    const win = overlay.querySelector(".window");
+    if(!win || win.dataset.positioned) return;
+    win.dataset.positioned = "1";
+    requestAnimationFrame(()=>{
+      const rect = win.getBoundingClientRect();
+      const step = (openOrder.length % 6) * 26;
+      let left = rect.left + step;
+      let top = rect.top + step;
+      left = Math.max(8, Math.min(left, window.innerWidth - 100));
+      top = Math.max(8, Math.min(top, window.innerHeight - 90));
+      win.style.position = "fixed";
+      win.style.margin = "0";
+      win.style.left = left + "px";
+      win.style.top = top + "px";
+    });
+  }
+
+  function bringToFront(overlay){
+    zCounter++;
+    overlay.style.zIndex = zCounter;
+    activeId = overlay.id;
+    document.querySelectorAll(".window").forEach(w=> w.classList.remove("is-active-window"));
+    const win = overlay.querySelector(".window");
+    if(win) win.classList.add("is-active-window");
+    renderTaskbar();
+  }
+
+  function activateWindow(id){
+    const overlay = document.getElementById(id);
+    if(!overlay || !windowState[id]) return;
+    overlay.classList.remove("is-minimized");
+    windowState[id].minimized = false;
+    bringToFront(overlay);
   }
 
   function openWindow(id){
     const overlay = document.getElementById(id);
     if(!overlay) return;
+    const alreadyOpen = overlay.classList.contains("open");
+
     overlay.classList.add("open");
-    if(id === "minesweeper" && typeof window.resetMinesweeper === "function"){
-      window.resetMinesweeper();
+    overlay.classList.remove("is-minimized");
+
+    if(!openOrder.includes(id)) openOrder.push(id);
+    windowState[id] = windowState[id] || {minimized:false};
+    windowState[id].minimized = false;
+
+    if(!alreadyOpen){
+      positionCascade(overlay);
+      // fresh open — reset the games; re-opening from taskbar/minimize keeps progress
+      if(id === "minesweeper" && typeof window.resetMinesweeper === "function"){
+        window.resetMinesweeper();
+      }
+      if(id === "solitaire" && typeof window.newSolitaireGame === "function"){
+        window.newSolitaireGame();
+      }
     }
-    if(id === "solitaire" && typeof window.newSolitaireGame === "function"){
-      window.newSolitaireGame();
+
+    bringToFront(overlay);
+    playUISound();
+  }
+
+  function minimizeWindow(overlay){
+    if(!overlay || !windowState[overlay.id]) return;
+    const id = overlay.id;
+    overlay.classList.add("is-minimized");
+    windowState[id].minimized = true;
+    if(activeId === id) activeId = null;
+    playUISound();
+    const nextVisible = [...openOrder].reverse().find(wid => wid !== id && !windowState[wid].minimized);
+    if(nextVisible) activateWindow(nextVisible);
+    else renderTaskbar();
+  }
+
+  function toggleMaximize(overlay){
+    const win = overlay.querySelector(".window");
+    if(!win) return;
+    const goingMax = !win.classList.contains("is-maximized");
+    if(goingMax){
+      win.dataset.prevLeft = win.style.left || "";
+      win.dataset.prevTop = win.style.top || "";
+      win.classList.add("is-maximized");
+      win.style.position = "fixed";
+      win.style.left = "10px";
+      win.style.top = "10px";
+      win.style.margin = "0";
+    } else {
+      win.classList.remove("is-maximized");
+      win.style.left = win.dataset.prevLeft || win.style.left;
+      win.style.top = win.dataset.prevTop || win.style.top;
     }
+    playUISound();
+    bringToFront(overlay);
   }
 
   function closeWindow(overlay){
-    overlay.classList.remove("open");
+    if(!overlay) return;
+    const id = overlay.id;
+    overlay.classList.remove("open","is-minimized");
     resetWindowPosition(overlay);
+
+    const idx = openOrder.indexOf(id);
+    if(idx !== -1) openOrder.splice(idx,1);
+    delete windowState[id];
+    if(activeId === id) activeId = null;
+
+    playUISound();
+
+    const nextVisible = [...openOrder].reverse().find(wid => !windowState[wid].minimized);
+    if(nextVisible) activateWindow(nextVisible);
+    else renderTaskbar();
   }
 
-  icons.forEach(icon=>{
+  window.__xpCloseWindow = closeWindow; // used by shutdown sequence below
+
+  /* wire desktop icons */
+  document.querySelectorAll(".icon[data-window]").forEach(icon=>{
     icon.addEventListener("click",()=>{
       openWindow(icon.dataset.window);
     });
   });
 
+  /* wire window control buttons */
   document.querySelectorAll("[data-close]").forEach(button=>{
-    button.addEventListener("click",()=>{
+    button.addEventListener("click",(e)=>{
+      e.stopPropagation();
       closeWindow(button.closest(".overlay"));
     });
   });
+  document.querySelectorAll("[data-minimize]").forEach(button=>{
+    button.addEventListener("click",(e)=>{
+      e.stopPropagation();
+      minimizeWindow(button.closest(".overlay"));
+    });
+  });
+  document.querySelectorAll("[data-maximize]").forEach(button=>{
+    button.addEventListener("click",(e)=>{
+      e.stopPropagation();
+      toggleMaximize(button.closest(".overlay"));
+    });
+  });
 
-  overlays.forEach(overlay=>{
-    overlay.addEventListener("click",(event)=>{
-      if(event.target === overlay){
-        closeWindow(overlay);
-      }
+  /* clicking anywhere on a window activates/raises it */
+  document.querySelectorAll(".window").forEach(win=>{
+    win.addEventListener("pointerdown",()=>{
+      const overlay = win.closest(".overlay");
+      if(overlay && windowState[overlay.id]) activateWindow(overlay.id);
     });
   });
 
   document.addEventListener("keydown",(event)=>{
     if(event.key === "Escape"){
-      overlays.forEach(closeWindow);
+      if(activeId) closeWindow(document.getElementById(activeId));
       closeStartMenu();
     }
   });
@@ -2557,11 +3037,13 @@ body::before {
 
     titlebar.addEventListener("pointerdown",(e)=>{
       if(e.target.closest(".win-btn")) return;
+      if(windowEl.classList.contains("is-maximized")) return;
       const rect = windowEl.getBoundingClientRect();
       windowEl.style.position = "fixed";
       windowEl.style.margin = "0";
       windowEl.style.left = rect.left + "px";
       windowEl.style.top = rect.top + "px";
+      windowEl.dataset.positioned = "1";
       originLeft = rect.left;
       originTop = rect.top;
       startX = e.clientX;
@@ -2606,6 +3088,7 @@ body::before {
 
   startButton.addEventListener("click",(e)=>{
     e.stopPropagation();
+    playUISound();
     toggleStartMenu();
   });
 
@@ -2632,9 +3115,11 @@ body::before {
     clearTimeout(toastTimer);
     toastTimer = setTimeout(()=> toast.classList.remove("show"), 1800);
   }
+  window.__xpShowToast = showToast;
 
   startMenu.querySelectorAll("[data-toast]").forEach(item=>{
     item.addEventListener("click",()=>{
+      playUISound();
       showToast(item.dataset.toast);
       closeStartMenu();
     });
@@ -2647,6 +3132,7 @@ body::before {
   const shutdownBar = document.getElementById("shutdown-bar-fill");
 
   document.getElementById("sm-poweroff").addEventListener("click",()=>{
+    playUISound();
     closeStartMenu();
     overlays.forEach(closeWindow);
     shutdownMsg.textContent = "Windows завершує роботу...";
@@ -2665,9 +3151,86 @@ body::before {
   });
 
   document.getElementById("sm-lock").addEventListener("click",()=>{
+    playUISound();
     closeStartMenu();
     showToast("🔒 Екран заблоковано... жартую ♡");
   });
+
+  /* =========================================================
+     LIVE DESKTOP — rare, quiet ambient events.
+     Runs on its own timer, mostly does nothing visible;
+     every 45–110s there's a small chance of a toast,
+     a drifting symbol, or (rarely) a fake system error.
+     Pauses while the tab isn't visible to save resources.
+  ========================================================= */
+
+  const AMBIENT_MESSAGES = [
+    "💌 Отримано нове повідомлення",
+    "😴 Система в режимі очікування",
+    "Noresmell.exe відповідає...",
+    "♡",
+    "✦ щось блиснуло на екрані",
+    "🔋 Все стабільно ♡"
+  ];
+  const AMBIENT_SYMBOLS = ["✦","♡","✿","🦋"];
+
+  function spawnDriftingSymbol(){
+    const symbol = AMBIENT_SYMBOLS[Math.floor(Math.random()*AMBIENT_SYMBOLS.length)];
+    const el = document.createElement("span");
+    const crossing = symbol === "🦋" && Math.random() < 0.6;
+    el.className = "ambient-event" + (crossing ? " crossing" : "");
+    el.textContent = symbol;
+    el.style.left = (crossing ? "4%" : (10 + Math.random()*78) + "%");
+    el.style.top = (12 + Math.random()*62) + "%";
+    document.body.appendChild(el);
+    requestAnimationFrame(()=> el.classList.add("show"));
+    const life = crossing ? 4600 : 2200;
+    setTimeout(()=>{
+      el.classList.remove("show");
+      setTimeout(()=> el.remove(), 900);
+    }, life);
+  }
+
+  function showFakeError(){
+    if(document.getElementById("fake-error-dialog")) return;
+    const dlg = document.createElement("div");
+    dlg.id = "fake-error-dialog";
+    dlg.className = "fake-error";
+    dlg.innerHTML =
+      '<div class="fake-error-titlebar">⚠️ Windows</div>' +
+      '<div class="fake-error-body">' +
+        '<span class="fake-error-icon">⚠️</span>' +
+        'Something went wrong.<br>But probably not important.' +
+        '<br><button class="fake-error-ok" type="button">OK</button>' +
+      '</div>';
+    document.body.appendChild(dlg);
+    playUISound();
+    dlg.querySelector(".fake-error-ok").addEventListener("click",()=>{
+      playUISound();
+      dlg.remove();
+    });
+  }
+
+  function triggerAmbientEvent(){
+    if(document.hidden) return;
+    const roll = Math.random();
+    if(roll < 0.08){
+      showFakeError();
+    } else if(roll < 0.55){
+      showToast(AMBIENT_MESSAGES[Math.floor(Math.random()*AMBIENT_MESSAGES.length)]);
+    } else {
+      spawnDriftingSymbol();
+    }
+  }
+
+  function scheduleAmbientEvent(){
+    const delay = 45000 + Math.random()*65000; // 45–110s
+    setTimeout(()=>{
+      triggerAmbientEvent();
+      scheduleAmbientEvent();
+    }, delay);
+  }
+  scheduleAmbientEvent();
 
 })();
 </script>
