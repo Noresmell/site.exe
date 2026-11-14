@@ -1082,8 +1082,8 @@ body.reduced-motion-on *,body.reduced-motion-on *::before{animation:none!importa
    CONFIG — впиши свої дані тут
 ========================================================= */
 const SUPPORT_CONFIG = {
-  monobankUrl: "",   // напр. "https://send.monobank.ua/jar/XXXXXXXX"
-  qrImage: ""        // посилання на картинку QR-коду (необов'язково)
+  monobankUrl: "https://send.monobank.ua/jar/2qvcoppwpZ",
+  qrImage: "Untitled2_20261114022448.png"   // файл лежить поруч з index.html
 };
 const API_BASE = "https://siteexe.me11isqwq.workers.dev";
 const SOUNDS = {
@@ -1434,7 +1434,7 @@ document.addEventListener("click", e=>{
 (function initSupport(){
   const {monobankUrl, qrImage} = SUPPORT_CONFIG;
   const qr = $("#support-qr"), actions = $("#support-actions"), empty = $("#support-empty");
-  if(qrImage){ qr.src = qrImage; qr.hidden = false; }
+  if(qrImage){ qr.onerror = ()=>{ qr.hidden = true; }; qr.onload = ()=>{ qr.hidden = false; }; qr.src = qrImage; }
   if(monobankUrl){
     actions.hidden = false;
     $("#support-open-btn").addEventListener("click", ()=>{ play("select"); window.open(monobankUrl,"_blank","noopener"); });
