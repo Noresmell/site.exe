@@ -29,14 +29,23 @@ html,body{
 }
 button{font-family:inherit}
 
-body::before{
-  content:"";position:fixed;inset:0;z-index:-10;
+.wallpaper{
+  position:fixed;inset:0;z-index:0;pointer-events:none;
+  background-color:#1750B5;
   background-image:
     linear-gradient(160deg,rgba(255,216,234,.12) 0%,rgba(255,246,250,.025) 42%,rgba(42,111,224,.10) 100%),
     url("https://raw.githubusercontent.com/Noresmell/stream-widgets-assets2/main/image/perfect_hue_47%20%281%29.jpg");
   background-size:cover;background-position:center;background-repeat:no-repeat;
   filter:saturate(var(--pink-boost));
 }
+.ov-stage{
+  position:relative;width:100%;aspect-ratio:16/9;overflow:hidden;border:1px solid #888;border-radius:2px;
+  background:
+    conic-gradient(#e9e9e9 25%,#fff 0 50%,#e9e9e9 0 75%,#fff 0) 0 0/20px 20px;
+}
+.ov-stage iframe{position:absolute;left:0;top:0;width:1920px;height:1080px;border:0;transform-origin:0 0;background:transparent}
+.ov-note{font-size:11px;color:#666;line-height:1.5;margin-top:8px}
+#projects .window{width:min(680px,100%)}
 
 /* ---------------- DESKTOP ---------------- */
 .desktop{
@@ -484,6 +493,7 @@ body.reduced-motion-on *,body.reduced-motion-on *::before{animation:none!importa
 
 <body>
 
+<div class="wallpaper" aria-hidden="true"></div>
 <span class="sparkle s1">✦</span><span class="sparkle s2">♡</span><span class="sparkle s3">✿</span><span class="sparkle s4">✦</span>
 <span class="petal" style="left:6%;font-size:15px;--drift:35px;animation-duration:16s;animation-delay:0s">✿</span>
 <span class="petal" style="left:22%;font-size:11px;--drift:-25px;animation-duration:13s;animation-delay:3s">♡</span>
@@ -795,10 +805,18 @@ body.reduced-motion-on *,body.reduced-motion-on *::before{animation:none!importa
       <div class="content-inner">
         <h2 class="about-title">PROJECTS</h2>
         <div class="project-grid" id="projects-grid">
-          <div class="project"><div class="project-icon">🎨</div><strong>Stream Design</strong><p>Плашки, оверлеї та всякі дрібні штуки для стрімів.</p></div>
+          <div class="project" id="project-design" style="cursor:pointer" title="Показати оверлеї"><div class="project-icon">🎨</div><strong>Stream Design</strong><p>Плашки, оверлеї та всякі дрібні штуки для стрімів. <em>(клік — дивитись оверлеї ↓)</em></p></div>
           <div class="project"><div class="project-icon">🖥️</div><strong>Live2D</strong><p>Модель, ріггінг, анімації та експерименти з VTube Studio.</p></div>
           <div class="project"><div class="project-icon">🤖</div><strong>Stream Bots</strong><p>Боти, автоматизація та різні корисні штуки для трансляцій.</p></div>
           <div class="project"><div class="project-icon">🧪</div><strong>Experiments</strong><p>Все інше, що починається зі слів «а що буде, якщо...».</p></div>
+        </div>
+
+        <h2 class="about-title" id="ov-section" style="margin-top:22px">ОВЕРЛЕЇ</h2>
+        <div class="ov-stage" id="ov-stage"><iframe id="ov-frame" title="Overlay" loading="lazy" allow="autoplay"></iframe></div>
+        <p class="ov-note">Живий оверлей зі StreamElements — так він виглядає в ефірі (шахматне тло = прозорість). Якщо не відображається у вікні, відкрий у браузері.</p>
+        <div style="text-align:center">
+          <button type="button" class="app-open-btn" data-open-link="https://streamelements.com/overlay/6a99d87a0e8f9e2eebcd1d2e/ieFgSDypNDJTwcAW6TmZmI6v7tEaPnjQKCwOQ8mHGSmt_XlS">ВІДКРИТИ В БРАУЗЕРІ →</button>
+          <button type="button" class="app-secondary-btn" id="ov-reload-btn">ОНОВИТИ</button>
         </div>
       </div>
     </div>
@@ -1114,10 +1132,28 @@ function openWindow(id){
     if(id==="twitchapp") fetchTwitch(false);
     if(id==="youtubeapp") fetchYouTube(false);
     if(id==="notepad") setTimeout(()=>$("#notepad-area").focus(), 60);
+    if(id==="projects") loadOverlay(false);
   }
+  if(id==="projects") requestAnimationFrame(scaleOverlay);
   bringToFront(id);
   play("drop");
 }
+const OVERLAY_URL = "https://streamelements.com/overlay/6a99d87a0e8f9e2eebcd1d2e/ieFgSDypNDJTwcAW6TmZmI6v7tEaPnjQKCwOQ8mHGSmt_XlS";
+let overlayLoaded = false;
+function scaleOverlay(){
+  const stage = $("#ov-stage"), fr = $("#ov-frame");
+  if(!stage || !stage.clientWidth) return;
+  fr.style.transform = `scale(${stage.clientWidth/1920})`;
+}
+function loadOverlay(force){
+  const fr = $("#ov-frame");
+  if(overlayLoaded && !force) return;
+  fr.onload = ()=>flashStatus("projects","Оверлей завантажено",2500);
+  fr.src = OVERLAY_URL; overlayLoaded = true;
+  requestAnimationFrame(scaleOverlay);
+}
+addEventListener("resize", scaleOverlay);
+if(window.ResizeObserver) new ResizeObserver(scaleOverlay).observe($("#ov-stage"));
 function minimize(id){
   if(!state[id]) return;
   document.getElementById(id).classList.add("is-minimized");
@@ -1558,6 +1594,15 @@ document.addEventListener("click", e=>{
 const spinStyle = document.createElement("style");
 spinStyle.textContent = "@keyframes spin{to{transform:rotate(360deg)}}";
 document.head.appendChild(spinStyle);
+
+/* projects: overlays section */
+$("#ov-reload-btn").addEventListener("click", e=>{ e.stopPropagation(); play("click"); loadOverlay(true); showToast("Оверлей оновлено ♡"); });
+$("#project-design").addEventListener("click", ()=>{
+  play("select");
+  const sec = $("#ov-section");
+  sec.scrollIntoView({behavior:"smooth", block:"start"});
+  flash($("#ov-stage"));
+});
 
 /* recycle bin + secret file */
 $("#bin-empty-btn").addEventListener("click", e=>{
