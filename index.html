@@ -1,4 +1,4 @@
-j<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="uk">
 <head>
 <meta charset="UTF-8">
@@ -407,6 +407,58 @@ body.ambient-off .petal,body.ambient-off .sparkle{display:none}
 body.reduced-motion-on *,body.reduced-motion-on *::before{animation:none!important;transition:none!important}
 @media(prefers-reduced-motion:reduce){.sparkle,.petal,.support-heart,.status-dot,.tray-heart,.boot-logo{animation:none!important}}
 
+/* ---------------- CALENDAR ---------------- */
+#calendarapp .window{width:min(600px,100%)}
+.cal-head{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:10px}
+.cal-title{flex:1;text-align:center;font-size:17px;font-weight:700;color:#2457a6}
+.cal-nav{
+  min-width:30px;height:28px;padding:0 8px;cursor:pointer;font-size:13px;font-weight:700;color:#2457a6;
+  border:1px solid #888;border-radius:3px;background:linear-gradient(180deg,#fff,#e5efff);
+  box-shadow:inset 1px 1px 0 #fff,inset -1px -1px 0 #d2d2d2;
+}
+.cal-nav:hover{background:linear-gradient(180deg,#fff,#ffd8ea);color:var(--accent-pink-darker)}
+.cal-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:3px}
+.cal-wd{text-align:center;font-size:10px;font-weight:700;color:#888;padding:2px 0 4px}
+.cal-wd:nth-child(n+6){color:var(--accent-pink-darker)}
+.cal-day{
+  position:relative;height:46px;padding:3px 4px;cursor:pointer;text-align:left;
+  display:flex;flex-direction:column;justify-content:space-between;
+  border:1px solid #bbb;border-radius:2px;background:linear-gradient(#fff,#f1f1f1);color:#222;font-size:12px;
+  box-shadow:inset 1px 1px 0 #fff;transition:transform .1s,background .1s;
+}
+.cal-day:hover{background:linear-gradient(#fff,#e5efff);transform:translateY(-1px)}
+.cal-day.dim{color:#aaa;background:#f7f7f7}
+.cal-day.weekend{color:var(--accent-pink-darker)}
+.cal-day.today{border:2px solid var(--titlebar-start);padding:2px 3px;font-weight:700}
+.cal-day.has-stream{background:linear-gradient(#fff,var(--accent-pink))}
+.cal-day.selected{outline:2px solid var(--accent-pink-darker);outline-offset:-2px;background:linear-gradient(#fff,var(--accent-pink-deep))}
+.cal-dots{display:flex;gap:1px;font-size:10px;line-height:1;flex-wrap:wrap}
+.cal-count{position:absolute;right:3px;top:2px;font-size:9px;font-weight:700;color:#2457a6}
+.cal-panel{margin-top:14px;padding:10px 12px;background:#f4f4f4;border:1px solid #b7b7b7;border-radius:2px}
+.cal-panel h3{margin:0 0 8px;font-size:13px;color:#2457a6}
+.cal-events{list-style:none;margin:0 0 10px;padding:0;display:grid;gap:5px}
+.cal-ev{display:flex;align-items:center;gap:8px;padding:5px 8px;background:#fff;border:1px solid #ccc;border-radius:2px;font-size:12px}
+.cal-ev.done .cal-ev-text{text-decoration:line-through;color:#999}
+.cal-ev-time{font-family:"Courier New",monospace;font-size:11px;color:#2457a6;min-width:38px}
+.cal-ev-text{flex:1;min-width:0;overflow-wrap:anywhere}
+.cal-ev button.cal-del{border:0;background:none;cursor:pointer;color:#c22a17;font-size:14px;font-weight:700;padding:0 4px}
+.cal-ev input[type=checkbox]{margin:0}
+.cal-empty{font-size:11px;color:#777;padding:4px 0}
+.cal-form{display:flex;flex-wrap:wrap;gap:6px}
+.cal-form select,.cal-form input{
+  font-family:var(--font-family);font-size:12px;padding:5px 6px;border:1px solid #999;border-radius:2px;background:#fff;min-width:0;
+}
+.cal-form input[type=text]{flex:1 1 160px}
+.cal-form .app-open-btn{margin-top:0;padding:5px 12px}
+.cal-upcoming{margin-top:12px;font-size:11px;color:#555}
+.cal-upcoming b{color:#2457a6}
+.cal-upcoming a{color:#2457a6;cursor:pointer;display:block;margin:2px 0}
+@media(max-width:600px){
+  .cal-day{height:40px;font-size:11px;padding:2px 3px}
+  .cal-dots{font-size:8px}
+  .cal-title{font-size:15px}
+}
+
 /* ---------------- MINESWEEPER ---------------- */
 #minesweeper .window{width:min(310px,96vw)}
 .ms-wrap{padding:14px;background:var(--window-bg)}
@@ -516,6 +568,7 @@ body.reduced-motion-on *,body.reduced-motion-on *::before{animation:none!importa
     <button class="icon" data-window="recyclebin"><div class="icon-symbol">🗑️</div><div class="icon-name">Recycle Bin</div></button>
     <button class="icon" data-window="notepad"><div class="icon-symbol">📝</div><div class="icon-name">Notepad.exe</div></button>
     <button class="icon" data-window="iexplore"><div class="icon-symbol">🌐</div><div class="icon-name">Internet Explorer</div></button>
+    <button class="icon" data-window="calendarapp"><div class="icon-symbol">📅</div><div class="icon-name">CALENDAR.exe</div></button>
     <button class="icon" data-window="minesweeper"><div class="icon-symbol">💣</div><div class="icon-name">Сапер</div></button>
   </main>
 </div>
@@ -547,6 +600,7 @@ body.reduced-motion-on *,body.reduced-motion-on *::before{animation:none!importa
       <div class="sm-item" data-window="about"><span class="sm-icon">🦋</span> About.exe</div>
       <div class="sm-item" data-window="support"><span class="sm-icon">💖</span> Support.exe</div>
       <div class="sm-item" data-window="projects"><span class="sm-icon">📂</span> Projects.exe</div>
+      <div class="sm-item" data-window="calendarapp"><span class="sm-icon">📅</span> Calendar.exe</div>
       <div class="sm-divider"></div>
       <div class="sm-item has-submenu">
         <span class="sm-icon">🎮</span> Ігри <span class="sm-arrow">▶</span>
@@ -787,9 +841,10 @@ body.reduced-motion-on *,body.reduced-motion-on *::before{animation:none!importa
             <button type="button" class="app-open-btn" id="support-open-btn">ВІДКРИТИ MONOBANK →</button>
             <button type="button" class="app-secondary-btn" id="support-copy-btn">СКОПІЮВАТИ ПОСИЛАННЯ</button>
           </div>
+          <div class="app-preview-box" id="support-empty" hidden>Посилання на банку ще не додано ♡<br>(власнику: впиши його в SUPPORT_CONFIG у кінці файлу)</div>
         </div>
       </div>
-    </div>c
+    </div>
     <div class="window-status"><span class="status-dot"></span><span class="status-text">Дякую за підтримку ♡</span></div>
   </section>
 </div>
@@ -820,6 +875,40 @@ body.reduced-motion-on *,body.reduced-motion-on *::before{animation:none!importa
       </div>
     </div>
     <div class="window-status"><span class="status-dot"></span><span class="status-text">Знайдено 4 проєкти</span></div>
+  </section>
+</div>
+
+<!-- CALENDAR -->
+<div class="overlay" id="calendarapp">
+  <section class="window">
+    <div class="titlebar"><div class="title-left"><span>📅</span><span>Calendar.exe</span></div>
+      <div class="window-buttons"><button class="win-btn" data-minimize title="Згорнути">_</button><button class="win-btn" data-maximize title="Розгорнути">□</button><button class="win-btn close" data-close title="Закрити">×</button></div></div>
+    <div class="window-content">
+      <div class="menu">
+        <span data-action="cal-today">Сьогодні</span><span data-action="cal-export">Експорт</span><span data-action="cal-import">Імпорт</span><span data-action="cal-clear">Очистити</span><span data-action="cal-help">Help</span>
+      </div>
+      <div class="content-inner">
+        <div class="cal-head">
+          <button type="button" class="cal-nav" id="cal-prev" title="Попередній місяць">◀</button>
+          <div class="cal-title" id="cal-title"></div>
+          <button type="button" class="cal-nav" id="cal-next" title="Наступний місяць">▶</button>
+        </div>
+        <div class="cal-grid" id="cal-grid"></div>
+        <div class="cal-panel">
+          <h3 id="cal-day-title"></h3>
+          <ul class="cal-events" id="cal-events"></ul>
+          <form class="cal-form" id="cal-form" autocomplete="off">
+            <select id="cal-tag" aria-label="Тип події"></select>
+            <input type="time" id="cal-time" aria-label="Час">
+            <input type="text" id="cal-text" placeholder="Що плануємо?" maxlength="120" aria-label="Подія">
+            <button type="submit" class="app-open-btn">ДОДАТИ</button>
+          </form>
+        </div>
+        <div class="cal-upcoming" id="cal-upcoming"></div>
+        <input type="file" id="cal-import-file" accept="application/json,.json" hidden>
+      </div>
+    </div>
+    <div class="window-status"><span class="status-dot"></span><span class="status-text" id="cal-status">Календар готовий ♡</span></div>
   </section>
 </div>
 
@@ -1067,7 +1156,7 @@ const APPS = {
   recyclebin:{t:"Recycle Bin",g:"🗑️"}, notepad:{t:"Notepad.exe",g:"📝"}, iexplore:{t:"Internet Explorer",g:"🌐"},
   twitchapp:{t:"Twitch.exe",g:"🟣"}, youtubeapp:{t:"YouTube.exe",g:"▶️"}, tiktokapp:{t:"TikTok.exe",g:"🎵"},
   telegramapp:{t:"Telegram.exe",g:"💬"}, mycomputer:{t:"My Computer",g:"🖴"}, mydocuments:{t:"My Documents",g:"🗂"},
-  searchapp:{t:"Search.exe",g:"🔍"}, controlpanel:{t:"Control Panel",g:"⚙️"}, winhelp:{t:"Windows Help",g:"❓"}
+  calendarapp:{t:"Calendar.exe",g:"📅"}, searchapp:{t:"Search.exe",g:"🔍"}, controlpanel:{t:"Control Panel",g:"⚙️"}, winhelp:{t:"Windows Help",g:"❓"}
 };
 const taskbarApps = $("#taskbar-apps");
 const openOrder = [];
@@ -1132,6 +1221,7 @@ function openWindow(id){
     if(id==="youtubeapp") fetchYouTube(false);
     if(id==="notepad") setTimeout(()=>$("#notepad-area").focus(), 60);
     if(id==="projects") loadOverlay(false);
+    if(id==="calendarapp") window.__calRender?.();
   }
   if(id==="projects") requestAnimationFrame(scaleOverlay);
   bringToFront(id);
@@ -1473,6 +1563,7 @@ fetchTwitch(false); /* тихо перевіряємо, щоб показати 
     {k:["project","проєкт","проект","live2d","bot","бот","design"], t:"Projects.exe", w:"projects"},
     {k:["note","блокнот","todo","нотатк"], t:"Notepad.exe", w:"notepad"},
     {k:["game","гра","сапер","miner","пасьянс","solitaire","карт"], t:"Ігри (Сапер / Пасьянс)", w:"minesweeper"},
+    {k:["calendar","календар","розклад","подія","події","план","schedule","дата"], t:"Calendar.exe", w:"calendarapp"},
     {k:["settings","налаштув","звук","sound","панель"], t:"Control Panel", w:"controlpanel"},
     {k:["help","довід","допом"], t:"Windows Help", w:"winhelp"}
   ];
@@ -1562,6 +1653,11 @@ const ACTIONS = {
   "notepad-edit":()=>{ const ta = $("#notepad-area"); ta.focus(); ta.select(); showToast("Виділено все"); },
   "notepad-format":()=>{ window.__notepadReset(); showToast("↺ Відновлено початковий текст"); },
   "notepad-help":()=>helpDlg("Notepad.exe","<p>File — новий порожній файл.<br>Edit — виділити все.<br>Format — відновити початковий текст.</p><p>Текст зберігається автоматично.</p>"),
+  "cal-today":()=>window.__calToday?.(),
+  "cal-export":()=>window.__calExport?.(),
+  "cal-import":()=>$("#cal-import-file").click(),
+  "cal-clear":()=>window.__calClear?.(),
+  "cal-help":()=>helpDlg("Calendar.exe","<p>Клікни на день, щоб побачити або додати події.</p><p>Тип 🎮 «Стрім» підсвічує день рожевим. Галочка — подію виконано.</p><p>Усе зберігається у твоєму браузері. «Експорт/Імпорт» — резервна копія у файлі .json.</p>"),
   "ie-back":()=>flashStatus("iexplore","Неможливо повернутись назад. Нікуди.",2400),
   "ie-forward":()=>flashStatus("iexplore","Неможливо перейти вперед. Ти нікуди не переходив.",2400),
   "ie-refresh":()=>{
@@ -1593,6 +1689,199 @@ document.addEventListener("click", e=>{
 const spinStyle = document.createElement("style");
 spinStyle.textContent = "@keyframes spin{to{transform:rotate(360deg)}}";
 document.head.appendChild(spinStyle);
+
+/* =========================================================
+   CALENDAR (saved in localStorage)
+========================================================= */
+(function(){
+  const KEY = "noresmell-calendar";
+  const TAGS = [
+    {id:"stream",   e:"🎮", n:"Стрім"},
+    {id:"deadline", e:"💌", n:"Дедлайн"},
+    {id:"bday",     e:"🎂", n:"Свято"},
+    {id:"other",    e:"✦",  n:"Інше"}
+  ];
+  const TAG = Object.fromEntries(TAGS.map(t=>[t.id,t]));
+  const WD = ["Пн","Вт","Ср","Чт","Пт","Сб","Нд"];
+  const p2 = n => String(n).padStart(2,"0");
+  const keyOf = (y,m,d) => `${y}-${p2(m+1)}-${p2(d)}`;
+  const dateOfKey = k => { const [y,m,d] = k.split("-").map(Number); return new Date(y,m-1,d); };
+  const nowKey = () => { const n = new Date(); return keyOf(n.getFullYear(), n.getMonth(), n.getDate()); };
+
+  let data = {};
+  try{ const parsed = JSON.parse(store.get(KEY,"{}")); if(parsed && typeof parsed==="object" && !Array.isArray(parsed)) data = parsed; }catch(e){}
+  const save = () => store.set(KEY, JSON.stringify(data));
+
+  const t0 = new Date();
+  let viewY = t0.getFullYear(), viewM = t0.getMonth(), selKey = nowKey();
+
+  const gridEl = $("#cal-grid"), titleEl = $("#cal-title"), dayTitle = $("#cal-day-title");
+  const evList = $("#cal-events"), upEl = $("#cal-upcoming"), statusEl = $("#cal-status");
+  const tagSel = $("#cal-tag"), timeInp = $("#cal-time"), textInp = $("#cal-text");
+  tagSel.innerHTML = TAGS.map(t=>`<option value="${t.id}">${t.e} ${t.n}</option>`).join("");
+
+  const eventsOf = k => Array.isArray(data[k]) ? data[k] : [];
+  function sorted(list){
+    return [...list].sort((a,b)=> (a.time||"99:99").localeCompare(b.time||"99:99"));
+  }
+
+  function renderGrid(){
+    const monthName = new Date(viewY,viewM,1).toLocaleDateString("uk-UA",{month:"long"});
+    titleEl.textContent = monthName.charAt(0).toUpperCase() + monthName.slice(1) + " " + viewY;
+    const first = (new Date(viewY,viewM,1).getDay()+6)%7;           /* Mon=0 */
+    const dim = new Date(viewY,viewM+1,0).getDate();
+    const prevDim = new Date(viewY,viewM,0).getDate();
+    const today = nowKey();
+    let html = WD.map(w=>`<div class="cal-wd">${w}</div>`).join("");
+    const total = Math.ceil((first+dim)/7)*7;
+    let monthEvents = 0;
+    for(let i=0;i<total;i++){
+      let y = viewY, m = viewM, d, dimmed = false;
+      if(i<first){ d = prevDim-first+i+1; m = viewM-1; dimmed = true; }
+      else if(i>=first+dim){ d = i-first-dim+1; m = viewM+1; dimmed = true; }
+      else d = i-first+1;
+      if(m<0){ m = 11; y--; } else if(m>11){ m = 0; y++; }
+      const k = keyOf(y,m,d), evs = eventsOf(k);
+      if(!dimmed) monthEvents += evs.length;
+      const cls = ["cal-day", dimmed?"dim":"", (i%7>=5)?"weekend":"", k===today?"today":"", k===selKey?"selected":"",
+                   evs.some(e=>e.tag==="stream")?"has-stream":""].filter(Boolean).join(" ");
+      const dots = [...new Set(evs.map(e=>(TAG[e.tag]||TAG.other).e))].slice(0,4).join("");
+      html += `<button type="button" class="${cls}" data-k="${k}" aria-label="${d}"><span>${d}</span>` +
+              (evs.length ? `<span class="cal-count">${evs.length}</span>` : "") +
+              `<span class="cal-dots">${dots}</span></button>`;
+    }
+    gridEl.innerHTML = html;
+    statusEl.textContent = monthEvents ? `Подій у місяці: ${monthEvents}` : "У цьому місяці поки нічого ♡";
+  }
+
+  function renderDay(){
+    const dt = dateOfKey(selKey);
+    const ds = dt.toLocaleDateString("uk-UA",{weekday:"long",day:"numeric",month:"long",year:"numeric"});
+    dayTitle.textContent = ds.charAt(0).toUpperCase() + ds.slice(1);
+    const list = sorted(eventsOf(selKey));
+    if(!list.length){ evList.innerHTML = `<li class="cal-empty">На цей день нічого немає. Додай першу подію ♡</li>`; return; }
+    evList.innerHTML = list.map(ev=>
+      `<li class="cal-ev${ev.done?" done":""}" data-id="${escapeHtml(ev.id)}">
+        <input type="checkbox" ${ev.done?"checked":""} aria-label="Виконано">
+        <span>${(TAG[ev.tag]||TAG.other).e}</span>
+        <span class="cal-ev-time">${ev.time?escapeHtml(ev.time):"--:--"}</span>
+        <span class="cal-ev-text">${escapeHtml(ev.text)}</span>
+        <button type="button" class="cal-del" title="Видалити" aria-label="Видалити">×</button>
+      </li>`).join("");
+  }
+
+  function renderUpcoming(){
+    const today = nowKey();
+    const items = [];
+    Object.keys(data).filter(k=>k>=today).sort().forEach(k=>{
+      sorted(eventsOf(k)).forEach(ev=>{ if(!ev.done) items.push({k,ev}); });
+    });
+    const top = items.slice(0,5);
+    if(!top.length){ upEl.innerHTML = ""; return; }
+    upEl.innerHTML = "<b>Найближче:</b>" + top.map(({k,ev})=>{
+      const ds = dateOfKey(k).toLocaleDateString("uk-UA",{day:"numeric",month:"short"});
+      return `<a data-jump="${k}">${(TAG[ev.tag]||TAG.other).e} ${escapeHtml(ds)}${ev.time?" · "+escapeHtml(ev.time):""} — ${escapeHtml(ev.text)}</a>`;
+    }).join("");
+  }
+
+  function render(){ renderGrid(); renderDay(); renderUpcoming(); }
+  window.__calRender = render;
+
+  function goTo(k){
+    selKey = k; const d = dateOfKey(k); viewY = d.getFullYear(); viewM = d.getMonth(); render();
+  }
+  window.__calToday = ()=>{ play("select"); goTo(nowKey()); };
+
+  function shiftMonth(delta){
+    viewM += delta;
+    while(viewM<0){ viewM += 12; viewY--; }
+    while(viewM>11){ viewM -= 12; viewY++; }
+    renderGrid();
+  }
+  $("#cal-prev").addEventListener("click", ()=>{ play("click"); shiftMonth(-1); });
+  $("#cal-next").addEventListener("click", ()=>{ play("click"); shiftMonth(1); });
+
+  gridEl.addEventListener("click", e=>{
+    const b = e.target.closest(".cal-day"); if(!b) return;
+    play("click");
+    const k = b.dataset.k;
+    if(b.classList.contains("dim")) goTo(k); else { selKey = k; renderGrid(); renderDay(); }
+    textInp.focus({preventScroll:true});
+  });
+  upEl.addEventListener("click", e=>{ const a = e.target.closest("[data-jump]"); if(a){ play("select"); goTo(a.dataset.jump); } });
+
+  $("#cal-form").addEventListener("submit", e=>{
+    e.preventDefault();
+    const text = textInp.value.trim();
+    if(!text){ textInp.focus(); showToast("Напиши, що планується ♡"); return; }
+    const ev = { id: Date.now().toString(36)+Math.random().toString(36).slice(2,6), text, tag: tagSel.value, time: timeInp.value || "", done:false };
+    (data[selKey] = eventsOf(selKey)).push(ev);
+    save(); textInp.value = ""; timeInp.value = ""; play("drop"); render(); textInp.focus({preventScroll:true});
+  });
+
+  evList.addEventListener("click", e=>{
+    const li = e.target.closest(".cal-ev"); if(!li) return;
+    const list = eventsOf(selKey), idx = list.findIndex(x=>x.id===li.dataset.id); if(idx<0) return;
+    if(e.target.closest(".cal-del")){
+      list.splice(idx,1); if(!list.length) delete data[selKey];
+      save(); play("click"); render();
+    } else if(e.target.matches("input[type=checkbox]")){
+      list[idx].done = e.target.checked; save(); play("select"); render();
+    }
+  });
+
+  /* export / import / clear */
+  window.__calExport = ()=>{
+    const blob = new Blob([JSON.stringify(data,null,2)], {type:"application/json"});
+    const a = document.createElement("a");
+    a.href = URL.createObjectURL(blob); a.download = "noresmell-calendar.json";
+    document.body.appendChild(a); a.click(); a.remove();
+    setTimeout(()=>URL.revokeObjectURL(a.href), 1000);
+    showToast("📅 Календар збережено у файл ♡");
+  };
+  $("#cal-import-file").addEventListener("change", e=>{
+    const f = e.target.files[0]; if(!f) return;
+    const r = new FileReader();
+    r.onload = ()=>{
+      try{
+        const obj = JSON.parse(r.result);
+        if(!obj || typeof obj!=="object" || Array.isArray(obj)) throw 0;
+        const clean = {}; let n = 0;
+        Object.keys(obj).forEach(k=>{
+          if(!/^\d{4}-\d{2}-\d{2}$/.test(k) || !Array.isArray(obj[k])) return;
+          const arr = obj[k].filter(x=>x && typeof x.text==="string" && x.text.trim()).map(x=>({
+            id: String(x.id || Date.now().toString(36)+Math.random().toString(36).slice(2,6)),
+            text: x.text.slice(0,120), tag: TAG[x.tag] ? x.tag : "other",
+            time: /^\d{2}:\d{2}$/.test(x.time||"") ? x.time : "", done: !!x.done
+          }));
+          if(arr.length){ clean[k] = arr; n += arr.length; }
+        });
+        data = clean; save(); render(); showToast(`📅 Імпортовано подій: ${n}`);
+      }catch(err){ showToast("Не вдалося прочитати файл календаря"); }
+      e.target.value = "";
+    };
+    r.readAsText(f);
+  });
+  window.__calClear = ()=>{
+    if(!Object.keys(data).length){ showToast("Календар і так порожній ♡"); return; }
+    if(confirm("Видалити ВСІ події з календаря? Це не можна скасувати.")){
+      data = {}; save(); render(); showToast("Календар очищено");
+    }
+  };
+
+  /* clicking the tray clock opens the calendar, like in real Windows */
+  const clock = $("#tray-clock");
+  clock.style.cursor = "pointer"; clock.title = "Відкрити календар";
+  clock.addEventListener("click", ()=>{ play("select"); openWindow("calendarapp"); });
+
+  /* gentle reminder about today's plans */
+  setTimeout(()=>{
+    const todays = eventsOf(nowKey()).filter(e=>!e.done);
+    if(todays.length) showToast(`📅 Сьогодні в планах: ${todays.length} ${todays.length===1?"подія":"подій"} ♡`);
+  }, 3200);
+
+  render();
+})();
 
 /* projects: overlays section */
 $("#ov-reload-btn").addEventListener("click", e=>{ e.stopPropagation(); play("click"); loadOverlay(true); showToast("Оверлей оновлено ♡"); });
@@ -1690,7 +1979,7 @@ $("#secret-file").addEventListener("click", ()=>{
     if(!over && revealed === ROWS*COLS-MINES) end(true);
   }
   function flag(cell){
-    if(!started || cell.rev || over) return;
+    if(cell.rev || over) return;
     cell.flag = !cell.flag; cell.el.textContent = cell.flag ? "🚩" : "";
     flags += cell.flag ? 1 : -1; minesEl.textContent = pad(MINES-flags);
   }
